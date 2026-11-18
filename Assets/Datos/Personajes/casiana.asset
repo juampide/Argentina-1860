@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 019ad227a4a1147b5ac143c2174def25, type: 3}
+  m_Name: casiana
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
+  id: casiana
+  nombre: Casiana
+  lugar: Rancho junto al arroyo
+  aspecto:
+    estilo: 1
+    piel: {r: 0.9411765, g: 0.75686276, b: 0.6039216, a: 1}
+    pelo: {r: 0.6039216, g: 0.6039216, b: 0.5882353, a: 1}
+    peinado: 5
+    barba: 0
+    bigote: 0
+    ropa: {r: 0.2901961, g: 0.22745098, b: 0.3529412, a: 1}
+    ropa2: {r: 0.84705883, g: 0.7882353, b: 0.65882355, a: 1}
+    chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
+    pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
+    poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    sombrero: 0
+    colorSombrero: {r: 0.23137255, g: 0.18431373, b: 0.15294118, a: 1}
+    baston: 0
+    accesorio: 2
+    escala: 0.95
+  lineas:
+  - "Ten\xE9s cara de cansado. Si te duele algo, tengo yuyos para todo, menos para los males del alma."
+  - No me gustan los uniformes ni los papeles. Los de la autoridad siempre llegan cuando ya es tarde.
+  personalidad: 
+  sabe: 
+  noSabe: 

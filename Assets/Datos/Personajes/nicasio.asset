@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 019ad227a4a1147b5ac143c2174def25, type: 3}
+  m_Name: nicasio
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
+  id: nicasio
+  nombre: Nicasio
+  lugar: Ranchos de peones
+  aspecto:
+    estilo: 4
+    piel: {r: 0.8509804, g: 0.63529414, b: 0.47843137, a: 1}
+    pelo: {r: 0.22745098, g: 0.16470589, b: 0.10980392, a: 1}
+    peinado: 1
+    barba: 0
+    bigote: 0
+    ropa: {r: 0.41568628, g: 0.47843137, b: 0.2901961, a: 1}
+    ropa2: {r: 0.9372549, g: 0.9019608, b: 0.8156863, a: 1}
+    chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
+    pantalon: {r: 0.47843137, g: 0.4392157, b: 0.3764706, a: 1}
+    poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    sombrero: 2
+    colorSombrero: {r: 0.84705883, g: 0.7529412, b: 0.47843137, a: 1}
+    baston: 0
+    accesorio: 0
+    escala: 1
+  lineas:
+  - "\xA1Che, qu\xE9 tal! Yo soy Nicasio, hace dos a\xF1os que estoy ac\xE1. Sentate junto al fog\xF3n, que hay mate."
+  - "Si me acompa\xF1\xE1s en la faena te ense\xF1o a sacar un cuero entero sin cortarlo. Pero no le cuentes a Ferm\xEDn que te lo ense\xF1\xE9 yo."
+  personalidad: 
+  sabe: 
+  noSabe: 
