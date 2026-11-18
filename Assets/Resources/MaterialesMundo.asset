@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e20f6f4dccdc4c958043551a66bbbfb, type: 3}
+  m_Name: MaterialesMundo
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.MaterialesMundo
+  baseColor: {fileID: 2100000, guid: 0577e34520b6e4ee0be416c22f71a21b, type: 2}
+  materiales:
+  - nombre: adobe
+    material: {fileID: 2100000, guid: e4575a8ca7dc142b89def6ec8ca37669, type: 2}
+  - nombre: blanco
+    material: {fileID: 2100000, guid: a2e890ec121fd4ee281dbefd64efb837, type: 2}
+  - nombre: paja
+    material: {fileID: 2100000, guid: eb8bee1028ddb4a8695ec3b1a2097c89, type: 2}
+  - nombre: teja
+    material: {fileID: 2100000, guid: a26a49181081147b68532f9c37f6cbed, type: 2}
+  - nombre: madera
+    material: {fileID: 2100000, guid: 511fd7a5590c34ae4bc47eb6707b3269, type: 2}
+  - nombre: oscuro
+    material: {fileID: 2100000, guid: 9d676352332cc44f08e4a2e4b5e43a71, type: 2}
+  - nombre: postigo
+    material: {fileID: 2100000, guid: 96ff2151fe57242589f160495e38eab7, type: 2}
+  - nombre: hierro
+    material: {fileID: 2100000, guid: b6f737dc9272b4b2e825d58292417fec, type: 2}
+  - nombre: piedra
+    material: {fileID: 2100000, guid: d5ffa0b047bcf44d3b931767f384bae3, type: 2}
+  - nombre: vara
+    material: {fileID: 2100000, guid: 2e9d080a3dd8b410eaefcbf26ceb50ff, type: 2}
+  - nombre: llama
+    material: {fileID: 2100000, guid: 98157b5d67ad3400ca96970384df9309, type: 2}
+  - nombre: farol
+    material: {fileID: 2100000, guid: 21f9d92e304a34b729fb5e3184d1499f, type: 2}
+  - nombre: vidrio
+    material: {fileID: 2100000, guid: c87de2405c7fb4a2e97f2ac8803d7601, type: 2}
+  - nombre: cerco
+    material: {fileID: 2100000, guid: 6961014e0cb464049bab6fa9cec70e9e, type: 2}
