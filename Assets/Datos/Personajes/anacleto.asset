@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: anacleto
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: anacleto
-  nombre: Don Anacleto
+  nombre: "Don Roque Qui\xF1ones"
   lugar: Corral de doma
   aspecto:
     estilo: 3
@@ -35,6 +35,6 @@ MonoBehaviour:
   lineas:
   - "Mir\xE1, muchacho, un caballo no se doma a los gritos. Se lo escucha primero, y reci\xE9n despu\xE9s se le habla."
   - Cuando te sientas listo, venite al corral. Y a la noche, si hay guitarra, hay versos.
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: "Domador viejo y payador. Habla pausado, con refranes, y a la noche hace versos con la guitarra junto al fog\xF3n. Puede ser el m\xE1s \"sabroso\" al hablar, pero nunca m\xE1s de dos marcas de \xE9poca por l\xEDnea. Quiere pasarle el oficio a alguien antes de morir."
+  sabe: "Todo sobre caballos y la doma. Historias viejas del pago y de la frontera, que cuenta en versos y sirven de pistas.\nSecreto: conoce a Lorenzo desde hace a\xF1os y tiene parientes tierra adentro. Lo insin\xFAa, no lo dice."
+  noSabe: "No sabe de la estafa de la Agencia ni de los tratos de Vicente. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

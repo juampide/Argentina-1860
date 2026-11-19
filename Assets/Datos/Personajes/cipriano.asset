@@ -13,28 +13,28 @@ MonoBehaviour:
   m_Name: cipriano
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: cipriano
-  nombre: Cipriano Baigorria
+  nombre: "Do\xF1a Petrona Silva"
   lugar: Posta
   aspecto:
-    estilo: 0
-    piel: {r: 0.9411765, g: 0.75686276, b: 0.6039216, a: 1}
-    pelo: {r: 0.22745098, g: 0.16470589, b: 0.10980392, a: 1}
-    peinado: 2
+    estilo: 1
+    piel: {r: 0.41960785, g: 0.27058825, b: 0.1882353, a: 1}
+    pelo: {r: 0.11764706, g: 0.08627451, b: 0.06666667, a: 1}
+    peinado: 5
     barba: 0
-    bigote: 1
-    ropa: {r: 0.3529412, g: 0.2901961, b: 0.22745098, a: 1}
-    ropa2: {r: 0.95686275, g: 0.93333334, b: 0.8627451, a: 1}
+    bigote: 0
+    ropa: {r: 0.3529412, g: 0.22745098, b: 0.16470589, a: 1}
+    ropa2: {r: 0.84705883, g: 0.8117647, b: 0.72156864, a: 1}
     chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
     pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
-    sombrero: 2
+    sombrero: 0
     colorSombrero: {r: 0.22745098, g: 0.18039216, b: 0.14901961, a: 1}
     baston: 0
     accesorio: 0
-    escala: 1
+    escala: 0.98
   lineas:
   - "\xA1Caballos de remuda, los mejores del camino! Cambio, alquilo o vendo. Pero r\xE1pido, que el coche no espera."
   - Los viajeros traen noticias del este. Dicen que se viene tiempo de leva.
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: "Maestra de posta y due\xF1a del negocio. Afroargentina; habla como sus vecinos de la misma clase, sin caricatura. Apurada, vendedora y con autoridad: en la posta manda ella. Voseo, vocabulario de caballada y galeras. Quiere mantener la posta en marcha y cobrarle al gobierno lo que le debe."
+  sabe: "Todo sobre caballos de remuda: cambiarlos, alquilarlos, venderlos. Las noticias del este que traen los viajeros de las galeras: la guerra del Paraguay, la leva y, m\xE1s adelante, la peste en la ciudad."
+  noSabe: "No sabe de la estafa de la Agencia ni del papel de Rufino. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

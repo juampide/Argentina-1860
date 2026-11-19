@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: pascual
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: pascual
-  nombre: Pascual
+  nombre: Juan Maidana
   lugar: Carretero del camino real
   aspecto:
     estilo: 4
@@ -35,6 +35,8 @@ MonoBehaviour:
   lineas:
   - Llevo cuero y lana a Buenos Aires. Es un camino largo, pero se paga bien.
   - "Si alg\xFAn d\xEDa necesit\xE1s ir a la ciudad, hablame. Siempre hay lugar en la carreta para uno m\xE1s, si es gente de bien."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: "Carretero entre el pago y Buenos Aires. Bonach\xF3n, de viajero, voseo y alguna marca suelta. Habla de la carga, del camino y de la ciudad. Quiere llegar con la carga y cobrar."
+  sabe: 'El camino real, las postas, los precios del cuero y la lana en la ciudad, las novedades de Buenos Aires. Trajo al Gallego al pago.
+
+    Secreto: lleva las cartas de Carmen a la ciudad. No lo cuenta.'
+  noSabe: "No sabe de la estafa de la Agencia. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

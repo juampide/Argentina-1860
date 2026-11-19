@@ -15,7 +15,7 @@ Cada ficha tiene:
 
 ### Don Vicente Larralde · `celestino`
 - **Rol**: dueño de la estancia La Soledad.
-- **Quiere**: no perder la estancia. Está endeudado con Rufino Páez y con un consignatario de Buenos Aires.
+- **Quiere**: no perder la estancia. Está endeudado con Rufino Aramburu y con un consignatario de Buenos Aires.
 - **Esconde**: vende ganado a escondidas, por medio de Lorenzo, para pagar las deudas. Si se supiera, quedaría como alguien que comercia con "el otro lado". *Pregunta abierta*: ¿se mantiene, ahora que el villano es Rufino?
 - **Voz**: seca, de patrón. Al Gallego lo tutea y le habla de arriba. A Rufino y a Obregón los trata de usted.
 - **Función**: toma al Gallego como peón porque Rufino se lo pide, y porque le sale barato.

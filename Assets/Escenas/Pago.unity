@@ -562,7 +562,7 @@ GameObject:
   - component: {fileID: 324371953}
   - component: {fileID: 324371952}
   m_Layer: 8
-  m_Name: Pascual
+  m_Name: Juan Maidana
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -881,7 +881,7 @@ GameObject:
   - component: {fileID: 371970540}
   - component: {fileID: 371970539}
   m_Layer: 8
-  m_Name: "Don Wenceslao Ib\xE1\xF1ez"
+  m_Name: Hilario Acosta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1197,7 +1197,7 @@ GameObject:
   - component: {fileID: 469961553}
   - component: {fileID: 469961552}
   m_Layer: 8
-  m_Name: "Do\xF1a Juana"
+  m_Name: "Juana Ben\xEDtez"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1346,7 +1346,7 @@ MonoBehaviour:
   camara: {fileID: 1720561353}
   fauna: {fileID: 542630511}
   misionTitulo: "Etapa 1 \xB7 Sin nada"
-  misionTexto: "Conoc\xE9 a la gente del pago. Ferm\xEDn, el capataz, reparte las tareas en los corrales de la estancia."
+  misionTexto: "Conoc\xE9 a la gente del pago. Anselmo, el capataz, reparte las tareas en los corrales de la estancia."
   monedas: 0
   habArreo: 0
   habComercio: 0
@@ -1583,7 +1583,7 @@ GameObject:
   - component: {fileID: 819114928}
   - component: {fileID: 819114927}
   m_Layer: 8
-  m_Name: Don Celestino Aguirre
+  m_Name: Don Vicente Larralde
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1682,7 +1682,7 @@ GameObject:
   - component: {fileID: 978841011}
   - component: {fileID: 978841010}
   m_Layer: 8
-  m_Name: Nicasio
+  m_Name: Santos Sosa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2111,7 +2111,7 @@ GameObject:
   - component: {fileID: 1255387290}
   - component: {fileID: 1255387289}
   m_Layer: 8
-  m_Name: Don Anacleto
+  m_Name: "Don Roque Qui\xF1ones"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2353,7 +2353,7 @@ GameObject:
   - component: {fileID: 1317964795}
   - component: {fileID: 1317964794}
   m_Layer: 8
-  m_Name: "Ferm\xEDn Lucero"
+  m_Name: Anselmo Lucero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2529,7 +2529,7 @@ GameObject:
   - component: {fileID: 1465212219}
   - component: {fileID: 1465212218}
   m_Layer: 8
-  m_Name: "Don Remigio P\xE1ez"
+  m_Name: Don Rufino Aramburu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2786,7 +2786,7 @@ GameObject:
   - component: {fileID: 1640113878}
   - component: {fileID: 1640113877}
   m_Layer: 8
-  m_Name: Cipriano Baigorria
+  m_Name: "Do\xF1a Petrona Silva"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2929,7 +2929,7 @@ GameObject:
   - component: {fileID: 1659747147}
   - component: {fileID: 1659747146}
   m_Layer: 8
-  m_Name: Carmen
+  m_Name: Carmen Larralde
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3458,7 +3458,7 @@ GameObject:
   - component: {fileID: 1741873355}
   - component: {fileID: 1741873354}
   m_Layer: 8
-  m_Name: "Do\xF1a Mercedes"
+  m_Name: "Do\xF1a Matilde Garmendia"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3557,7 +3557,7 @@ GameObject:
   - component: {fileID: 1745930444}
   - component: {fileID: 1745930443}
   m_Layer: 8
-  m_Name: Casiana
+  m_Name: Jacinta Molina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3743,7 +3743,7 @@ GameObject:
   - component: {fileID: 1916526218}
   - component: {fileID: 1916526217}
   m_Layer: 8
-  m_Name: Don Isidro Barral
+  m_Name: "Don Ram\xF3n Peralta"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

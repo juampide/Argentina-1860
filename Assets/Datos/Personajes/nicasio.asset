@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: nicasio
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: nicasio
-  nombre: Nicasio
+  nombre: Santos Sosa
   lugar: Ranchos de peones
   aspecto:
     estilo: 4
@@ -33,8 +33,8 @@ MonoBehaviour:
     accesorio: 0
     escala: 1
   lineas:
-  - "\xA1Che, qu\xE9 tal! Yo soy Nicasio, hace dos a\xF1os que estoy ac\xE1. Sentate junto al fog\xF3n, que hay mate."
-  - "Si me acompa\xF1\xE1s en la faena te ense\xF1o a sacar un cuero entero sin cortarlo. Pero no le cuentes a Ferm\xEDn que te lo ense\xF1\xE9 yo."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  - "\xA1Che, qu\xE9 tal! Yo soy Santos, hace dos a\xF1os que estoy ac\xE1. Sentate junto al fog\xF3n, que hay mate."
+  - "Si me acompa\xF1\xE1s en la faena te ense\xF1o a sacar un cuero entero sin cortarlo. Pero no le cuentes a Anselmo que te lo ense\xF1\xE9 yo."
+  personalidad: "Pe\xF3n joven, el primer amigo del Gallego y su compa\xF1ero de rancho. Charlat\xE1n, compinche, siempre con el mate. Le ense\xF1a al Gallego las palabras del campo y se r\xEDe de c\xF3mo habla. Quiere juntar plata para comprarse un caballo propio."
+  sabe: "La faena: sacar un cuero entero, carnear. Los chismes de los peones. Las palabras del campo (recao, chasque, vicios, mancarr\xF3n) y qu\xE9 significan.\nSecreto: le tiene miedo a la leva porque no tiene la papeleta en regla."
+  noSabe: "No sabe de la estafa de la Agencia ni de los tratos de Vicente. No sabe leer. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

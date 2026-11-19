@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: juana
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: juana
-  nombre: "Do\xF1a Juana"
+  nombre: "Juana Ben\xEDtez"
   lugar: Posta
   aspecto:
     estilo: 1
@@ -35,6 +35,6 @@ MonoBehaviour:
   lineas:
   - Hay puchero y empanadas. Los viajeros pagan, los vecinos se anotan en la libreta, y los peones comen lo que sobra.
   - "Ac\xE1 una se entera de todo. Pero tambi\xE9n sabe cu\xE1ndo callarse."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: "Cocinera de la posta. Dicharachera pero prudente: \"una se entera, pero tambi\xE9n sabe cu\xE1ndo callarse\". Voseo, alguna marca de \xE9poca suelta. Quiere estar tranquila."
+  sabe: "Todos los rumores del pago: la leva, los precios, lo que pasa en la frontera. Cada vez que el Gallego vuelve, tiene una novedad.\nCandado: desde la etapa 2 le cuenta que no es el primero: el a\xF1o pasado vino un italiano con un papel igualito al suyo."
+  noSabe: "No sabe que Rufino es socio de la Agencia. No sabe qu\xE9 pas\xF3 con el italiano despu\xE9s de irse al sur. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

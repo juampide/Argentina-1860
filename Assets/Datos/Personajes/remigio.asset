@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: remigio
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: remigio
-  nombre: "Don Remigio P\xE1ez"
+  nombre: Don Rufino Aramburu
   lugar: "De paso por la pulper\xEDa"
   aspecto:
     estilo: 0
@@ -35,6 +35,6 @@ MonoBehaviour:
   lineas:
   - "Soy el juez de paz. Si busc\xE1s trabajo, and\xE1 con tu papeleta de conchabo en regla; no quiero problemas."
   - "Ando de paso por la pulper\xEDa. Los tiempos est\xE1n dif\xEDciles y el gobierno pide hombres."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: "Juez de paz del pago. Formal, de usted, de papeles, con f\xF3rmulas como \"paso a decirle\". Amable con el Gallego al principio, casi protector. Siempre habla de la papeleta de conchabo, como recordatorio de qui\xE9n tiene el poder. Quiere cumplir la cuota de hombres que pide el gobierno, cobrar lo que le deben y que la estafa no salga a la luz."
+  sabe: "La ley del pago, la papeleta de conchabo, la leva, qui\xE9n tiene los papeles en regla y qui\xE9n no. Es el acreedor de Vicente.\nSecreto que nunca confiesa: es socio de la Agencia de Emigraci\xF3n Trasatl\xE1ntica. Retiene el t\xEDtulo y el pasaporte del Gallego \"para reclamar ante el gobierno\" y lo coloca como pe\xF3n barato. Si lo acorralan, niega, amenaza con la leva o cambia de tema."
+  noSabe: "No sabe que el Gallego sabe leer bien (lo subestima). Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

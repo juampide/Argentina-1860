@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: wenceslao
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: wenceslao
-  nombre: "Don Wenceslao Ib\xE1\xF1ez"
+  nombre: Hilario Acosta
   lugar: Puesto del baqueano
   aspecto:
     estilo: 3
@@ -35,6 +35,6 @@ MonoBehaviour:
   lineas:
   - "El campo habla, muchacho, solo hay que saber leerlo. Mir\xE1 esa huella: venado, de esta ma\xF1ana."
   - "Y fijate en el sur. Hace d\xEDas que los p\xE1jaros se levantan sin motivo. No me gusta nada."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: 'Baqueano: lee el rastro y el campo. Lento, observador, de pocas palabras. Le dice "muchacho" al Gallego. Quiere que le crean cuando avisa.'
+  sabe: "Leer huellas, rastrilladas, el vuelo de los p\xE1jaros y el humo. Los caminos que nadie m\xE1s conoce. Nota se\xF1ales raras del lado del sur.\nCandado: sabe que el italiano del a\xF1o pasado se fue al sur a buscar su tierra y no volvi\xF3. Lo cuenta desde la etapa 2."
+  noSabe: "No sabe de la estafa de la Agencia ni del papel de Rufino. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

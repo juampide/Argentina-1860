@@ -21,5 +21,6 @@ Guion y diseño narrativo, en texto. Lo escribe el lado de diseño (ver `CLAUDE.
 
 ## Pendiente con desarrollo
 
-- Pasar a las fichas (`Assets/Datos/Personajes/*.asset`) los nombres nuevos y los campos *personalidad*, *sabe* y *noSabe*, a partir de `personajes.md`. Se hace desde el editor de Unity o con el MCP, nunca editando el YAML a mano.
+- ~~Pasar a las fichas los nombres nuevos y los campos *personalidad*, *sabe* y *noSabe*~~: hecho. También se cambió el aspecto de Petrona Silva y los nombres viejos en los textos de `JuegoPago`.
+- Los nombres viejos siguen en `Assets/Scripts/Editor/DatosPago.cs` (datos del generador). No afecta al juego porque el generador no pisa las fichas existentes, pero conviene actualizarlo.
 - El diálogo por opciones (`charla-ia.md`) necesita código nuevo: queda para desarrollo.

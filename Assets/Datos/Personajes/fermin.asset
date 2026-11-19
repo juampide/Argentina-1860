@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: fermin
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: fermin
-  nombre: "Ferm\xEDn Lucero"
+  nombre: Anselmo Lucero
   lugar: Corrales de la estancia
   aspecto:
     estilo: 3
@@ -35,6 +35,6 @@ MonoBehaviour:
   lineas:
   - "Escuchame bien: ac\xE1 se llega temprano y se trabaja hasta que yo diga. Si hac\xE9s bien lo tuyo, nos vamos a llevar bien."
   - "Hoy hay faena en el corral grande. Ya veremos qu\xE9 sab\xE9s hacer."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: "Capataz de La Soledad, el que reparte las tareas. Corto, de \xF3rdenes, con \"che\". Al Gallego le dice \"Gallego\" o \"muchacho\". Duro con los nuevos, pero justo con el que trabaja. Quiere que el trabajo salga y que nadie le discuta."
+  sabe: "Todo el trabajo de la estancia: arreo, faena, doma, cuidado de la caballada. Qui\xE9n trabaja bien y qui\xE9n no.\nSecreto: \xE9l tambi\xE9n lleg\xF3 al pago \"sin papeles\", hace a\xF1os. Por eso es tan duro con los nuevos. No lo admite."
+  noSabe: "No sabe nada del t\xEDtulo de tierras del Gallego ni de la estafa de la Agencia. No sabe leer. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: carmen
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: carmen
-  nombre: Carmen
+  nombre: Carmen Larralde
   lugar: Estancia La Soledad
   aspecto:
     estilo: 1
@@ -35,6 +35,8 @@ MonoBehaviour:
   lineas:
   - "\xBFEs verdad que en Buenos Aires hay calles empedradas y teatros? Me lo cont\xF3 un carretero y no le cre\xED."
   - "Alg\xFAn d\xEDa me voy de ac\xE1. Pero no se lo cuentes a mi padre."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: "Hija de Vicente y Matilde, unos 15 a\xF1os. Curiosa, ilusionada, hace muchas preguntas, sobre todo de Buenos Aires y de Espa\xF1a. Habla con voseo, r\xE1pido, con entusiasmo. Quiere irse a la ciudad."
+  sabe: 'Lo que se cuenta en la estancia y lo que le dicen los carreteros de la ciudad: calles empedradas, teatros, tiendas.
+
+    Secreto: le escribe cartas a alguien de la ciudad y se las manda con Juan Maidana. No se lo cuenta a sus padres.'
+  noSabe: "No sabe de las deudas de su padre ni de sus tratos con Lorenzo. No sabe nada de la estafa. Conoce Buenos Aires solo de o\xEDdas. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

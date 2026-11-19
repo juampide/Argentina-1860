@@ -19,7 +19,7 @@ namespace Argentina1860
 
         [Header("Misión")]
         public string misionTitulo = "Etapa 1 · Sin nada";
-        [TextArea] public string misionTexto = "Conocé a la gente del pago. Fermín, el capataz, reparte las tareas en los corrales de la estancia.";
+        [TextArea] public string misionTexto = "Conocé a la gente del pago. Anselmo, el capataz, reparte las tareas en los corrales de la estancia.";
 
         [Header("Estado")]
         public int monedas;
@@ -75,8 +75,8 @@ namespace Argentina1860
         {
             int antes = NivelArreo;
             monedas += r.pago; habArreo += r.xp; arreoUlt = r;
-            if (r.ok) { misionTitulo = "Tarea cumplida"; misionTexto = "Hablá con Fermín si querés otra tanda de vacas."; }
-            else { misionTitulo = "Se acabó el tiempo"; misionTexto = $"Metiste {r.dentro} de {Fauna.ArreoTotal}. Hablá con Fermín para intentarlo de nuevo."; }
+            if (r.ok) { misionTitulo = "Tarea cumplida"; misionTexto = "Hablá con Anselmo si querés otra tanda de vacas."; }
+            else { misionTitulo = "Se acabó el tiempo"; misionTexto = $"Metiste {r.dentro} de {Fauna.ArreoTotal}. Hablá con Anselmo para intentarlo de nuevo."; }
             Decir((r.ok ? $"¡Todas adentro! Ganaste ${r.pago}." : $"Tiempo. Cobrás ${r.pago} por {r.dentro} vacas.") + (NivelArreo > antes ? $" Arreo sube a nivel {NivelArreo}." : ""));
         }
 
@@ -217,7 +217,7 @@ namespace Argentina1860
 
             void L(string n, float kx, float ky) { var k = MapaPago.K(kx, ky); lugares.Add(new MapaDibujo.Lugar { n = n, x = k.x, z = k.y }); }
             L("Estancia La Soledad", 0.75f, 0.75f); L("Ranchos de peones", 0.59f, 0.9f); L("Posta y pulpería", 2.15f, 1.25f); L("Rancho abandonado", 1.0f, 1.0f);
-            L("Fortín", 0.12f, 1.15f); L("Puesto del baqueano", 0.55f, 1.85f); L("Rancho de Casiana", 1.17f, 0.5f); L("Laguna", 1.7f, 2.05f); L("Monte", 2.3f, 0.45f);
+            L("Fortín", 0.12f, 1.15f); L("Puesto del baqueano", 0.55f, 1.85f); L("Rancho de Jacinta", 1.17f, 0.5f); L("Laguna", 1.7f, 2.05f); L("Monte", 2.3f, 0.45f);
         }
 
         List<MapaDibujo.Lugar> Lugares()
@@ -231,7 +231,7 @@ namespace Argentina1860
         {
             if (fauna != null && fauna.ArreoActivo) return new MapaDibujo.Lugar { n = "Corral", x = fauna.Rodeo.x, z = fauna.Rodeo.y };
             var f = npcs.FirstOrDefault(n => n != null && n.Ficha != null && n.Ficha.id == "fermin");
-            if (f != null) return new MapaDibujo.Lugar { n = "Fermín", x = f.transform.position.x, z = -f.transform.position.z };
+            if (f != null) return new MapaDibujo.Lugar { n = "Anselmo", x = f.transform.position.x, z = -f.transform.position.z };
             return null;
         }
 
@@ -243,9 +243,9 @@ namespace Argentina1860
         static readonly (Key k, string n, float kx, float ky, float dx, float dz)[] DESTINOS =
         {
             (Key.F1, "Ranchos de peones", 0.59f, 0.9f, 3, 12),
-            (Key.F2, "Estancia (Fermín)", 0.75f, 0.75f, 26, 36),
+            (Key.F2, "Estancia (Anselmo)", 0.75f, 0.75f, 26, 36),
             (Key.F3, "Corral del arreo", 0.75f, 0.75f, -20, 62),
-            (Key.F4, "Pulpería (Isidro)", 2.15f, 1.25f, 0, -2),
+            (Key.F4, "Pulpería (Ramón)", 2.15f, 1.25f, 0, -2),
             (Key.F5, "Pajonal", 0.95f, 1.62f, 0, 0),
             (Key.F6, "Laguna", 1.7f, 1.85f, 0, 0),
             (Key.F7, "Monte", 2.3f, 0.7f, 0, 0),
@@ -437,14 +437,14 @@ namespace Argentina1860
             float w = Mathf.Min(700, Screen.width - 32);
             GUILayout.BeginArea(new Rect((Screen.width - w) / 2, Screen.height / 2 - 190, w, 380));
             GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
-            GUILayout.Label("Pulpería de Don Isidro", sTitulo);
+            GUILayout.Label("Pulpería de Don Ramón", sTitulo);
             GUILayout.Label($"Tenés ${monedas} · Comercio nivel {NivelComercio} (a más nivel, mejor precio). Los precios cambian con las noticias del camino.", sAyuda);
             GUILayout.Space(6);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Mercadería", sCelda, GUILayout.Width(w * 0.3f));
             GUILayout.Label("Mercado", sCelda, GUILayout.Width(w * 0.15f));
-            GUILayout.Label("Isidro vende a", sCelda, GUILayout.Width(w * 0.25f));
-            GUILayout.Label("Isidro compra a", sCelda);
+            GUILayout.Label("Ramón vende a", sCelda, GUILayout.Width(w * 0.25f));
+            GUILayout.Label("Ramón compra a", sCelda);
             GUILayout.EndHorizontal();
             int niv = NivelComercio;
             foreach (var b in mercado.bienes)

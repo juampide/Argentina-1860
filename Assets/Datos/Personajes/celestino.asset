@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: celestino
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: celestino
-  nombre: Don Celestino Aguirre
+  nombre: Don Vicente Larralde
   lugar: Estancia La Soledad
   aspecto:
     estilo: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
     escala: 1
   lineas:
   - Vos sos el muchacho nuevo. En La Soledad el que trabaja bien no pasa hambre, y el que no, se va por donde vino.
-  - "Habl\xE1 con Ferm\xEDn, que \xE9l reparte las tareas. Y cuid\xE1 mis caballos como si fueran tuyos."
-  personalidad: 
-  sabe: 
-  noSabe: 
+  - "Habl\xE1 con Anselmo, que \xE9l reparte las tareas. Y cuid\xE1 mis caballos como si fueran tuyos."
+  personalidad: "Due\xF1o de la estancia La Soledad. Seco, de patr\xF3n, acostumbrado a mandar. Tutea al Gallego y le habla de arriba; a Rufino Aramburu y a Obreg\xF3n los trata de usted. Vive preocupado por las deudas m\xE1s que por la gente. Quiere no perder la estancia."
+  sabe: "Est\xE1 endeudado con Rufino Aramburu, el juez de paz, y con un consignatario de Buenos Aires. Tom\xF3 al Gallego como pe\xF3n porque Rufino se lo pidi\xF3 y porque le sale barato. Conoce el campo, los precios del cuero y la lana, y a toda la gente del pago.\nSecreto (no lo cuenta nunca por su cuenta): vende ganado a escondidas, por medio de Lorenzo, para pagar las deudas."
+  noSabe: "No sabe nada de la estafa de la Agencia de Emigraci\xF3n Trasatl\xE1ntica ni de que Rufino es socio. No sabe leer bien los papeles del Gallego ni le interesa. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

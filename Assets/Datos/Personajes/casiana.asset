@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: casiana
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
   id: casiana
-  nombre: Casiana
+  nombre: Jacinta Molina
   lugar: Rancho junto al arroyo
   aspecto:
     estilo: 1
@@ -35,6 +35,6 @@ MonoBehaviour:
   lineas:
   - "Ten\xE9s cara de cansado. Si te duele algo, tengo yuyos para todo, menos para los males del alma."
   - No me gustan los uniformes ni los papeles. Los de la autoridad siempre llegan cuando ya es tarde.
-  personalidad: 
-  sabe: 
-  noSabe: 
+  personalidad: Curandera. Vive sola junto al arroyo. Mansa pero desconfiada, sobre todo de la autoridad y de los uniformes. Habla con voseo, despacio. Quiere que la dejen en paz.
+  sabe: "Yuyos y remedios para todo, menos para los males del alma. Qui\xE9n est\xE1 enfermo en el pago.\nSecreto: atendi\xF3 heridos de los dos lados de la frontera. No lo cuenta a cualquiera."
+  noSabe: "No sabe de la estafa de la Agencia. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."
