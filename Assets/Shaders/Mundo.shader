@@ -15,6 +15,7 @@ Shader "Argentina/Mundo"
         _Suciedad("Suciedad", Range(0, 2)) = 1
         _Grietas("Grietas", Range(0, 1)) = 0
         _Absorbe("Se moja con la lluvia (0 = nada, 1 = suelo de tierra)", Range(0, 1)) = 0.35
+        _Ventana("Ventana: se enciende de noche (0 = no, 1 = sí)", Range(0, 1)) = 0
         [Toggle] _Xray("Recorte tramado cuando tapa al jugador", Float) = 0
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("Caras", Float) = 0
     }
@@ -36,6 +37,7 @@ Shader "Argentina/Mundo"
             half _Suciedad;
             half _Grietas;
             half _Absorbe;
+            half _Ventana;
             half _Xray;
             half _Cull;
         CBUFFER_END
@@ -47,6 +49,7 @@ Shader "Argentina/Mundo"
         float4 _XrayDir;   // dirección cámara → jugador
         float _XrayRad;    // radio del hueco (0 = apagado)
         float _Humedad;    // 0 seco, 1 empapado (la pone Ambiente.cs con la lluvia)
+        float _LucesNoche; // 0 de día, 1 de noche (Ambiente.cs): las ventanas se encienden
 
         float sH(float2 p) { return frac(sin(dot(p, float2(127.1, 311.7))) * 43758.5453); }
         float sN(float2 p)
@@ -209,6 +212,9 @@ Shader "Argentina/Mundo"
                 #endif
 
                 half4 c = UniversalFragmentPBR(id, s);
+                // luz de vela o de candil detrás de la ventana, que titila apenas
+                float vela = 0.85 + 0.15 * sN(g.xz * 0.3 + _Time.y * 1.7);
+                c.rgb += _Ventana * _LucesNoche * half3(1.0, 0.5, 0.18) * 1.3 * vela;
                 c.rgb = MixFog(c.rgb, i.fog);
                 return c;
             }

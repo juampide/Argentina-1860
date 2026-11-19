@@ -74,3 +74,5 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 79448c6b845c5427d94272d0fc066803, type: 2}
   - nombre: bordo
     material: {fileID: 2100000, guid: 1fefa52156bc445d3b85995069b9bbea, type: 2}
+  - nombre: ventana
+    material: {fileID: 2100000, guid: 58ceeb5e0d1ee43b98be2ba9ba1dbc8c, type: 2}

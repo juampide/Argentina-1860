@@ -28,6 +28,9 @@ namespace Argentina1860
 
         static Vector3 v(float x, float y, float z) => new Vector3(x, y, z);
 
+        /// Material de las ventanas: se encienden de noche (si no existe en MaterialesMundo, se usa el oscuro).
+        public static string Ventana() => MaterialesMundo.Instancia != null && MaterialesMundo.Instancia.Buscar("ventana") != null ? "ventana" : "oscuro";
+
         protected override void Construir(Transform raiz)
         {
             float w = ancho, l = largo, h = alto, rise = caida;
@@ -50,7 +53,7 @@ namespace Argentina1860
             if (w > 5)
                 foreach (var sx in new[] { -1f, 1f })
                 {
-                    n.Pieza(Geo.Caja(0.8f, 0.9f, 0.12f, 1.5f), "oscuro", v(sx * w * 0.3f, 1.5f, l / 2 + 0.04f));
+                    n.Pieza(Geo.Caja(0.8f, 0.9f, 0.12f, 1.5f), Ventana(), v(sx * w * 0.3f, 1.5f, l / 2 + 0.04f));
                     n.Pieza(Geo.Caja(0.2f, 1.0f, 0.16f, 1.5f), "postigo", v(sx * w * 0.3f - 0.5f, 1.5f, l / 2 + 0.06f));
                     n.Pieza(Geo.Caja(0.2f, 1.0f, 0.16f, 1.5f), "postigo", v(sx * w * 0.3f + 0.5f, 1.5f, l / 2 + 0.06f));
                 }

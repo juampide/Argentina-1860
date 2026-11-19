@@ -48,8 +48,20 @@ namespace Argentina1860
         /// Qué tan mojado está el suelo (sube con la lluvia y baja de a poco con el sol y el viento).
         public static float Humedad { get; private set; }
         public static Tiempo TiempoActual { get; private set; }
+        /// Cuánta niebla baja hay (0 a 1): sale a la madrugada en los bajos.
+        public static float Madrugada { get; private set; }
+        /// Qué tan cubierto está el cielo (0 a 1).
+        public static float TiempoNubes { get; private set; }
+        /// Cuánta luz hay (0 de noche cerrada a 1 a pleno día): para oscurecer partículas que no reciben luz.
+        public static float Claridad => Mathf.Lerp(0.2f, 1, 1 - LucesDeNoche) * (1 - 0.3f * TiempoNubes);
 
-        static readonly int idViento = Shader.PropertyToID("_Viento"), idHumedad = Shader.PropertyToID("_Humedad");
+        static readonly int idViento = Shader.PropertyToID("_Viento"), idHumedad = Shader.PropertyToID("_Humedad"), idLucesNoche = Shader.PropertyToID("_LucesNoche");
+
+        [Header("Mirada (pampa gris y melancólica)")]
+        [Tooltip("Color de la niebla de día; el horizonte se funde con él")]
+        public Color nieblaDia = new Color(0.72f, 0.74f, 0.71f);
+        [Tooltip("Niebla baja que se junta en los bajos al amanecer y después de llover")]
+        [Range(0, 1)] public float nieblaMatinal = 0.7f;
         const float LAT = -34.6f, DECL = -19f;
 
         // destinos del clima actual
@@ -80,7 +92,7 @@ namespace Argentina1860
                 luna.shadows = LightShadows.Soft;
                 luna.intensity = 0;
             }
-            niebla0 = RenderSettings.fogColor;
+            niebla0 = nieblaDia;
             nieblaIni0 = RenderSettings.fogStartDistance; nieblaFin0 = RenderSettings.fogEndDistance;
             var cj = FindAnyObjectByType<ControlJugador>();
             foco = cj != null ? cj.transform : null;
@@ -92,6 +104,7 @@ namespace Argentina1860
             humedad = Humedad;
             ElegirDestinos(tiempo, true);
             gotas = CrearLluvia();
+            if (GetComponent<Aire>() == null) gameObject.AddComponent<Aire>();   // pelusas, polvo, bichitos y niebla baja
             polvo = CrearPolvo();
         }
 
@@ -117,12 +130,15 @@ namespace Argentina1860
             Viento = dir * viento;
             Lluvia = lluvia;
             TiempoActual = tiempo;
+            TiempoNubes = nubosidad;
             // la tierra se moja rápido y se seca despacio, más ligero si hay sol y viento
             if (lluvia > 0.05f) humedad = Mathf.Min(1, humedad + lluvia * dt / 40f);
             else humedad = Mathf.Max(0, humedad - dt / 300f * (0.3f + viento + (1 - LucesDeNoche) * (1 - nubosidad)));
             Humedad = humedad;
             Shader.SetGlobalVector(idViento, new Vector4(dir.x, dir.y, viento, 0));
             Shader.SetGlobalFloat(idHumedad, humedad);
+            Shader.SetGlobalFloat(idLucesNoche, LucesDeNoche);
+            Posproceso();
         }
 
         static Vector2 Rumbo(float grados)
@@ -137,7 +153,7 @@ namespace Argentina1860
             tiempo = t;
             switch (t)
             {
-                case Tiempo.Despejado: nubObj = 0.12f + Random.value * 0.15f; lluviaObj = 0; vientoObj = 0.15f + Random.value * 0.2f; rumboObj = 200 + Random.value * 50; duracion = 6 + Random.value * 8; break;   // brisa del noreste
+                case Tiempo.Despejado: nubObj = 0.3f + Random.value * 0.2f; lluviaObj = 0; vientoObj = 0.15f + Random.value * 0.2f; rumboObj = 200 + Random.value * 50; duracion = 6 + Random.value * 8; break;   // brisa del noreste
                 case Tiempo.Nublado: nubObj = 0.55f + Random.value * 0.2f; lluviaObj = 0; vientoObj = 0.35f + Random.value * 0.15f; rumboObj = 170 + Random.value * 40; duracion = 2 + Random.value * 4; break;
                 case Tiempo.Tormenta: nubObj = 0.95f; lluviaObj = 0.7f + Random.value * 0.3f; vientoObj = 0.55f + Random.value * 0.2f; rumboObj = 120 + Random.value * 120; duracion = 1 + Random.value * 1.5f; break;
                 case Tiempo.Pampero: nubObj = 0.2f; lluviaObj = 0; vientoObj = 0.85f + Random.value * 0.15f; rumboObj = 45; duracion = 3 + Random.value * 3; break;   // del sudoeste hacia el noreste
@@ -181,13 +197,14 @@ namespace Argentina1860
         // ---------- sol, luna, cielo y niebla ----------
         void Sol(float dt)
         {
-            float h = (hora - 12) * 15 * Mathf.Deg2Rad, fi = LAT * Mathf.Deg2Rad, de = DECL * Mathf.Deg2Rad;
+            // la hora del reloj va unos 40 minutos adelante del sol: el mediodía solar cae a las 12:40 y el sol se pone pasadas las 19:30
+            float h = (hora - 12.65f) * 15 * Mathf.Deg2Rad, fi = LAT * Mathf.Deg2Rad, de = DECL * Mathf.Deg2Rad;
             float este = -Mathf.Cos(de) * Mathf.Sin(h);
             float norte = Mathf.Cos(fi) * Mathf.Sin(de) - Mathf.Sin(fi) * Mathf.Cos(de) * Mathf.Cos(h);
             float arriba = Mathf.Sin(fi) * Mathf.Sin(de) + Mathf.Cos(fi) * Mathf.Cos(de) * Mathf.Cos(h);
             var haciaSol = new Vector3(este, arriba, norte).normalized;
 
-            float dia = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(-0.04f, 0.22f, arriba));   // 0 de noche, 1 de día pleno
+            float dia = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(-0.09f, 0.18f, arriba));   // 0 de noche, 1 de día pleno (el crepúsculo dura)
             float bajo = 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(0.0f, 0.35f, arriba)); // sol bajo: luz dorada
             LucesDeNoche = 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(-0.06f, 0.1f, arriba));
             float cubierto = Mathf.Clamp01(nubosidad * 1.1f - 0.1f);
@@ -208,7 +225,7 @@ namespace Argentina1860
                 // la luna, del lado contrario, alta en el cielo de la noche
                 var dirLuna = new Vector3(-haciaSol.x * 0.6f, 0.75f, -haciaSol.z * 0.6f + 0.3f).normalized;
                 luna.transform.rotation = Quaternion.LookRotation(-dirLuna);
-                luna.intensity = 0.32f * LucesDeNoche * (1 - 0.7f * cubierto);
+                luna.intensity = 1.15f * LucesDeNoche * (1 - 0.5f * cubierto);
                 luna.shadowStrength = 0.6f;
             }
             RenderSettings.sun = dia > 0.15f || luna == null ? sol : luna;
@@ -216,25 +233,61 @@ namespace Argentina1860
             // cielo y niebla: día polvoriento, atardecer naranja, noche azul, tormenta gris
             var cieloDia = new Color(0.81f, 0.88f, 0.96f);
             var cieloAtardecer = new Color(0.95f, 0.63f, 0.45f);
-            var cieloNoche = new Color(0.08f, 0.1f, 0.18f);
+            var cieloNoche = new Color(0.27f, 0.31f, 0.42f);
             var cieloGris = new Color(0.55f, 0.57f, 0.6f);
             var cielo = Color.Lerp(Color.Lerp(cieloNoche, cieloAtardecer, dia), cieloDia, dia * (1 - bajo));
             cielo = Color.Lerp(cielo, cieloGris * Mathf.Lerp(0.25f, 1, dia), cubierto * 0.8f);
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
             RenderSettings.ambientSkyColor = cielo * (1 + relampago * 2);
-            RenderSettings.ambientEquatorColor = Color.Lerp(cielo, new Color(0.75f, 0.68f, 0.55f), 0.4f) * Mathf.Lerp(0.5f, 1, dia);
-            RenderSettings.ambientGroundColor = new Color(0.35f, 0.3f, 0.22f) * Mathf.Lerp(0.25f, 1, dia);
+            RenderSettings.ambientEquatorColor = Color.Lerp(cielo, new Color(0.75f, 0.68f, 0.55f), 0.4f) * Mathf.Lerp(0.7f, 1, dia);
+            RenderSettings.ambientGroundColor = new Color(0.35f, 0.3f, 0.22f) * Mathf.Lerp(0.5f, 1, dia);
 
             var nieblaAtardecer = new Color(0.95f, 0.66f, 0.48f);
-            var nieblaNoche = new Color(0.06f, 0.07f, 0.12f);
+            var nieblaNoche = new Color(0.09f, 0.1f, 0.16f);
             var nieblaGris = new Color(0.6f, 0.61f, 0.62f);
             var nb = Color.Lerp(Color.Lerp(nieblaNoche, nieblaAtardecer, dia), niebla0, dia * (1 - bajo));
             nb = Color.Lerp(nb, nieblaGris * Mathf.Lerp(0.2f, 1, dia), cubierto * 0.7f + lluvia * 0.3f);
             RenderSettings.fogColor = nb;
-            RenderSettings.fogStartDistance = Mathf.Lerp(nieblaIni0, 40, lluvia);
-            RenderSettings.fogEndDistance = Mathf.Lerp(nieblaFin0, 600, lluvia) * (viento > 0.8f && humedad < 0.2f ? 0.75f : 1);   // el pampero levanta tierra
+            // al amanecer la niebla baja se cierra (y más si llovió)
+            float madrugada = Mathf.Clamp01(1 - Mathf.Abs(hora - 6.3f) / 2.2f) * nieblaMatinal * (0.5f + 0.5f * Mathf.Max(humedad, 1 - viento));
+            Madrugada = madrugada;
+            RenderSettings.fogStartDistance = Mathf.Lerp(Mathf.Lerp(nieblaIni0, 30, madrugada), 40, lluvia);
+            RenderSettings.fogEndDistance = Mathf.Lerp(Mathf.Lerp(nieblaFin0, 420, madrugada), 600, lluvia) * (viento > 0.8f && humedad < 0.2f ? 0.75f : 1);   // el pampero levanta tierra
+            nb = Color.Lerp(nb, new Color(0.78f, 0.8f, 0.8f) * Mathf.Lerp(0.3f, 1, dia), madrugada * 0.6f);
+            RenderSettings.fogColor = nb;
             var cam = Camera.main;
             if (cam != null) cam.backgroundColor = nb;   // el horizonte se funde con la niebla
+        }
+
+        // ---------- posproceso según la hora y el tiempo ----------
+        UnityEngine.Rendering.Volume volumen;
+        UnityEngine.Rendering.Universal.ColorAdjustments ajuste;
+        UnityEngine.Rendering.Universal.Vignette vineta;
+        float exp0, sat0;
+        Color filtro0;
+
+        void Posproceso()
+        {
+            if (volumen == null)
+            {
+                volumen = FindAnyObjectByType<UnityEngine.Rendering.Volume>();
+                if (volumen == null) return;
+                var perfil = volumen.profile;   // en juego es una copia: no toca el asset
+                perfil.TryGet(out ajuste);
+                perfil.TryGet(out vineta);
+                if (ajuste != null) { exp0 = ajuste.postExposure.value; sat0 = ajuste.saturation.value; filtro0 = ajuste.colorFilter.value; }
+            }
+            float noche = LucesDeNoche, gris = Mathf.Clamp01(nubosidad * 1.2f - 0.2f + lluvia * 0.4f);
+            float h = hora, atardecer = Mathf.Clamp01(1 - Mathf.Abs(h - 18.6f) / 1.3f) + Mathf.Clamp01(1 - Mathf.Abs(h - 6.0f) / 1.0f) * 0.6f;
+            if (ajuste != null)
+            {
+                ajuste.postExposure.value = exp0 + noche * 0.22f - gris * 0.1f;
+                ajuste.saturation.value = Mathf.Lerp(sat0, -50, Mathf.Max(noche * 0.6f, gris * 0.5f));
+                var filtro = Color.Lerp(filtro0, new Color(1.06f, 0.92f, 0.82f), atardecer * (1 - gris) * 0.7f);
+                filtro = Color.Lerp(filtro, new Color(0.82f, 0.88f, 1.04f), noche * 0.8f);
+                ajuste.colorFilter.value = filtro;
+            }
+            if (vineta != null) vineta.intensity.value = 0.28f + noche * 0.08f + lluvia * 0.06f;
         }
 
         // ---------- nubes ----------

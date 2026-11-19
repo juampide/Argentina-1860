@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.9647059, g: 0.9019608, b: 0.78431374, a: 1}
+  m_FogColor: {r: 0.72, g: 0.74, b: 0.71, a: 1}
   m_FogMode: 1
   m_FogDensity: 0.01
   m_LinearFogStart: 170
@@ -266,6 +266,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Fogon
   luz: 1
+  manana: {x: 9.5, y: 12.75}
+  tarde: {x: 17, y: 21.75}
+  siempre: 0
+  coccion: 3
+  gente: 2
+  soldados: 0
 --- !u!1 &98438537
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +317,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Fogon
   luz: 1
+  manana: {x: 9.5, y: 12.75}
+  tarde: {x: 17, y: 21.75}
+  siempre: 0
+  coccion: 1
+  gente: 4
+  soldados: 1
 --- !u!1 &179908356
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +760,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Fogon
   luz: 1
+  manana: {x: 9.5, y: 12.75}
+  tarde: {x: 17, y: 21.75}
+  siempre: 0
+  coccion: 2
+  gente: 1
+  soldados: 0
 --- !u!1 &338645015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1773,6 +1791,8 @@ MonoBehaviour:
   rumboViento: 225
   sol: {fileID: 1733181797}
   luna: {fileID: 0}
+  nieblaDia: {r: 0.72, g: 0.74, b: 0.71, a: 1}
+  nieblaMatinal: 0.7
 --- !u!4 &740456342
 Transform:
   m_ObjectHideFlags: 0
@@ -2471,6 +2491,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Fogon
   luz: 1
+  manana: {x: 9.5, y: 12.75}
+  tarde: {x: 17, y: 21.75}
+  siempre: 0
+  coccion: 2
+  gente: 3
+  soldados: 0
 --- !u!1 &1255387287
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,6 +2641,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Fogon
   luz: 1
+  manana: {x: 9.5, y: 12.75}
+  tarde: {x: 17, y: 21.75}
+  siempre: 0
+  coccion: 2
+  gente: 4
+  soldados: 0
 --- !u!1 &1282351879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2713,6 +2745,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Fogon
   luz: 1
+  manana: {x: 9.5, y: 12.75}
+  tarde: {x: 17, y: 21.75}
+  siempre: 0
+  coccion: 1
+  gente: 3
+  soldados: 0
 --- !u!1 &1317964792
 GameObject:
   m_ObjectHideFlags: 0
@@ -3985,7 +4023,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.9647059, g: 0.9019608, b: 0.78431374, a: 1}
+  m_BackGroundColor: {r: 0.72, g: 0.74, b: 0.71, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

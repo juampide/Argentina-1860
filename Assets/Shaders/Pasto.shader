@@ -21,6 +21,7 @@ Shader "Argentina/Pasto"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
             #pragma multi_compile_fog
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -105,6 +106,11 @@ Shader "Argentina/Pasto"
                 Light luz = GetMainLight(TransformWorldToShadowCoord(i.positionWS));
                 half ndl = saturate(dot(n, luz.direction)) * 0.6 + 0.4;
                 half3 c = i.color.rgb * (luz.color * ndl * luz.shadowAttenuation + SampleSH(n));
+                #if defined(_SCREEN_SPACE_OCCLUSION)
+                    // oclusión ambiental: el pasto se oscurece al pie de las paredes, bajo los árboles y en los rincones
+                    AmbientOcclusionFactor ao = GetScreenSpaceAmbientOcclusion(GetNormalizedScreenSpaceUV(i.positionCS));
+                    c *= lerp(1.0, ao.indirectAmbientOcclusion, 0.8);
+                #endif
                 c = MixFog(c, i.fog);
                 return half4(c, 1);
             }

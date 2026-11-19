@@ -97,7 +97,7 @@ namespace Argentina1860
                 n.Pieza(Geo.Caja(lado, alt, lado, 2), "blanco", v(x, base_ + alt / 2 - 0.4f, z));
                 n.Pieza(Geo.Caja(lado + 0.3f, 0.3f, lado + 0.3f, 2), ZOCALO, v(x, base_ + alt - 0.25f, z));   // cornisa
                 foreach (var (dx, dz, rot) in new[] { (0f, lado / 2 + 0.03f, false), (0f, -lado / 2 - 0.03f, false), (lado / 2 + 0.03f, 0f, true), (-lado / 2 - 0.03f, 0f, true) })
-                    n.Pieza(Geo.Caja(rot ? 0.1f : 1.4f, 1.4f, rot ? 1.4f : 0.1f, 1.5f), "oscuro", v(x + dx, base_ + alt - 1.6f, z + dz));
+                    n.Pieza(Geo.Caja(rot ? 0.1f : 1.4f, 1.4f, rot ? 1.4f : 0.1f, 1.5f), Casa.Ventana(), v(x + dx, base_ + alt - 1.6f, z + dz));
                 // remate: pretil con almenas bajas
                 for (int k = 0; k < 4; k++)
                 {
@@ -112,6 +112,9 @@ namespace Argentina1860
                 n.Pieza(Geo.Caja(0.7f, 1.6f, 0.7f, 2), "blanco", v(sx * W, h + 1.2f, zFrente - p * 0.15f));
 
             n.Instanciar(raiz, Registrar);
+            if (Application.isPlaying)   // humo de las chimeneas a la hora de cocinar
+                foreach (var sx in new[] { -0.3f, 0.32f })
+                    Humo.Poner(raiz, Conv.P(sx * W, h + 2.1f, zFrente - p * 0.15f), true, 0.8f);
             // colisiones por cuerpo (en Unity la z va al revés)
             Colision(raiz, Conv.P(0, h / 2, zFrente), new Vector3(W, h, p));
             if (alas)
@@ -150,7 +153,7 @@ namespace Argentina1860
             Vector3 hacia = deCostado ? v(Mathf.Sign(c.x), 0, 0) : v(0, 0, 1);
             Vector3 Caja(float a, float b, float g) => deCostado ? v(g, b, a) : v(a, b, g);
             var s = Caja(an, al, 0.1f);
-            n.Pieza(Geo.Caja(s.x, s.y, s.z, 1.5f), "oscuro", c);
+            n.Pieza(Geo.Caja(s.x, s.y, s.z, 1.5f), Casa.Ventana(), c);
             var m = Caja(an + 0.3f, 0.12f, 0.16f);
             n.Pieza(Geo.Caja(m.x, m.y, m.z, 1.5f), "blanco", c + v(0, -al / 2 - 0.08f, 0) + hacia * 0.03f);   // alféizar
             foreach (var lado in new[] { -1f, 1f })
