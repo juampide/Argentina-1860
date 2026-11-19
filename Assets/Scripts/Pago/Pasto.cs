@@ -52,7 +52,7 @@ namespace Argentina1860
             if (material == null)
             {
                 var sh = Shader.Find("Argentina/Pasto");
-                if (sh != null) material = new Material(sh) { enableInstancing = true, name = "Pasto" };
+                if (sh != null) material = new Material(sh) { enableInstancing = true, name = "Pasto", hideFlags = HideFlags.DontSave };
             }
             if (jugador != null) Pisadas.Registrar(jugador, 0.65f);
             IniciarPisadas();

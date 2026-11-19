@@ -86,6 +86,22 @@ namespace Argentina1860
             }
         }
 
+        /// Polígono relleno (puntos en coordenadas del prototipo).
+        void Poligono(List<Vector2> poli, Color32 c, float alfa)
+        {
+            var q = poli.ConvertAll(v => WX(v.x, v.y));
+            float x0 = float.MaxValue, y0 = float.MaxValue, x1 = float.MinValue, y1 = float.MinValue;
+            foreach (var v in q) { x0 = Mathf.Min(x0, v.x); y0 = Mathf.Min(y0, v.y); x1 = Mathf.Max(x1, v.x); y1 = Mathf.Max(y1, v.y); }
+            for (int y = Mathf.FloorToInt(y0); y <= Mathf.CeilToInt(y1); y++)
+                for (int x = Mathf.FloorToInt(x0); x <= Mathf.CeilToInt(x1); x++)
+                {
+                    bool dentro = false;
+                    for (int i = 0, j = q.Count - 1; i < q.Count; j = i++)
+                        if ((q[i].y > y) != (q[j].y > y) && x < (q[j].x - q[i].x) * (y - q[i].y) / (q[j].y - q[i].y) + q[i].x) dentro = !dentro;
+                    if (dentro) Mezclar(x, y, c, alfa);
+                }
+        }
+
         void RectRotado(float cx, float cy, float w, float l, float rot, Color32 relleno, Color32 borde)
         {
             float c = Mathf.Cos(rot), s = Mathf.Sin(rot), r = Mathf.Sqrt(w * w + l * l) / 2 + 1;
@@ -102,7 +118,9 @@ namespace Argentina1860
         static Vector2 WX(float x, float z) => new Vector2((x + ANCHO / 2) * ESC, (z + ALTO / 2) * ESC);
 
         /// edificios: (x, z, ancho, largo, rot) y cercos: listas de puntos, todo en coordenadas del prototipo.
-        public void Construir(List<(float x, float z, float w, float l, float rot)> edificios, List<List<Vector2>> cercos)
+        /// parcelas: polígonos rellenos (sembrados, quintas) en coordenadas del prototipo; lindes: bordes de lotes (zanjas).
+        public void Construir(List<(float x, float z, float w, float l, float rot)> edificios, List<List<Vector2>> cercos,
+            List<(List<Vector2> poli, Color32 color)> parcelas = null, List<List<Vector2>> lindes = null)
         {
             for (int i = 0; i < px.Length; i++) px[i] = PAPEL;
             // cuadrícula cada 500 m, para tener escala
@@ -122,6 +140,12 @@ namespace Argentina1860
                 Elipse(c.x, c.y, rx, ry, C("#9cc0c4"));
                 ElipseBorde(c.x, c.y, rx, ry, C("#6d98a0"), 3);
             }
+            // chacras: el color de cada sembrado y el borde de los lotes (la zanja)
+            if (parcelas != null) foreach (var (poli, col) in parcelas) Poligono(poli, col, 0.85f);
+            if (lindes != null)
+                foreach (var pts in lindes)
+                    for (int i = 0; i < pts.Count; i++)
+                        Linea(WX(pts[i].x, pts[i].y), WX(pts[(i + 1) % pts.Count].x, pts[(i + 1) % pts.Count].y), C("#7a6a4a"), 1.4f, 0.8f);
             Trazo(MapaPago.Suavizar(MapaPago.ARROYO), 9, C("#9cc0c4"));
             var camino = MapaPago.Suavizar(MapaPago.CAMINO);
             Trazo(camino, 8, C("#c3a674"));
@@ -137,14 +161,15 @@ namespace Argentina1860
                 for (int i = 0; i < pts.Count; i++)
                     Linea(WX(pts[i].x, pts[i].y), WX(pts[(i + 1) % pts.Count].x, pts[(i + 1) % pts.Count].y), C("#6a4a2a"), 2, 1, 5, 3);
 
-            Base = new Texture2D(W, H, TextureFormat.RGBA32, true) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Trilinear, name = "Mapa del pago" };
+            // HideAndDontSave: que Unity no la descargue por su cuenta (solo la usa el GUI y no lo cuenta como uso)
+            Base = new Texture2D(W, H, TextureFormat.RGBA32, true) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Trilinear, name = "Mapa del pago", hideFlags = HideFlags.HideAndDontSave };
             Base.SetPixels32(px);
             Base.Apply(true);
 
             // flecha y punto para las marcas
             const int F = 32;
-            flecha = new Texture2D(F, F, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear };
-            punto = new Texture2D(F, F, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear };
+            flecha = new Texture2D(F, F, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
+            punto = new Texture2D(F, F, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
             for (int y = 0; y < F; y++)
                 for (int x = 0; x < F; x++)
                 {
@@ -226,14 +251,7 @@ namespace Argentina1860
             float a = Mathf.PI / 2 - yaw, ca = Mathf.Cos(a), sa = Mathf.Sin(a);
             GUI.BeginGroup(area);
             GUI.DrawTexture(new Rect(0, 0, S, S), Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0, new Color(0.886f, 0.827f, 0.682f), 0, 0);
-            var m0 = GUI.matrix;
-            var centro = new Vector2(S / 2, S / 2);
-            GUIUtility.RotateAroundPivot(a * Mathf.Rad2Deg, centro);
-            float D = S * 1.5f, span = D / k;
-            var pm = WX(px, pz);
-            var tc = new Rect((pm.x - span / 2) / W, 1 - (pm.y + span / 2) / H, span / W, span / H);
-            GUI.DrawTextureWithTexCoords(new Rect(centro.x - D / 2, centro.y - D / 2, D, D), Base, tc);
-            GUI.matrix = m0;
+            DibujarGirado(area, S, a, k, WX(px, pz));
 
             Vector2 Pant(float x, float z) { float dx = x - px, dz = z - pz; return new Vector2((dx * ca - dz * sa) * esc, (dx * sa + dz * ca) * esc); }
             float M = S / 2 - 12;
@@ -267,6 +285,66 @@ namespace Argentina1860
             float nx = sa, ny = -ca;                               // el norte (z negativa del prototipo) en pantalla
             Texto("N", S / 2 + nx * (S / 2 - 16), S / 2 + ny * (S / 2 - 16), ROJO, true, 13);
             GUI.EndGroup();
+        }
+
+        Material matMapa;
+        RenderTexture rtMini;
+        bool hayPedido;
+        float pS, pA, pK;
+        Vector2 pPm;
+
+        /// El minimapa girado se dibuja en una textura aparte (en LateUpdate, fuera del OnGUI) y después se pega en el
+        /// cuadrado: así queda recortado exacto. Girar la matriz del GUI hacía que el dibujo se saliera del cuadro y
+        /// tapara los cuadros de diálogo; dibujar con GL adentro del OnGUI rompe los estilos del resto del HUD.
+        void DibujarGirado(Rect area, float S, float a, float k, Vector2 pm)
+        {
+            hayPedido = true; pS = S; pA = a; pK = k; pPm = pm;
+            if (rtMini != null && Event.current.type == EventType.Repaint) GUI.DrawTexture(new Rect(0, 0, S, S), rtMini);
+        }
+
+        /// Llamar una vez por cuadro fuera del OnGUI (JuegoPago.LateUpdate).
+        public void PrepararMini()
+        {
+            if (!hayPedido || Base == null) return;
+            int S = Mathf.Max(16, Mathf.RoundToInt(pS));
+            if (rtMini == null || rtMini.width != S)
+            {
+                if (rtMini != null) rtMini.Release();
+                rtMini = new RenderTexture(S, S, 0, RenderTextureFormat.ARGB32) { name = "Minimapa", filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
+            }
+            if (matMapa == null) matMapa = new Material(Shader.Find("UI/Default")) { hideFlags = HideFlags.HideAndDontSave };
+            matMapa.mainTexture = Base;
+            float ca = Mathf.Cos(pA), sa = Mathf.Sin(pA);
+            Vector2 Tex(float x, float y)
+            {
+                // punto del cuadrado (relativo al centro, y hacia abajo) → punto del dibujo base (giro inverso) → textura
+                float dx = x - pS / 2, dy = y - pS / 2;
+                float bx = (dx * ca + dy * sa) / pK, by = (-dx * sa + dy * ca) / pK;
+                return new Vector2((pPm.x + bx) / W, 1 - (pPm.y + by) / H);
+            }
+            var antes = RenderTexture.active;
+            RenderTexture.active = rtMini;
+            GL.PushMatrix();
+            GL.LoadPixelMatrix(0, pS, pS, 0);
+            GL.Clear(false, true, new Color(0.886f, 0.827f, 0.682f, 1));
+            matMapa.SetPass(0);
+            GL.Begin(GL.QUADS);
+            GL.Color(Color.white);
+            const int N = 12;
+            float paso = pS / N;
+            for (int i = 0; i < N; i++)
+                for (int j = 0; j < N; j++)
+                {
+                    float x0 = i * paso, y0 = j * paso, x1 = x0 + paso, y1 = y0 + paso;
+                    var t = Tex(x0, y0); GL.TexCoord2(t.x, t.y); GL.Vertex3(x0, y0, 0);
+                    t = Tex(x1, y0); GL.TexCoord2(t.x, t.y); GL.Vertex3(x1, y0, 0);
+                    t = Tex(x1, y1); GL.TexCoord2(t.x, t.y); GL.Vertex3(x1, y1, 0);
+                    t = Tex(x0, y1); GL.TexCoord2(t.x, t.y); GL.Vertex3(x0, y1, 0);
+                }
+            GL.End();
+            GL.PopMatrix();
+            RenderTexture.active = antes;
+            hayPedido = false;
         }
 
         /// Mapa grande con todo el pago a la vista.

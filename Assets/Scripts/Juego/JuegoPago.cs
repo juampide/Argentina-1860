@@ -47,6 +47,7 @@ namespace Argentina1860
         MapaDibujo mapa;
         readonly List<MapaDibujo.Lugar> lugares = new List<MapaDibujo.Lugar>();
         GUIStyle sCaja, sTitulo, sTexto, sEtiqueta, sAviso, sAyuda, sBoton, sCelda;
+        Texture2D papel;
 
         void Start()
         {
@@ -218,12 +219,46 @@ namespace Argentina1860
                 if (!c.cerrado) continue;
                 cercos.Add(c.puntos.Select(q => { var w = c.transform.TransformPoint(new Vector3(q.x, 0, q.y)); return new Vector2(w.x, -w.z); }).ToList());
             }
+            // chacras del loteo: cada sembrado con su color y el borde de los lotes cerrados con zanja
+            var parcelas = new List<(List<Vector2>, Color32)>();
+            foreach (var sm in FindObjectsByType<Sembrado>())
+            {
+                var esq = new List<Vector2>();
+                foreach (var (ex, ez) in new[] { (-1f, -1f), (1f, -1f), (1f, 1f), (-1f, 1f) })
+                {
+                    var w = sm.transform.TransformPoint(ex * sm.ancho / 2, 0, ez * sm.largo / 2);
+                    esq.Add(new Vector2(w.x, -w.z));
+                }
+                parcelas.Add((esq, ColorSembrado(sm)));
+            }
+            var lindes = new List<List<Vector2>>();
+            var loteo = LoteoPago.Instancia;
+            if (loteo != null)
+                foreach (var l in loteo.lotes)
+                {
+                    if (l.km == null || l.km.Length < 3) continue;
+                    var poli = l.km.Select(k => MapaPago.K(k)).ToList();
+                    if (l.uso == UsoLote.Quinta) parcelas.Add((poli, new Color32(0x9c, 0xb0, 0x70, 255)));
+                    if (l.linde == Linde.Zanja || l.linde == Linde.CercoVivo) lindes.Add(poli);
+                }
             mapa = new MapaDibujo();
-            mapa.Construir(edificios, cercos);
+            mapa.Construir(edificios, cercos, parcelas, lindes);
 
             void L(string n, float kx, float ky) { var k = MapaPago.K(kx, ky); lugares.Add(new MapaDibujo.Lugar { n = n, x = k.x, z = k.y }); }
             L("Estancia La Soledad", 0.75f, 0.75f); L("Ranchos de peones", 0.59f, 0.9f); L("Posta y pulpería", 2.15f, 1.25f); L("Rancho abandonado", 1.0f, 1.0f);
             L("Fortín", 0.12f, 1.15f); L("Puesto del baqueano", 0.55f, 1.85f); L("Rancho de Jacinta", 1.17f, 0.5f); L("Laguna", 1.7f, 2.05f); L("Monte", 2.3f, 0.45f);
+        }
+
+        static Color32 ColorSembrado(Sembrado s)
+        {
+            switch (s.etapa)
+            {
+                case Etapa.Arado: case Etapa.Sembrado: return new Color32(0x9a, 0x7a, 0x58, 255);
+                case Etapa.Brotando: return new Color32(0xb0, 0xb8, 0x80, 255);
+                case Etapa.Creciendo: return s.cultivo == Cultivo.Maiz ? new Color32(0x7a, 0x9a, 0x58, 255) : new Color32(0x9a, 0xb6, 0x6a, 255);
+                case Etapa.Maduro: return s.cultivo == Cultivo.Maiz ? new Color32(0xb8, 0x9a, 0x62, 255) : new Color32(0xd8, 0xb4, 0x5a, 255);
+                default: return new Color32(0xcc, 0xb4, 0x80, 255);
+            }
         }
 
         List<MapaDibujo.Lugar> Lugares()
@@ -277,6 +312,11 @@ namespace Argentina1860
         }
 
         // ---------- bucle ----------
+        void LateUpdate()
+        {
+            mapa?.PrepararMini();   // el minimapa girado se arma fuera del OnGUI
+        }
+
         void Update()
         {
             float dt = Time.deltaTime;
@@ -318,8 +358,10 @@ namespace Argentina1860
         // ---------- HUD provisorio ----------
         void Estilos()
         {
-            if (sCaja != null) return;
-            var papel = new Texture2D(1, 1);
+            // Unity descarga solo las texturas que cree que nadie usa (cuando sube la memoria) y no sabe que los
+            // estilos del GUI apuntan a esta: sin DontUnloadUnusedAsset los cuadros se quedaban sin fondo.
+            if (sCaja != null && papel != null) return;
+            papel = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
             papel.SetPixel(0, 0, new Color(0.945f, 0.902f, 0.804f, 0.94f));
             papel.Apply();
             var tinta = new Color(0.165f, 0.133f, 0.106f);
@@ -379,7 +421,7 @@ namespace Argentina1860
 
             // minimapa
             const float S = 240;
-            if (mapa != null && !mapaGrande)
+            if (mapa != null && !mapaGrande && hablando == null && !tienda)
             {
                 var area = new Rect(Screen.width - S - 16, Screen.height - S - 16, S, S);
                 GUI.Box(new Rect(area.x - 3, area.y - 3, S + 6, S + 6), GUIContent.none, sCaja);
