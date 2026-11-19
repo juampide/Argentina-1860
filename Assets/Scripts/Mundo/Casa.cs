@@ -33,6 +33,7 @@ namespace Argentina1860
             float w = ancho, l = largo, h = alto, rise = caida;
             string mPared = pared == Pared.Adobe ? "adobe" : "blanco";
             string mTecho = techo == TipoTecho.Paja ? "paja" : "teja";
+            if (ruina) { Ruina(raiz, w, l, h, Mathf.Max(rise, 1.6f), mPared, mTecho); return; }
             var n = new Nodo("casa");
 
             n.Pieza(Geo.Caja(w, h, l, 3), mPared, v(0, h / 2, 0));
@@ -42,12 +43,6 @@ namespace Argentina1860
             float lg = Mathf.Max(w, l), an = Mathf.Min(w, l);
             var tm = n.Hijo("techo", v(0, h, 0));
             if (w > l) tm.rot = v(0, Mathf.PI / 2, 0);
-            if (ruina)
-            {
-                tm.esc = v(1, 0.7f, 0.55f);
-                tm.pos = v(0, h, lg * 0.18f);
-                tm.rot = v(tm.rot.x, tm.rot.y, 0.08f);
-            }
             tm.Pieza(Geo.Techo(an, lg, rise, 0.55f), mTecho, Vector3.zero);
             if (techo == TipoTecho.Paja) tm.Pieza(Geo.Caja(0.16f, 0.16f, lg + 1.9f, 1.5f), "madera", v(0, rise + 0.03f, 0));
 
@@ -74,6 +69,69 @@ namespace Argentina1860
 
             n.Instanciar(raiz, Registrar);
             Colision(raiz, new Vector3(0, h / 2, 0), new Vector3(w + 0.4f, h, l + 0.4f));
+        }
+
+        /// Rancho abandonado: muros desmoronados (el del fondo casi en el suelo), el techo caído con la cumbrera
+        /// quebrada y algunos tirantes a la vista, un pedazo de quincho todavía colgando y adobes tirados alrededor.
+        void Ruina(Transform raiz, float w, float l, float h, float rise, string mPared, string mTecho)
+        {
+            var n = new Nodo("ruina");
+            float R(double i) => MapaPago.Hs(i * 3.7 + w * 13 + l * 7);
+            const float e = 0.35f;   // espesor del muro de adobe
+            // cada muro en tramos de 0,8 m con la parte de arriba despareja
+            void Muro(float x0, float z0, float x1, float z1, float alto, int sem, float hueco = -1)
+            {
+                float largoM = Mathf.Sqrt((x1 - x0) * (x1 - x0) + (z1 - z0) * (z1 - z0));
+                int tramos = Mathf.Max(1, Mathf.RoundToInt(largoM / 0.8f));
+                float ang = Mathf.Atan2(z1 - z0, x1 - x0);
+                for (int i = 0; i < tramos; i++)
+                {
+                    float t = (i + 0.5f) / tramos;
+                    if (hueco >= 0 && Mathf.Abs(t - hueco) < 0.12f) continue;   // la puerta (o el boquete)
+                    float hh = alto * (0.55f + 0.45f * R(sem * 31 + i)) * (1 - 0.35f * Mathf.Abs(t - 0.5f) * R(sem + 99));
+                    if (R(sem * 17 + i * 3) < 0.12f) hh *= 0.35f;   // un boquete
+                    var c = v(Mathf.Lerp(x0, x1, t), hh / 2, Mathf.Lerp(z0, z1, t));
+                    n.Pieza(Geo.Caja(largoM / tramos + 0.02f, hh, e, 2), mPared, c, v(0, -ang, 0));
+                }
+            }
+            float hw = w / 2, hl = l / 2;
+            Muro(-hw, hl, hw, hl, h, 1, 0.5f);           // frente, con la puerta
+            Muro(-hw, -hl, hw, -hl, h * 0.35f, 2);       // fondo: casi en el suelo
+            Muro(-hw, -hl, -hw, hl, h * 0.9f, 3);
+            Muro(hw, -hl, hw, hl, h * 0.7f, 4);
+            // cumbrera quebrada: una punta sobre el muro de un costado y la otra clavada adentro
+            float cima = h + rise * 0.6f;
+            Tirante(n, v(-hw + 0.2f, cima, 0), v(hw * 0.35f, 0.6f, -hl * 0.2f), 0.14f);
+            for (int i = 0; i < 4; i++)
+            {
+                float x = -hw + 0.6f + i * (w - 1.2f) / 3;
+                if (R(i + 40) < 0.3f) continue;
+                float caidaT = R(i + 50) * 1.6f;
+                Tirante(n, v(x, h * 0.85f, hl), v(x + (R(i + 60) - 0.5f) * 0.8f, Mathf.Max(0.4f, cima - caidaT - x * 0.15f), 0), 0.08f);
+            }
+            // el pedazo de quincho que queda, colgando torcido sobre el frente
+            var q = n.Hijo("quincho", v(-hw * 0.35f, h * 0.9f, hl * 0.45f));
+            q.rot = v(0.55f, 0.15f, 0.12f);
+            q.Pieza(Geo.Caja(w * 0.55f, 0.18f, l * 0.55f, 1.5f), mTecho, Vector3.zero);
+            // adobes y terrones tirados
+            for (int i = 0; i < 14; i++)
+            {
+                float ang = R(i + 70) * Mathf.PI * 2, r = Mathf.Max(hw, hl) * (0.6f + R(i + 80) * 0.7f);
+                float s = 0.3f + R(i + 90) * 0.35f;
+                n.Pieza(Geo.Caja(s * 1.4f, s * 0.6f, s, 2), mPared, v(Mathf.Cos(ang) * r, s * 0.25f, Mathf.Sin(ang) * r), v(R(i + 100) * 0.5f, ang, R(i + 110) * 0.5f));
+            }
+            n.Instanciar(raiz, Registrar);
+            Colision(raiz, new Vector3(0, h * 0.4f, 0), new Vector3(w + 0.2f, h * 0.8f, l + 0.2f));
+        }
+
+        static void Tirante(Nodo n, Vector3 a, Vector3 b, float grueso)
+        {
+            var d = b - a;
+            float largo = d.magnitude;
+            var c = (a + b) / 2;
+            // la caja va a lo largo de x; se gira hacia la dirección del tirante (ángulos del prototipo)
+            float yaw = -Mathf.Atan2(d.z, d.x), pitch = Mathf.Asin(Mathf.Clamp(d.y / Mathf.Max(largo, 1e-4f), -1, 1));
+            n.Pieza(Geo.Caja(largo, grueso, grueso, 1.5f), "madera", c, v(0, yaw, pitch));
         }
 
         // varas de madera que atan el adobe y postes en las esquinas (como en las fotos de época)

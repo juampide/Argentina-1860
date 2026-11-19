@@ -347,6 +347,10 @@ Transform:
   - {fileID: 370494818}
   - {fileID: 1755091955}
   - {fileID: 1347357947}
+  - {fileID: 2006973033}
+  - {fileID: 2119125492}
+  - {fileID: 607221911}
+  - {fileID: 2124855983}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &186026469
@@ -496,6 +500,57 @@ MonoBehaviour:
     baston: 0
     accesorio: 0
     escala: 1
+--- !u!1 &245944959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 245944960}
+  - component: {fileID: 245944961}
+  m_Layer: 0
+  m_Name: Chacra del maizal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &245944960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245944959}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 324.99994, y: 1.0503769, z: 80.25011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &245944961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245944959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 1
+  etapa: 4
+  ancho: 230.00002
+  largo: 311.49997
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 4
 --- !u!1 &320727989
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,6 +838,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Palenque
   postes: 5
+--- !u!1 &353438916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 353438917}
+  - component: {fileID: 353438918}
+  m_Layer: 0
+  m_Name: "Chacra del ma\xEDz sembrado"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &353438917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353438916}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 790, y: 0.52519226, z: -199.34991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &353438918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353438916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 1
+  etapa: 1
+  ancho: 200.00006
+  largo: 172.7
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 10
 --- !u!1 &359373825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,6 +1423,11 @@ MonoBehaviour:
   jugador: {fileID: 1504872177}
   material: {fileID: 2100000, guid: 9c961e968394148e3bb10307a22a9b5e, type: 2}
   capacidad: 26000
+  alturaPastoreo: 0.3
+  alcancePastoreo: 1
+  densidadPastoreo: 0.45
+  recuperacion: 40
+  fuerzaPisada: 0.8
 --- !u!114 &542630511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1366,6 +1477,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &607221910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 607221911}
+  - component: {fileID: 607221912}
+  m_Layer: 0
+  m_Name: Sendas (huellas)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &607221911
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607221910}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 179908357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &607221912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607221910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8f5c8bda7f146af9dbaa58fa8f677b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Huellas
+  trazado: 1
+  pares: 3
+  trocha: 1.9
+  anchoHuella: 0.45
+  hondura: 0.14
+  vaiven: 1.2
+  charcos: 0.3
+  matas: 0.8
 --- !u!1 &639608882
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,6 +1733,61 @@ MonoBehaviour:
   puerta: 1
   galeria: 0
   ruina: 0
+--- !u!1 &740456340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 740456342}
+  - component: {fileID: 740456341}
+  m_Layer: 0
+  m_Name: Ambiente
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &740456341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740456340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d710de3d94e7f4784a4a841ee93d7148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Ambiente
+  hora: 8.5
+  minutosPorDia: 24
+  detenerHora: 0
+  tiempo: 0
+  climaAutomatico: 1
+  nubosidad: 0.15
+  lluvia: 0
+  viento: 0.25
+  rumboViento: 225
+  sol: {fileID: 1733181797}
+  luna: {fileID: 0}
+--- !u!4 &740456342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740456340}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &819114925
 GameObject:
   m_ObjectHideFlags: 0
@@ -1768,6 +1986,57 @@ MonoBehaviour:
     baston: 0
     accesorio: 0
     escala: 1
+--- !u!1 &983586561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 983586562}
+  - component: {fileID: 983586563}
+  m_Layer: 0
+  m_Name: "Chacra del rastrojo de ma\xEDz"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &983586562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983586561}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 1010, y: 0.76836014, z: -186.90219}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &983586563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983586561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 1
+  etapa: 5
+  ancho: 200
+  largo: 279.80472
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 11
 --- !u!1 &1075605463
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,6 +2129,57 @@ Transform:
   - {fileID: 1301293482}
   m_Father: {fileID: 179908357}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1102108951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1102108952}
+  - component: {fileID: 1102108953}
+  m_Layer: 0
+  m_Name: Maizal de la estancia
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1102108952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102108951}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -630, y: -0.45541143, z: 375.00006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1102108953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102108951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 1
+  etapa: 4
+  ancho: 200
+  largo: 230
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 2
 --- !u!1 &1103551236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2013,7 +2333,7 @@ Terrain:
   m_TreeMaximumFullLODCount: 50
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
-  m_HeightmapPixelError: 4
+  m_HeightmapPixelError: 1
   m_SplatMapDistance: 1500
   m_HeightmapMinimumLODSimplification: 0
   m_HeightmapMaximumLOD: 0
@@ -2053,6 +2373,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1136753039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1136753040}
+  - component: {fileID: 1136753041}
+  m_Layer: 0
+  m_Name: Cuadra de peones
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1136753040
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136753039}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -897, y: 0.60062265, z: 482.00006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699174162}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1136753041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136753039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3297968f291784d2a8019bc76f5c7c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Casa
+  ancho: 14
+  largo: 5
+  alto: 2.5
+  caida: 1.6
+  pared: 0
+  techo: 0
+  puerta: 1
+  galeria: 0
+  ruina: 0
 --- !u!1 &1139843083
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,7 +2626,7 @@ GameObject:
   - component: {fileID: 1282351880}
   - component: {fileID: 1282351881}
   m_Layer: 0
-  m_Name: Casa principal
+  m_Name: Casa del capataz
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2267,8 +2640,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1282351879}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -850, y: 0.60060287, z: 450.00006}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -897, y: 0.60062265, z: 452.00003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2286,12 +2659,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3297968f291784d2a8019bc76f5c7c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Casa
-  ancho: 16
-  largo: 8
-  alto: 3.4
+  ancho: 9
+  largo: 6
+  alto: 2.8
   caida: 2.4
   pared: 1
-  techo: 1
+  techo: 0
   puerta: 1
   galeria: 1
   ruina: 0
@@ -2439,6 +2812,57 @@ MonoBehaviour:
     baston: 0
     accesorio: 0
     escala: 1
+--- !u!1 &1332307570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1332307571}
+  - component: {fileID: 1332307572}
+  m_Layer: 0
+  m_Name: Chacra del trigo maduro
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1332307571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332307570}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 1235, y: 1.3469272, z: -90.936295}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1332307572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332307570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 4
+  ancho: 210
+  largo: 229.50906
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 12
 --- !u!1 &1347357946
 GameObject:
   m_ObjectHideFlags: 0
@@ -2472,6 +2896,57 @@ Transform:
   - {fileID: 92402401}
   m_Father: {fileID: 179908357}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1418674616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1418674617}
+  - component: {fileID: 1418674618}
+  m_Layer: 0
+  m_Name: Trigal de la estancia
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1418674617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418674616}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -570.00006, y: 0.870903, z: 930}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1418674618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418674616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 4
+  ancho: 240
+  largo: 319.99994
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 1
 --- !u!1 &1419458897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2516,6 +2991,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f080cd928a14225ba53d2e845d7294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Pulperia
+--- !u!1 &1455764029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1455764030}
+  - component: {fileID: 1455764031}
+  m_Layer: 0
+  m_Name: Chacra del trigal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1455764030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455764029}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -80.00004, y: -1.1571138, z: 109.95012}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1455764031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455764029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 4
+  ancho: 180.00005
+  largo: 357.40002
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 3
 --- !u!1 &1465212216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,6 +3141,59 @@ MonoBehaviour:
     baston: 0
     accesorio: 0
     escala: 1
+--- !u!1 &1488276528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1488276529}
+  - component: {fileID: 1488276530}
+  m_Layer: 0
+  m_Name: Casona de La Soledad
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1488276529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488276528}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -848.00006, y: 0.60062265, z: 478.00003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699174162}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1488276530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488276528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 976955c2e76fc4dd6a3b90b6f627559a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Casona
+  frente: 28
+  fondo: 20
+  ala: 7
+  alto: 4.2
+  techo: 0
+  alas: 1
+  galeria: 1
+  mirador: 1
+  rejas: 1
 --- !u!1 &1504872176
 GameObject:
   m_ObjectHideFlags: 0
@@ -2720,6 +3299,57 @@ CharacterController:
   m_SkinWidth: 0.05
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!1 &1517752387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1517752388}
+  - component: {fileID: 1517752389}
+  m_Layer: 0
+  m_Name: "Chacra del ma\xEDz nuevo"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1517752388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517752387}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -40.000023, y: 0.5273552, z: -272.2881}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1517752389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517752387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 1
+  etapa: 2
+  ancho: 179.99992
+  largo: 314.3542
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 8
 --- !u!1 &1569736614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,6 +3403,57 @@ MonoBehaviour:
   hueco: 0
   alto: 1.4
   paso: 3
+--- !u!1 &1579792130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1579792131}
+  - component: {fileID: 1579792132}
+  m_Layer: 0
+  m_Name: Chacra del trigo brotando
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579792131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579792130}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 179.99994, y: 0.55490255, z: -328.74988}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1579792132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579792130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 2
+  ancho: 220
+  largo: 411
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 9
 --- !u!1 &1640113875
 GameObject:
   m_ObjectHideFlags: 0
@@ -2916,6 +3597,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e475ff18a45394badb59d6c6b17a4f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.Pozo
+--- !u!1 &1658281043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1658281044}
+  - component: {fileID: 1658281045}
+  m_Layer: 0
+  m_Name: Chacra del trigo verde
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1658281044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658281043}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1119.9999, y: 1.0103693, z: 240.50002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1658281045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658281043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 3
+  ancho: 180
+  largo: 287.18192
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 7
 --- !u!1 &1659747144
 GameObject:
   m_ObjectHideFlags: 0
@@ -3160,8 +3892,61 @@ Transform:
   - {fileID: 1139843084}
   - {fileID: 1932582389}
   - {fileID: 186026470}
+  - {fileID: 1488276529}
+  - {fileID: 1136753040}
   m_Father: {fileID: 179908357}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1709372292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1709372293}
+  - component: {fileID: 1709372294}
+  m_Layer: 0
+  m_Name: Trigal del oeste
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1709372293
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709372292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1190, y: 0.3896408, z: 530.00006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1709372294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709372292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 3
+  ancho: 240
+  largo: 280
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 21
 --- !u!1 &1720561349
 GameObject:
   m_ObjectHideFlags: 0
@@ -3677,6 +4462,57 @@ Transform:
   - {fileID: 332257529}
   m_Father: {fileID: 179908357}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1824465571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1824465572}
+  - component: {fileID: 1824465573}
+  m_Layer: 0
+  m_Name: Chacra de las parvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1824465572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824465571}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 775, y: 0.7528119, z: 199.12508}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1824465573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824465571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 5
+  ancho: 170.00006
+  largo: 423.74997
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 5
 --- !u!1 &1826192806
 GameObject:
   m_ObjectHideFlags: 0
@@ -4090,6 +4926,50 @@ MonoBehaviour:
   alto: 2.6
   caida: 2.2
   amueblado: 1
+--- !u!1 &2006973032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2006973033}
+  m_Layer: 0
+  m_Name: Sembrados
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2006973033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006973032}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1418674617}
+  - {fileID: 1102108952}
+  - {fileID: 1455764030}
+  - {fileID: 245944960}
+  - {fileID: 1824465572}
+  - {fileID: 2134711266}
+  - {fileID: 1658281044}
+  - {fileID: 1517752388}
+  - {fileID: 1579792131}
+  - {fileID: 353438917}
+  - {fileID: 983586562}
+  - {fileID: 1332307571}
+  - {fileID: 1709372293}
+  m_Father: {fileID: 179908357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2040390431
 GameObject:
   m_ObjectHideFlags: 0
@@ -4189,6 +5069,157 @@ MonoBehaviour:
   puerta: 1
   galeria: 0
   ruina: 0
+--- !u!1 &2119125491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2119125492}
+  - component: {fileID: 2119125493}
+  m_Layer: 0
+  m_Name: Camino real (huellas)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2119125492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119125491}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 179908357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2119125493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119125491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8f5c8bda7f146af9dbaa58fa8f677b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Huellas
+  trazado: 0
+  pares: 3
+  trocha: 1.9
+  anchoHuella: 0.45
+  hondura: 0.14
+  vaiven: 1.2
+  charcos: 0.5
+  matas: 0.6
+--- !u!1 &2124855982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2124855983}
+  - component: {fileID: 2124855984}
+  m_Layer: 0
+  m_Name: Lindes del loteo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2124855983
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124855982}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 179908357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2124855984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124855982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a261ecbd19be44050ab48adb9bd89648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Lindes
+  altoBordo: 0.5
+  anchoBordo: 2.2
+  pasoTuna: 1.3
+  tranquerasAbiertas: 1
+--- !u!1 &2134711265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2134711266}
+  - component: {fileID: 2134711267}
+  m_Layer: 0
+  m_Name: "Chacra reci\xE9n arada"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2134711266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134711265}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 944.99994, y: 0.29225636, z: 141.37506}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006973033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2134711267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134711265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e6fe63a972f455ba1fac23d82d7dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.Sembrado
+  cultivo: 0
+  etapa: 0
+  ancho: 129.99988
+  largo: 210.75008
+  fallas: 0.15
+  orillaConPlantas: 1.5
+  semilla: 6
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4201,3 +5232,4 @@ SceneRoots:
   - {fileID: 2040390432}
   - {fileID: 1504872177}
   - {fileID: 542630513}
+  - {fileID: 740456342}

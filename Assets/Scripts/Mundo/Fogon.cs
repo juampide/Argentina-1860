@@ -41,7 +41,10 @@ namespace Argentina1860
         {
             if (llama == null || !Application.isPlaying) return;
             float t = Time.time * 7 + semilla;
-            llama.intensity = 2.2f + Mathf.Sin(t) * 0.25f + Mathf.Sin(t * 2.7f) * 0.15f;
+            // de noche el fuego alumbra más lejos (Ambiente.LucesDeNoche va de 0 de día a 1 de noche)
+            float noche = Ambiente.LucesDeNoche;
+            llama.intensity = (2.2f + Mathf.Sin(t) * 0.25f + Mathf.Sin(t * 2.7f) * 0.15f) * (1 + noche * 1.8f);
+            llama.range = 7 + noche * 9;
         }
     }
 }

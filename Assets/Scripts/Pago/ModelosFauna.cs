@@ -89,6 +89,7 @@ namespace Argentina1860
             go.transform.SetParent(padre, false);
             var mapa = new Dictionary<Nodo, Transform>();
             p.raiz.Instanciar(go.transform, null, mapa);
+            Pisadas.Registrar(go.transform, nombre);   // los animales grandes y las carretas aplastan el pasto
             return Armar(p, mapa, go.transform);
         }
 
@@ -139,6 +140,25 @@ namespace Argentina1860
             return p;
         }
 
+        // Vacuno criollo, el de la pampa de 1867: pelajes colorado, hosco, barcino, bayo y overos (con manchas blancas),
+        // cuernos largos claros. (El holando, blanco y negro, llega décadas después.)
+        static readonly string[] PELAJES = { "#8a4a2a", "#6b3a22", "#3a2a22", "#a8754a", "#7a5a3a", "#5a3626" };
+
+        static Spec VacaCriolla()
+        {
+            string pelo = PELAJES[Random.Range(0, PELAJES.Length)];
+            bool overo = Random.value < 0.35f;
+            var parches = new List<(float, float, float, float, float, float, string)>();
+            if (overo)
+                for (int i = 0; i < 4; i++)
+                    parches.Add(((Random.value - 0.5f) * 0.8f, 1.15f + Random.value * 0.5f, (Random.value - 0.5f) * 1.4f, 0.18f + Random.value * 0.12f, 0.2f + Random.value * 0.2f, 0.3f + Random.value * 0.2f, "#ece6da"));
+            return new Spec
+            {
+                L = 2.0f, A = 0.85f, pat = 0.72f, grosor = 0.42f, cuello = 0.42f, cab = 0.52f, cola = 0.75f, color = pelo, claro = pelo,
+                hocico = Osc(pelo, 0.55f), colaColor = Osc(pelo, 0.6f), orejas = true, cuernos = true, pezunas = "#3a3428", parches = parches,
+            };
+        }
+
         // Vaca holando: cuerpo blanco con grandes manchas negras, hocico negro, cuernos claros, patas blancas con pezuñas
         static Spec VacaSpec()
         {
@@ -179,6 +199,21 @@ namespace Argentina1860
                 var pt = n.Hijo("pata", v(sx * s.gr * 0.35f, bas, 0));
                 pt.Pieza(Geo.Cilindro(0.025f, 0.02f, bas, 4).Trasladar(0, -bas / 2, 0), s.patas ?? "#8a7a60", Vector3.zero);
                 p.patas.Add(pt);
+            }
+            return p;
+        }
+
+        /// Ave que camina y vuela: como Ave, pero con alas que se abren (tero, pato, flamenco).
+        static Plano AveConAlas(SpecAve s, float envergadura, string colorAla, string puntaAla = null)
+        {
+            var p = Ave(s);
+            var n = p.raiz;
+            foreach (var sx in new[] { -1f, 1f })
+            {
+                var a = n.Hijo("ala", v(sx * s.gr * 0.6f, s.pat + s.A * 0.62f, 0.02f));
+                a.Pieza(ICO, colorAla, v(sx * envergadura * 0.45f, 0, -s.L * 0.05f), default, v(envergadura * 0.5f, 0.02f, s.L * 0.32f));
+                if (puntaAla != null) a.Pieza(ICO0, puntaAla, v(sx * envergadura * 0.85f, 0, -s.L * 0.1f), default, v(envergadura * 0.18f, 0.025f, s.L * 0.2f));
+                p.alas.Add(a);
             }
             return p;
         }
@@ -240,7 +275,24 @@ namespace Argentina1860
                 case "carpincho": p = Cuadrupedo(new Spec { L = 1.1f, A = 0.5f, pat = 0.2f, grosor = 0.3f, cab = 0.38f, color = "#6b4a30", claro = "#8a6445", orejas = true }); break;
                 case "coipo": p = Cuadrupedo(new Spec { L = 0.62f, A = 0.3f, pat = 0.1f, grosor = 0.17f, cab = 0.24f, cola = 0.5f, color = "#6a4a32", claro = "#8c6a4c", orejas = true }); break;
                 case "puma": p = Cuadrupedo(new Spec { L = 1.45f, A = 0.6f, pat = 0.46f, grosor = 0.22f, cuello = 0.3f, cab = 0.34f, cola = 1.0f, color = "#c8a060", claro = "#eadcc0", orejas = true }); break;
-                case "vaca": p = Cuadrupedo(VacaSpec(), "vaca"); break;
+                case "vaca": p = Cuadrupedo(VacaCriolla(), "vaca"); break;
+                case "oveja":
+                    {
+                        // oveja criolla de lana sucia, cabeza y patas más oscuras
+                        string lana = Random.value < 0.85f ? "#ddd3bc" : "#5a4a3a";
+                        p = Cuadrupedo(new Spec { L = 1.0f, A = 0.5f, pat = 0.36f, grosor = 0.36f, cuello = 0.12f, cab = 0.26f, cola = 0.18f, color = lana, claro = lana, hocico = "#3a3028", patas = "#4a4038", orejas = true, colaColor = lana }, "oveja");
+                        break;
+                    }
+                case "perro":
+                    {
+                        string[] pelos = { "#6b4a2a", "#2a2420", "#a8804a", "#d8ccb4", "#4a3a2a" };
+                        string pelo = pelos[Random.Range(0, pelos.Length)];
+                        p = Cuadrupedo(new Spec { L = 0.75f, A = 0.32f, pat = 0.38f, grosor = 0.15f, cuello = 0.2f, cab = 0.24f, cola = 0.35f, color = pelo, claro = Random.value < 0.5f ? "#e8dcc8" : pelo, hocico = Osc(pelo, 0.5f), orejas = true }, "perro");
+                        break;
+                    }
+                case "tero": p = AveConAlas(new SpecAve { L = 0.34f, A = 0.18f, pat = 0.26f, gr = 0.1f, cuello = 0.1f, cab = 0.1f, color = "#8f9590", claro = "#f0eee8", cabColor = "#4a4e52", pico = "#d0405a", patas = "#c8506a" }, 0.42f, "#7a8a84", "#1d1d20"); break;
+                case "pato": p = AveConAlas(new SpecAve { L = 0.45f, A = 0.22f, pat = 0.06f, gr = 0.16f, cuello = 0.12f, cab = 0.12f, color = "#7a6248", claro = "#a08868", cabColor = "#3a4a3a", pico = "#2a3a5a", patas = "#c08040" }, 0.45f, "#6a5440", "#e8e4d8"); break;
+                case "flamenco": p = AveConAlas(new SpecAve { L = 0.6f, A = 0.3f, pat = 1.0f, gr = 0.17f, cuello = 0.75f, cab = 0.12f, color = "#e8a8b0", claro = "#f2c8c8", pico = "#2a2224", patas = "#d87888" }, 0.7f, "#e88898", "#1d1d20"); break;
                 case "nandu": p = Ave(new SpecAve { L = 0.95f, A = 0.55f, pat = 0.9f, gr = 0.28f, cuello = 0.85f, cab = 0.22f, color = "#9a8b78", claro = "#cfc3b0", pico = "#6a5a48", patas = "#7a6c58" }); break;
                 case "perdiz": p = Ave(new SpecAve { L = 0.36f, A = 0.2f, pat = 0.14f, gr = 0.11f, cuello = 0.1f, cab = 0.1f, color = "#b07a3d", claro = "#e4c89a", pico = "#8a6a3a" }); break;
                 case "peludo": p = Peludo(); break;

@@ -50,8 +50,8 @@ namespace Argentina1860
 
         // ---------- trazados (en km) ----------
         public static readonly Vector2[] ARROYO = V(1.4f, -0.05f, 1.38f, 0.2f, 1.25f, 0.55f, 1.18f, 0.8f, 1.16f, 1.05f, 1.15f, 1.3f, 1.25f, 1.6f, 1.4f, 1.85f, 1.52f, 2.0f);
-        public static readonly Vector2[] CAMINO = V(-0.05f, 1.5f, 0.4f, 1.46f, 0.8f, 1.38f, 1.15f, 1.3f, 1.6f, 1.27f, 2.15f, 1.25f, 2.7f, 1.15f, 3.25f, 1.0f);
-        public static readonly Vector2[][] SENDAS =
+        static readonly Vector2[] CAMINO_PROTO = V(-0.05f, 1.5f, 0.4f, 1.46f, 0.8f, 1.38f, 1.15f, 1.3f, 1.6f, 1.27f, 2.15f, 1.25f, 2.7f, 1.15f, 3.25f, 1.0f);
+        static readonly Vector2[][] SENDAS_PROTO =
         {
             V(0.75f, 0.8f, 0.9f, 0.92f, 1.0f, 1.0f, 1.08f, 1.15f, 1.15f, 1.3f),   // estancia → paso
             V(0.59f, 0.9f, 0.68f, 0.85f, 0.75f, 0.8f),                             // rancho de peones → estancia
@@ -61,6 +61,29 @@ namespace Argentina1860
             V(0.75f, 0.8f, 0.62f, 1.3f, 0.57f, 1.6f, 0.55f, 1.85f),                // estancia → puesto del baqueano
             V(0.75f, 0.8f, 0.95f, 0.62f, 1.17f, 0.5f),                             // estancia → rancho de Casiana
         };
+        /// Camino real: sale del loteo (Resources/LoteoPago.asset); si no hay loteo, el del prototipo.
+        public static Vector2[] CAMINO
+        {
+            get
+            {
+                var r = LoteoPago.Instancia?.CaminoReal();
+                return r != null && r.km != null && r.km.Length >= 2 ? r.km : CAMINO_PROTO;
+            }
+        }
+
+        /// Los demás caminos (callejones, sendas, huellas) del loteo; si no hay loteo, las sendas del prototipo.
+        public static Vector2[][] SENDAS
+        {
+            get
+            {
+                var l = LoteoPago.Instancia;
+                if (l == null) return SENDAS_PROTO;
+                var r = new List<Vector2[]>();
+                foreach (var c in l.caminos) if (c.tipo != TipoCamino.Real && c.km != null && c.km.Length >= 2) r.Add(c.km);
+                return r.ToArray();
+            }
+        }
+
         public static readonly Vector2 LAGUNA_C = new Vector2(1.7f, 2.05f);
         public const float LAGUNA_RX = 0.21f, LAGUNA_RY = 0.14f;
         public static readonly Vector2 MONTE_C = new Vector2(2.3f, 0.45f);
@@ -183,6 +206,23 @@ namespace Argentina1860
         }
 
         static CampoDist arroyo, caminos;
+        static List<Vector2> patios = new List<Vector2>();
+
+        /// Patios de tierra pisada donde terminan los caminos (puerta de una casa, tranquera, orilla), en metros.
+        public static IReadOnlyList<Vector2> Patios { get { Asegurar(); return patios; } }
+
+        /// Vuelve a calcular los caminos (cuando cambia el loteo).
+        public static void Invalidar()
+        {
+            lock (candado) { caminos = null; arroyo = null; }
+        }
+
+        /// Uso del lote en un punto (en metros del prototipo). Sin loteo o fuera de todo lote: campo abierto.
+        public static UsoLote Uso(float x, float z)
+        {
+            var l = LoteoPago.Instancia?.LoteEn(x, z);
+            return l != null ? l.uso : UsoLote.CampoAbierto;
+        }
         static readonly object candado = new object();
 
         static void Asegurar()
@@ -194,8 +234,21 @@ namespace Argentina1860
                 var a = new CampoDist(60);
                 a.Polilinea(Suavizar(ARROYO), 0);
                 var c = new CampoDist(30);
-                c.Polilinea(Suavizar(CAMINO), 3.5f);                  // camino real: 7 m de ancho
-                foreach (var s in SENDAS) c.Polilinea(Suavizar(s), 1.8f);   // sendas: 3,6 m
+                var pt = new List<Vector2>();
+                var l = LoteoPago.Instancia;
+                if (l != null)
+                    foreach (var cm in l.caminos)
+                    {
+                        if (cm.km == null || cm.km.Length < 2) continue;
+                        c.Polilinea(Suavizar(cm.km), LoteoPago.MedioAncho(cm.tipo));
+                        if (cm.patioAlFinal) pt.Add(K(cm.km[cm.km.Length - 1]));
+                    }
+                else
+                {
+                    c.Polilinea(Suavizar(CAMINO_PROTO), 3.5f);                  // camino real: 7 m de ancho
+                    foreach (var s in SENDAS_PROTO) c.Polilinea(Suavizar(s), 1.8f);   // sendas: 3,6 m
+                }
+                patios = pt;
                 arroyo = a;
                 caminos = c;
             }
@@ -271,6 +324,37 @@ namespace Argentina1860
 
         public static bool PuedeCrecer(float x, float z) => !EnAgua(x, z) && !EnCamino(x, z);
 
+        /// Distancia al borde del camino real o de una senda (negativa sobre el camino), hasta 30 m.
+        public static float DistCamino(float x, float z)
+        {
+            Asegurar();
+            return caminos.Muestra(x, z);
+        }
+
+        /// Cuánto se nota la gente en un lugar, de 0 (campo abierto) a 1 (al lado de las casas).
+        /// Cerca de los sitios poblados y a la orilla de los caminos el pasto está comido por los animales
+        /// y pisoteado; lejos crece alto. El borde no es parejo: lo corta un ruido.
+        public static float Pastoreo(float x, float z, float alcance = 1)
+        {
+            Asegurar();
+            float f = 0;
+            foreach (var s in SITIOS)
+            {
+                float d = Vector2.Distance(new Vector2(x, z), s.p);
+                f = Mathf.Max(f, 1 - SStep(s.r * 1.2f, s.r * (1.2f + 3f * alcance), d));
+            }
+            float dc = caminos.Muestra(x, z);
+            f = Mathf.Max(f, (1 - SStep(1, Mathf.Min(1 + 22 * alcance, 29), dc)) * 0.75f);   // el campo de distancia llega hasta 30 m
+            switch (Uso(x, z))
+            {
+                case UsoLote.Casco: case UsoLote.Posta: case UsoLote.Potrero: f = Mathf.Max(f, 0.9f); break;   // comido y pisoteado
+                case UsoLote.Quinta: f = Mathf.Max(f, 0.6f); break;
+                case UsoLote.Chacra: f = Mathf.Max(f, 0.45f); break;   // las orillas de la chacra las come el caballo del chacarero
+            }
+            float n = Ruido(x * 0.03 + 3, z * 0.03 - 7);
+            return Mathf.Clamp01(f * Mix(0.6f, 1.35f, n));
+        }
+
         public static bool LibreDeSitios(float x, float z, float margen = 1)
         {
             foreach (var s in SITIOS)
@@ -286,6 +370,11 @@ namespace Argentina1860
             float da = arroyo.Muestra(x, z) - 4.5f;
             float dAgua = Mathf.Min(da, DistLaguna(x, z));
             float gRaw = 1 - SStep(-1, 1, dc);
+            foreach (var pt in patios)   // patios de tierra donde terminan los caminos
+            {
+                float dp = Vector2.Distance(new Vector2(x, z), pt);
+                if (dp < 14) gRaw = Mathf.Max(gRaw, 1 - SStep(6, 14, dp + 3 * (Ruido(x * 0.3, z * 0.3) - 0.5f)));
+            }
             float g = Mathf.Clamp01(gRaw * 1.3f);
             float rSoft = 1 - SStep(-1.5f, 1.5f, dAgua);
             float agua = Mathf.Clamp01(rSoft * (1 - gRaw) * 1.6f);

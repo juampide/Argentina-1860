@@ -8,7 +8,7 @@ TerrainLayer:
   m_PrefabAsset: {fileID: 0}
   m_Name: Pasto seco
   m_DiffuseTexture: {fileID: 2800000, guid: 339e7c3d65a87460c9d19493219b83d8, type: 3}
-  m_NormalMapTexture: {fileID: 0}
+  m_NormalMapTexture: {fileID: 2800000, guid: dc7307f6c39e041d9a52e34868db1d87, type: 3}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 5, y: 5}
   m_TileOffset: {x: 0, y: 0}

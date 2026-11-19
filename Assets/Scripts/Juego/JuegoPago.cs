@@ -206,6 +206,12 @@ namespace Argentina1860
                 var p = c.transform.position;
                 edificios.Add((p.x, -p.z, c.Ancho, c.Largo, -c.transform.eulerAngles.y * Mathf.Deg2Rad));
             }
+            foreach (var c in FindObjectsByType<Casona>())
+            {
+                // en el mapa, la casona va como un rectángulo con todo su contorno (frente y alas)
+                var p = c.transform.position;
+                edificios.Add((p.x, -p.z, c.frente, c.alas ? c.fondo : c.ala, -c.transform.eulerAngles.y * Mathf.Deg2Rad));
+            }
             var cercos = new List<List<Vector2>>();
             foreach (var c in FindObjectsByType<Cerco>())
             {

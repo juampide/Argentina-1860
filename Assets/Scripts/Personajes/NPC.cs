@@ -19,6 +19,7 @@ namespace Argentina1860
         void Start()
         {
             fase = Random.value * 10;
+            Pisadas.Registrar(transform, 0.4f);
         }
 
         /// Lo mueve otro sistema (por ejemplo Pascual, que camina junto a su carreta): no gira hacia el jugador.

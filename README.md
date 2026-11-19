@@ -37,6 +37,12 @@ El **pago** (campo) está migrado completo. La **ciudad** (Buenos Aires) todaví
 | Personajes: nombre, aspecto, diálogos | `Assets/Datos/Personajes/*.asset` | Editar la ficha. El modelo cambia al instante. Tiene campos para el futuro NPC con LLM (personalidad, qué sabe y qué no) |
 | Texturas y colores de materiales | `Assets/Arte/Materiales`, `Assets/Resources/MaterialesMundo.asset` | Cambiar textura o color del material |
 | Luz, niebla y color | **Sol**, **PostProceso** (`Assets/Mundo/Pago/PerfilPago.asset`) | Inspector |
+| Hora, clima y viento | Objeto **Ambiente** (componente `Ambiente`) | Hora de arranque, minutos reales por día, clima automático o fijo (despejado, nublado, tormenta, pampero), nubosidad, lluvia y viento |
+| Carácter de cada animal | `Assets/Scripts/Pago/Fauna.Conducta.cs`, tabla `RASGOS` | Distancia de alerta y de huida, horario, manada, aguada, siesta, cueva, presas (por ahora en código: pedir a desarrollo pasarlo a una ficha) |
+| Loteo: lotes, dueños, usos, lindes y caminos | `Assets/Resources/LoteoPago.asset` | Ver `Docs/mundo/loteo-pago.md`. Los caminos, las zanjas, el pasto y los árboles salen de acá |
+| Sembrados | **Construcciones → Sembrados** (componente `Sembrado`) | Mover, rotar o duplicar. Elegir cultivo (trigo o maíz), etapa (arado, sembrado, brotando, creciendo, maduro, cosechado), tamaño y fallas. El pasto no crece adentro. Si se pone uno nuevo, sacar a mano los árboles que queden adentro |
+| Huellas del camino | **Construcciones → Camino real (huellas)** y **Sendas (huellas)** (componente `Huellas`) | Pares de huellas, trocha, ancho, vaivén, charcos y matas. Siguen el trazado de `MapaPago`. Después de esculpir el terreno: clic derecho en el componente → *Regenerar* |
+| Pasto corto cerca de la gente y pisadas | **Juego** → componente `Pasto` | Altura y alcance del pasto comido, segundos que tarda en levantarse una mata pisada y cuánto se dobla |
 
 Los objetos hijos `_generado` no se guardan en la escena y no se editan a mano: salen de los parámetros del componente.
 
@@ -56,8 +62,9 @@ Una vez que el diseño empiece a editar el terreno o las construcciones a mano, 
 ## Código (`Assets/Scripts`)
 
 - `Nucleo/`: conversión de coordenadas three.js → Unity (`Conv`), geometría low poly igual a la del prototipo (`Geo`, `MallaTres`), base de los objetos armados por código (`ProceduralBase`) y materiales con nombre.
-- `Pago/`: `MapaPago` (trazados, relieve, agua y caminos de `campo.js`) y `Flora`.
-- `Mundo/`: `Casa`, `Cerco`, `Fogon`, `Palenque`, `Pozo`.
+- `Pago/`: `MapaPago` (trazados, relieve, agua y caminos de `campo.js`; `Pastoreo` dice cuánto se nota la gente en cada lugar), `Flora`, `Pasto` (matas por GPU, pasto corto cerca de las casas y textura de pisadas) y `Pisadas` (registro de lo que aplasta el pasto: jugador, personajes, animales grandes y carretas).
+- `Mundo/`: `Casa`, `Cerco`, `Fogon`, `Palenque`, `Pozo`, `Sembrado`, `Huellas` (caminos con surcos), `Lindes` (zanjas, bordos, tunas, mojones, tranqueras) y `ObraMalla` (mallas grandes apoyadas en el terreno).
+- `Pago/LoteoPago` (datos del loteo) y `Pago/RelievePago` (rehace relieve, suelo y árboles a partir del loteo).
 - `Personajes/`: `Aspecto`, `FichaPersonaje`, `ConstructorPersonaje` (de `personaje.js`), animación y `NPC`.
 - `Juego/`: cámara isométrica, control del jugador, diálogos y HUD (provisorio, IMGUI).
 - `Editor/`: el generador del pago y los datos del elenco.

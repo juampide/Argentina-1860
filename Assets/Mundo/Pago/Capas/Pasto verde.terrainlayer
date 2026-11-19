@@ -8,7 +8,7 @@ TerrainLayer:
   m_PrefabAsset: {fileID: 0}
   m_Name: Pasto verde
   m_DiffuseTexture: {fileID: 2800000, guid: 3aa5c002d12664fa497a3f4d9b29d329, type: 3}
-  m_NormalMapTexture: {fileID: 0}
+  m_NormalMapTexture: {fileID: 2800000, guid: 498e580385da547dca788ba82efe12e9, type: 3}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 5, y: 5}
   m_TileOffset: {x: 0, y: 0}

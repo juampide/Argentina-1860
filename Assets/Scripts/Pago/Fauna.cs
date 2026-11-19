@@ -12,7 +12,7 @@ namespace Argentina1860
     /// (cruces de ñandúes y venados, tropillas, jinetes al galope, bandadas) y el minijuego del arreo de vacas.
     /// Toda la lógica usa coordenadas del prototipo (x este, z sur) y se pasa a Unity al ubicar cada modelo.
     /// </summary>
-    public class Fauna : MonoBehaviour
+    public partial class Fauna : MonoBehaviour
     {
         public JuegoPago juego;
 
@@ -99,6 +99,14 @@ namespace Argentina1860
             public bool arreo, corral, salio;
             public List<Vector2> ruta;
             public Transform G => m.raiz;
+            // conducta (Fauna.Conducta.cs)
+            public Manada manada;
+            public Vector2 ofs, nido, casa;
+            public float alerta, quieto, echado, vuelo, vueloT, comida, cuidado = 1;
+            public bool muerto, escondido, manso;
+            public float muertoT;
+            public Animal presa;
+            public Vector2 huidaDe;
         }
 
         readonly List<Animal> animales = new List<Animal>();
@@ -146,7 +154,7 @@ namespace Argentina1860
         float[] acum;
         float largoRuta;
 
-        class Vuelo { public Bicho b; public Vector2 c; public float r, f, h; }
+        class Vuelo { public Bicho b; public Vector2 c; public float r, f, h; public Animal carcasa; public float bajada, comerT; public Vector3 pos; }
         readonly List<Vuelo> vuelos = new List<Vuelo>();
 
         NPC pascual;
@@ -161,8 +169,10 @@ namespace Argentina1860
             Physics.SyncTransforms();
             raiz = new GameObject("Animales").transform;
             raiz.SetParent(transform, false);
+            AgregarEspecies();
             Poblar();
             ConstruirCorralArreo();
+            PoblarConducta();
             foreach (var n in FindObjectsByType<NPC>()) if (n.Ficha != null && n.Ficha.id == "pascual") pascual = n;
             if (pascual != null) pascual.ControladoAfuera = true;
             listo = true;
@@ -191,7 +201,7 @@ namespace Argentina1860
                 for (int k = 0; k < 40 && c == null; k++)
                 {
                     var p = region();
-                    if (EnMapa(p.x, p.y) && Libre(p.x, p.y)) c = p;
+                    if (EnMapa(p.x, p.y) && Libre(p.x, p.y) && !Sembrado.Ocupa(p.x, p.y) && MapaPago.Uso(p.x, p.y) != UsoLote.Chacra) c = p;
                 }
                 if (c == null) continue;
                 for (int i = 0; i < tam; i++)
@@ -338,15 +348,26 @@ namespace Argentina1860
         void ConstruirCorralArreo()
         {
             var e = MapaPago.K(0.75f, 0.75f);
+            // lugar para el corral: libre de construcciones, fuera de caminos, patios y lotes sembrados
+            bool Apto(float x, float z)
+            {
+                if (!Libre(x, z) || MapaPago.DistCamino(x, z) < 5 || Sembrado.Ocupa(x, z)) return false;
+                var u = MapaPago.Uso(x, z);
+                if (u == UsoLote.Chacra || u == UsoLote.Quinta) return false;
+                foreach (var pt in MapaPago.Patios) if (Vector2.Distance(pt, new Vector2(x, z)) < 16) return false;
+                return true;
+            }
             bool OkRing(float x, float z)
             {
-                if (!Libre(x, z)) return false;
-                for (int k = 0; k < 12; k++) if (!Libre(x + Mathf.Cos(k * 0.5236f) * 17, z + Mathf.Sin(k * 0.5236f) * 17)) return false;
+                if (!Apto(x, z)) return false;
+                for (int k = 0; k < 12; k++)
+                    foreach (var r in new[] { 10f, 17f })
+                        if (!Apto(x + Mathf.Cos(k * 0.5236f) * r, z + Mathf.Sin(k * 0.5236f) * r)) return false;
                 return true;
             }
             Rodeo = new Vector2(e.x - 20, e.y + 80);
             bool hallado = false;
-            for (int r = 0; r < 90 && !hallado; r += 8)
+            for (int r = 0; r < 220 && !hallado; r += 8)
                 for (int k = 0; k < 12 && !hallado; k++)
                 {
                     float x = e.x - 20 + Mathf.Cos(k * 0.52f) * r, z = e.y + 80 + Mathf.Sin(k * 0.52f) * r;
@@ -780,9 +801,11 @@ namespace Argentina1860
             {
                 if (a.arreo) continue;
                 float dx = p.x - a.x, dz = p.y - a.z, d = Mathf.Sqrt(dx * dx + dz * dz);
-                Activo(a.G, d <= 140);
-                if (d > 140) continue;
+                Activo(a.G, d <= 140 && !a.escondido);
+                if (d > 140) { if (a.manada != null && a.manada.majada) MajadaLejos(a, dt); continue; }
                 if (a.sp.vel == 0 && !a.sp.huye) continue;   // yarará: inmóvil
+                // las vacas del corral del arreo siguen con su lógica; las demás, con la conducta nueva
+                if (!a.corral && a.ruta == null) { Pensar(a, p, d, dt, t); continue; }
                 a.t -= dt;
                 float mover = 0, ang = a.ang;
                 if (a.sp.huye && d < a.sp.huida) { a.estado = "huir"; ang = Mathf.Atan2(-dx, -dz) + a.deriva; mover = a.sp.velH; a.t = 1.2f; }
@@ -863,12 +886,15 @@ namespace Argentina1860
                 }
             }
 
+            ActualizarConducta(dt, p, t);
+
             // caranchos en vuelo
             foreach (var v in vuelos)
             {
                 bool cerca = Vector2.Distance(v.c, p) <= 400;
-                Activo(v.b.raiz, cerca);
-                if (!cerca) continue;
+                Activo(v.b.raiz, cerca || v.carcasa != null);
+                if (!cerca && v.carcasa == null) continue;
+                if (Carroña(v, dt, t)) continue;   // bajó a comer una osamenta
                 float a = t * 0.35f + v.f;
                 v.b.raiz.position = new Vector3(v.c.x + Mathf.Cos(a) * v.r, v.h + Mathf.Sin(a * 2) * 2, -(v.c.y + Mathf.Sin(a) * v.r));
                 v.b.raiz.rotation = Conv.Rot(0, -a, -0.25f);

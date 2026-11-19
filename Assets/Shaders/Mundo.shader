@@ -14,6 +14,7 @@ Shader "Argentina/Mundo"
         [HDR] _EmissionColor("Emisión", Color) = (0, 0, 0, 1)
         _Suciedad("Suciedad", Range(0, 2)) = 1
         _Grietas("Grietas", Range(0, 1)) = 0
+        _Absorbe("Se moja con la lluvia (0 = nada, 1 = suelo de tierra)", Range(0, 1)) = 0.35
         [Toggle] _Xray("Recorte tramado cuando tapa al jugador", Float) = 0
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("Caras", Float) = 0
     }
@@ -34,6 +35,7 @@ Shader "Argentina/Mundo"
             half _Metallic;
             half _Suciedad;
             half _Grietas;
+            half _Absorbe;
             half _Xray;
             half _Cull;
         CBUFFER_END
@@ -44,6 +46,7 @@ Shader "Argentina/Mundo"
         float4 _XrayJug;   // xyz: pecho del jugador, w: altura de sus pies
         float4 _XrayDir;   // dirección cámara → jugador
         float _XrayRad;    // radio del hueco (0 = apagado)
+        float _Humedad;    // 0 seco, 1 empapado (la pone Ambiente.cs con la lluvia)
 
         float sH(float2 p) { return frac(sin(dot(p, float2(127.1, 311.7))) * 43758.5453); }
         float sN(float2 p)
@@ -190,11 +193,15 @@ Shader "Argentina/Mundo"
                 id.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.positionCS);
                 id.shadowMask = half4(1, 1, 1, 1);
 
+                // mojado: la tierra se oscurece y brilla; las paredes, menos
+                float moja = _Humedad * _Absorbe * lerp(0.45, 1.0, saturate(n.y));
+                alb *= lerp(1.0, 0.62, moja);
+
                 SurfaceData s = (SurfaceData)0;
                 s.albedo = alb;
                 s.alpha = 1;
                 s.metallic = _Metallic;
-                s.smoothness = _Smoothness;
+                s.smoothness = max(_Smoothness, 0.55 * moja);
                 s.normalTS = half3(0, 0, 1);
                 s.occlusion = 1;
                 #if defined(_EMISSION)

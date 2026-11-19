@@ -42,3 +42,35 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: c87de2405c7fb4a2e97f2ac8803d7601, type: 2}
   - nombre: cerco
     material: {fileID: 2100000, guid: 6961014e0cb464049bab6fa9cec70e9e, type: 2}
+  - nombre: camino
+    material: {fileID: 2100000, guid: e902cbe58ded34c8d8d5e1f924028bc5, type: 2}
+  - nombre: huella
+    material: {fileID: 2100000, guid: 5d0eefa7b4b1f4c679188659d1c9b299, type: 2}
+  - nombre: barro
+    material: {fileID: 2100000, guid: 940357a4d64b441a28f60bf3b1e0c5af, type: 2}
+  - nombre: charco
+    material: {fileID: 2100000, guid: 916317281fcd146f0b1dc4fc21449b48, type: 2}
+  - nombre: surco_arado
+    material: {fileID: 2100000, guid: e21e161fbb8af45b28c850d1c401e61f, type: 2}
+  - nombre: surco
+    material: {fileID: 2100000, guid: 5f46d00185af44d4f901b3b3926e7c97, type: 2}
+  - nombre: tierra_rastreada
+    material: {fileID: 2100000, guid: 09f0b0a13c7984e5cac2951843209da3, type: 2}
+  - nombre: brote_trigo
+    material: {fileID: 2100000, guid: 67570a2c76eb74b25b340208842fddf4, type: 2}
+  - nombre: brote_maiz
+    material: {fileID: 2100000, guid: 4ae592bf125624f14b7b7f30859eb8ac, type: 2}
+  - nombre: trigo_verde
+    material: {fileID: 2100000, guid: 302498fa22fe9480ca4628caa5eed61f, type: 2}
+  - nombre: trigo_maduro
+    material: {fileID: 2100000, guid: 6e9d8e9b522f045d18127bcfe8e91a7d, type: 2}
+  - nombre: maizal_verde
+    material: {fileID: 2100000, guid: 350458842339a49149b970099a61e76b, type: 2}
+  - nombre: maizal_seco
+    material: {fileID: 2100000, guid: 6d0e99754cf34488685a67667eddaf5b, type: 2}
+  - nombre: rastrojo_trigo
+    material: {fileID: 2100000, guid: 77ad1d04f215848a0934729b71491065, type: 2}
+  - nombre: rastrojo_maiz
+    material: {fileID: 2100000, guid: 79448c6b845c5427d94272d0fc066803, type: 2}
+  - nombre: bordo
+    material: {fileID: 2100000, guid: 1fefa52156bc445d3b85995069b9bbea, type: 2}
