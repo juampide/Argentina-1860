@@ -62,6 +62,13 @@ namespace Argentina1860
             listo = true;
         }
 
+        /// Sin caballo, como al empezar una partida nueva (lo usan también los tests).
+        public static void Reiniciar()
+        {
+            TieneCaballo = false; ibaMontado = false;
+            Nombre = "Moro"; Pelaje = "#5c6168"; Calcetines = true;
+        }
+
         /// Da el caballo al jugador y lo pone a su lado (lo usan las misiones; F11 en pruebas).
         public void DarCaballo(string nombre = null, string pelaje = null)
         {

@@ -76,6 +76,17 @@ Una vez que el diseño empiece a editar el terreno o las construcciones a mano, 
 - `Ciudad/`: `DatosCiudad` (lee el plano: `Assets/Datos/Ciudad`), `Ciudad` (arma manzanas, monumentos, iglesias, farolas, suelo y río), `ArbolesCiudad` (árboles por GPU), `ModelosCiudad` (carro y texturas pintadas por código) y `JuegoCiudad` (misión, personajes, transeúntes, carros, minimapa).
 - `Editor/`: los generadores del pago y de la ciudad (menú *Argentina 1860*) y los datos del elenco.
 
+El código del juego está en el ensamblado `Argentina1860` (`Assets/Scripts`) y las herramientas del editor en `Argentina1860.Editor` (`Assets/Scripts/Editor`). Un script nuevo dentro de esas carpetas entra solo en el ensamblado que corresponde.
+
+## Tests (`Assets/Tests`)
+
+Menú **Argentina 1860 → Tests**, o la ventana *Window → General → Test Runner*. El resumen queda en `Logs/tests.txt`.
+
+- **Tests de lógica** (`EditMode`, unos 3 segundos): conversión de coordenadas y colores, caras de las mallas, agua del pago, obstáculos y veredas de la ciudad, datos del plano de 1867, precios de la pulpería y aliento del caballo.
+- **Tests del juego** (`PlayMode`, unos 30 segundos): cargan el pago y la ciudad y revisan que el jugador esté en el piso, que estén los personajes, que las casas bloqueen y las veredas se suban, y que el caballo galope, se baje, venga al silbarle y cambie de mundo montado. Cualquier error en la consola hace fallar el test. Hay que guardar la escena antes de correrlos.
+
+Conviene correr los dos antes de subir cambios de código.
+
 **Coordenadas.** El prototipo usa x hacia el este y z hacia el sur. En Unity la z queda al revés (el norte del mapa es +Z). `MapaPago` trabaja en coordenadas del prototipo. Para pasar a Unity se usa `MapaPago.AUnity` o `Conv.P`.
 
 ## Git: LFS y Smart Merge
