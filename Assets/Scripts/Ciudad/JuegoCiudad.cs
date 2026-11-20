@@ -65,7 +65,7 @@ namespace Argentina1860
             listo = true;
         }
 
-        void OnDestroy() { ControlJugador.AguaEn = MapaPago.EnAgua; }
+        void OnDestroy() { ControlJugador.AguaEn = MapaPago.Bloqueado; }
 
         /// Lleva un objeto al lugar libre más cercano y lo apoya en el piso (veredas incluidas).
         void Ubicar(Transform t)
@@ -174,18 +174,11 @@ namespace Argentina1860
                 A(Estilo.Poncho, poncho: "#8a3a2a", sb: Sombrero.Ala, colorSombrero: "#4a3a2a", prop: Accesorio.Barril, pelo: "#2a1c14", piel: "#cf9a72"),
                 A(Estilo.Vestido, "#6a4a8a", "#f1e3c4", pelo: "#2a1a12", prop: Accesorio.Canasta),
             };
-            string[] pelos = { "#2b2018", "#6a4a2a", "#8a6a40", "#1f1410", "#a9a9a4", "#4a3220" };
             var raiz = new GameObject("Transeúntes").transform;
             for (int i = 0; i < 24; i++)
             {
-                var a = JsonUtility.FromJson<Aspecto>(JsonUtility.ToJson(tipos[i % tipos.Length]));
-                if (i >= tipos.Length)   // variantes de color para que no se repitan
-                {
-                    if (a.estilo != Estilo.Levita) a.ropa = Conv.HSL(Hz(i * 3 + 1), 0.42f, 0.4f);
-                    else if (a.sombrero == Sombrero.Copa) a.ropa = Conv.HSL(Hz(i * 3 + 1), 0.3f, 0.3f);
-                    if (a.estilo == Estilo.Poncho) a.poncho = Conv.HSL(Hz(i * 5 + 2), 0.5f, 0.4f);
-                    a.pelo = Conv.Hex(pelos[Mathf.FloorToInt(Hz(i + 7) * pelos.Length)]);
-                }
+                // los primeros son los tipos de arriba; los demás, gente de todas las clases que no se repite
+                var a = i < tipos.Length ? JsonUtility.FromJson<Aspecto>(JsonUtility.ToJson(tipos[i])) : Variedad.Transeunte(new System.Random(i * 7919 + 13));
                 float x = (Hz(i + 1) - 0.5f) * 120, z = (Hz(i + 9) - 0.5f) * 100;
                 for (int k = 0; k < 40 && !campo.Libre(x, z); k++) { x = (Hz(i + k * 3 + 2) - 0.5f) * 140; z = (Hz(i + k * 5 + 4) - 0.5f) * 120; }
                 var go = new GameObject("transeúnte " + i);

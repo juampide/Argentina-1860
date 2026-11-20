@@ -105,7 +105,7 @@ namespace Argentina1860
         ObraMalla Obra(float lx, float lz)
         {
             var k = (Mathf.FloorToInt(lx / CUADRO), Mathf.FloorToInt(lz / CUADRO));
-            if (!cuadros.TryGetValue(k, out var o)) cuadros[k] = o = new ObraMalla { metrosTextura = 7.2f };
+            if (!cuadros.TryGetValue(k, out var o)) cuadros[k] = o = new ObraMalla { metrosTextura = MetrosTextura() };
             return o;
         }
 
@@ -121,7 +121,12 @@ namespace Argentina1860
             int n = 0;
             foreach (var kv in cuadros) kv.Value.Instanciar($"cuadro {n++}", raiz, Registrar);
             cuadros = null;
+            PisoParaCaminar(raiz);
         }
+
+        /// Cada cuántos metros se repite la textura: los surcos del arado van a escala (unos 35 cm entre lomo y lomo),
+        /// los del maíz sembrado un poco más abiertos; el resto, como estaba.
+        float MetrosTextura() => etapa == Etapa.Arado ? 2.2f : etapa == Etapa.Sembrado && cultivo == Cultivo.Maiz ? 4f : 7.2f;
 
         // ---------- suelo ----------
         string MatSuelo()
@@ -150,6 +155,39 @@ namespace Argentina1860
                     float x0 = -a + i * ancho / nx, x1 = -a + (i + 1) * ancho / nx, z0 = -l + j * largo / nz, z1 = -l + (j + 1) * largo / nz;
                     Obra((x0 + x1) / 2, (z0 + z1) / 2).Quad(mat, P(x0, z0, H(x0, z0)), P(x0, z1, H(x0, z1)), P(x1, z1, H(x1, z1)), P(x1, z0, H(x1, z0)));
                 }
+        }
+
+        /// El suelo del sembrado queda unos centímetros por encima del terreno: sin esto, el jugador y su caballo
+        /// caminarían hundidos en la tierra arada. Una malla gruesa e invisible con la misma altura del suelo.
+        void PisoParaCaminar(Transform raiz)
+        {
+            const float PASO = 4;
+            float hBase = (etapa == Etapa.Arado ? 0.18f : 0.14f) + 0.04f + 0.03f;   // apenas por encima de la tierra: los pies no quedan tapados
+            float a = ancho / 2, l = largo / 2;
+            int nx = Mathf.Max(1, Mathf.CeilToInt(ancho / PASO)), nz = Mathf.Max(1, Mathf.CeilToInt(largo / PASO));
+            var vs = new Vector3[(nx + 1) * (nz + 1)];
+            for (int i = 0; i <= nx; i++)
+                for (int j = 0; j <= nz; j++)
+                {
+                    float x = -a + i * ancho / nx, z = -l + j * largo / nz;
+                    vs[i * (nz + 1) + j] = P(x, z, MapaPago.Mix(-0.12f, hBase, Orilla(x, z)));
+                }
+            var tris = new int[nx * nz * 6];
+            int k = 0;
+            for (int i = 0; i < nx; i++)
+                for (int j = 0; j < nz; j++)
+                {
+                    int v00 = i * (nz + 1) + j, v01 = v00 + 1, v10 = v00 + nz + 1, v11 = v10 + 1;
+                    tris[k++] = v00; tris[k++] = v01; tris[k++] = v11;
+                    tris[k++] = v00; tris[k++] = v11; tris[k++] = v10;
+                }
+            var m = new Mesh { name = "piso del sembrado", indexFormat = vs.Length > 65000 ? UnityEngine.Rendering.IndexFormat.UInt32 : UnityEngine.Rendering.IndexFormat.UInt16 };
+            m.vertices = vs; m.triangles = tris;
+            m.RecalculateBounds();
+            Registrar(m);
+            var go = new GameObject("piso para caminar");
+            go.transform.SetParent(raiz, false);
+            go.AddComponent<MeshCollider>().sharedMesh = m;
         }
 
         /// Manto: la superficie del cultivo, facetada, con fallas que dejan ver la tierra y bajando hacia la orilla.

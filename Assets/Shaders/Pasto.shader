@@ -81,7 +81,7 @@ Shader "Argentina/Pasto"
 
                 float3 pw = TransformObjectToWorld(p);
                 float alto = pw.y - ip.y;
-                float doblez = (temblor * (0.06 + 0.1 * fuerza) + rafaga * fuerza * 0.55 + fuerza * 0.12) * (1 - a);
+                float doblez = (temblor * (0.08 + 0.14 * fuerza) + rafaga * (0.08 + fuerza * 0.75) + fuerza * 0.12) * (1 - a);
                 pw.xz += dirV * doblez * alto * alto * 0.9;
                 pw.xz += float2(-dirV.y, dirV.x) * temblor * 0.03 * alto * alto * (1 - a);
                 // la hoja se acuesta: baja la punta y la corre hacia afuera, más cuanto más alta
@@ -94,6 +94,8 @@ Shader "Argentina/Pasto"
                 o.normalWS = TransformObjectToWorldNormal(i.normalOS);
                 o.color = i.color * UNITY_ACCESS_INSTANCED_PROP(Props, _ColorInst);
                 o.color.rgb *= lerp(1.0, 0.8, a);   // la pisada se ve más oscura y amarillenta
+                // la ráfaga dobla las matas y muestra el envés, más claro: una ola de color que recorre el campo
+                o.color.rgb *= 1.0 + (rafaga - 0.45) * (0.14 + 0.32 * fuerza) * (1 - a);
                 o.color.b *= lerp(1.0, 0.75, a);
                 o.fog = ComputeFogFactor(vp.positionCS.z);
                 return o;

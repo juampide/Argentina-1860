@@ -18,7 +18,7 @@ namespace Argentina1860
         public bool bloquearAgua = true;
 
         /// Qué es agua en el mundo actual (x, z del prototipo). Por defecto el pago; la ciudad pone el río del plano.
-        public static System.Func<float, float, bool> AguaEn = MapaPago.EnAgua;
+        public static System.Func<float, float, bool> AguaEn = MapaPago.Bloqueado;
 
         /// Altura del jinete sobre el piso (el recado queda a la altura de la cadera).
         const float ALTURA_JINETE = 0.8f;

@@ -15,7 +15,7 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | E | hablar, avanzar el diálogo, abrir o cerrar la tranquera, salir de la tienda, montar o bajarse del caballo |
 | Shift a caballo | galopar (gasta aliento) |
 | H | silbarle al caballo para que venga |
-| F11 | darse el caballo (pruebas, hasta que esté la misión) |
+| O | darse el caballo (pruebas, hasta que esté la misión) |
 | M | mapa grande |
 | Esc | cerrar el mapa o la tienda |
 | F10 | cuadros por segundo y milisegundos por cuadro (el juego está limitado a 60 cuadros por segundo en `Juego/Rendimiento.cs`) |
@@ -23,13 +23,14 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 ## Qué hay
 
 - **Terreno** de 3,2 × 2,4 km con lomas, arroyo, laguna, camino real y sendas. **Flora** autóctona (1.215 plantas) y **pasto alto** que se mece y se aplasta cerca del jugador.
-- **Construcciones**: estancia La Soledad, ranchos, posta, fortín con mástil, puesto del baqueano y rancho de Casiana. Cercos, fogones con luz, palenques, pozos y carteles.
+- **Construcciones**: estancia La Soledad, ranchos, posta, fortín de frontera (estacada de palo a pique, foso, mangrullo, ranchos de adobe y mástil), puesto del baqueano y rancho de Casiana. Cercos, fogones con horario y ronda de gente, palenques, pozos y carteles.
+- **Bordes del pago** (`Docs/mundo/bordes-pago.md`): el jugador queda encerrado sin que el mapa parezca cortado. Al norte, el bañado donde nace el arroyo; al este, un monte cerrado que el camino real cruza por una picada; al sur y al oeste, el cañadón de la frontera, con un mangrullo de guardia en el vado. Del otro lado del cañadón, tierra adentro, se ve una toldería. Al querer pasar, un aviso explica por qué no se puede.
 - **Interiores**: rancho de peones amueblado y pulpería completa (mostrador, balanza, vitrina, estantes, mesas). Al entrar se ocultan el techo y las paredes que dan a la cámara.
 - **Quince personajes** con nombre, ficha y diálogo. Fermín da el **arreo de vacas** (minijuego con tranquera y tiempo) e Isidro abre la **pulpería** (precios que fluctúan con noticias, habilidad de comercio).
-- **Fauna con vida propia**: vacas, caballos (potreros, corrales que se abren, atados al palenque), ñandúes, venados, zorros, pumas, carpinchos, coipos, vizcachas con vizcacheras, peludos, perdices, yararás y caranchos. **Eventos** cerca del jugador: cruces de animales, tropillas, jinetes al galope por el camino, bandadas y carretas de bueyes (Pascual camina junto a la primera).
+- **Fauna con vida propia**: vacas, caballos (potreros, corrales que se abren, atados al palenque), ñandúes, venados, zorros, pumas, carpinchos, coipos, vizcachas con vizcacheras, peludos, perdices, yararás y caranchos. **Eventos** cerca del jugador: jinetes al galope por el camino real, perdices que se vuelan y carretas de bueyes (Pascual camina junto a la primera).
 - **Minimapa** que gira con la cámara, con lugares y distancias, y **mapa grande** con la tecla M.
 - **Aspecto**: cámara isométrica, silueta del personaje cuando algo lo tapa, recorte tramado de árboles y cercos, suciedad procedural (barro, hollín, chorreaduras, grietas del adobe) y corrección de color polvorienta.
-- **Caballo propio** en los dos mundos: montar y bajarse, trote y galope con aliento, silbido para llamarlo. Cómo se consigue lo decide el guion (`Docs/guion/caballo.md`); por ahora F11 lo da para probar.
+- **Caballo propio** en los dos mundos: montar y bajarse, trote y galope con aliento, silbido para llamarlo. Cómo se consigue lo decide el guion (`Docs/guion/caballo.md`); por ahora la O lo da para probar.
 - **Buenos Aires**: la ciudad armada desde el plano del Departamento Topográfico de 1867. Son 3.612 manzanas: en el centro, lotes con casas de paredes pastel, techos de teja o planos con cornisa, zócalo, puertas, ventanas con reja y balcones; más lejos, volúmenes simples. Veredas elevadas con cordón, calles empedradas, 35.660 árboles y farolas. Plaza de la Victoria con la Pirámide de Mayo, el Cabildo y la Recova, 16 iglesias (con la Catedral) y el río. Misión "La carta urgente" (Anselmo → Remedios → el sacristán → Anselmo) con haz de luz sobre el objetivo, ocho personajes, transeúntes, carros con caballo y minimapa.
 
 ## Qué se puede editar (diseño)
@@ -46,8 +47,14 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | Hora, clima y viento | Objeto **Ambiente** (componente `Ambiente`) | Hora de arranque, minutos reales por día, clima automático o fijo (despejado, nublado, tormenta, pampero), nubosidad, lluvia y viento |
 | Carácter de cada animal | `Assets/Scripts/Pago/Fauna.Conducta.cs`, tabla `RASGOS` | Distancia de alerta y de huida, horario, manada, aguada, siesta, cueva, presas (por ahora en código: pedir a desarrollo pasarlo a una ficha) |
 | Loteo: lotes, dueños, usos, lindes y caminos | `Assets/Resources/LoteoPago.asset` | Ver `Docs/mundo/loteo-pago.md`. Los caminos, las zanjas, el pasto y los árboles salen de acá |
-| Sembrados | **Construcciones → Sembrados** (componente `Sembrado`) | Mover, rotar o duplicar. Elegir cultivo (trigo o maíz), etapa (arado, sembrado, brotando, creciendo, maduro, cosechado), tamaño y fallas. El pasto no crece adentro. Si se pone uno nuevo, sacar a mano los árboles que queden adentro |
+| Sembrados | **Construcciones → Sembrados** (componente `Sembrado`) | Mover, rotar o duplicar. Elegir cultivo (trigo o maíz), etapa (arado, sembrado, brotando, creciendo, maduro, cosechado), tamaño y fallas. El pasto no crece adentro. Se puede caminar por arriba, y el trigo y el maíz se abren alrededor del jugador (valor *Se abre alrededor del jugador* del material). Si se pone uno nuevo, sacar a mano los árboles que queden adentro |
 | Huellas del camino | **Construcciones → Camino real (huellas)** y **Sendas (huellas)** (componente `Huellas`) | Pares de huellas, trocha, ancho, vaivén, charcos y matas. Siguen el trazado de `MapaPago`. Después de esculpir el terreno: clic derecho en el componente → *Regenerar* |
+| Bordes del pago: bañado, monte, cañadón | `Assets/Scripts/Pago/BordesPago.cs` (líneas y avisos) | Ver `Docs/mundo/bordes-pago.md`. Para cambiar dónde están las orillas hay que tocar el código (pedir a desarrollo) y volver a aplicar `RelievePago.Bordes` |
+| Agua | **Construcciones → Agua** (componente `AguaViva`, shader `Argentina/Agua`, material `AguaViva`) | Cubre todo lo pintado con la capa Agua del terreno. Colores de lo hondo y la orilla, opacidad, tamaño de las ondas y destellos en el material. Después de repintar el agua: clic derecho → *Regenerar* |
+| Viento en árboles y matas | Materiales en `Assets/Mundo/Pago/Flora/Materiales` (valor *Se mece con el viento*) | 0 quieto, 1 normal, 2 mucho. Sigue el viento de `Ambiente` |
+| Puentes del arroyo | **Construcciones → Puentes del arroyo** (componente `PuentesArroyo`) | Se arman solos donde un camino del loteo cruza el arroyo: ancho, apoyos sobre la orilla y cuántos tablones faltan. Si cambia el trazado, volver a hundir el cauce y pintarlo de agua con `PuentesArroyo.HundirCauces` (MCP) |
+| Fortín | **Construcciones → Fortín**: `Estacada`, `Mangrullo`, `Casa` | Puntos de la estacada, lado del portón, alto y foso; alto del mangrullo |
+| Toldería | **Construcciones → Toldería (tierra adentro)** (componente `Tolderia`) | Cantidad de toldos, gente y caballos, y semilla. El fuego es el `Fogon` hijo |
 | Pasto corto cerca de la gente y pisadas | **Juego** → componente `Pasto` | Altura y alcance del pasto comido, segundos que tarda en levantarse una mata pisada y cuánto se dobla |
 
 Los objetos hijos `_generado` no se guardan en la escena y no se editan a mano: salen de los parámetros del componente.

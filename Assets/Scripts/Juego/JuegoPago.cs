@@ -65,6 +65,19 @@ namespace Argentina1860
         }
 
         // ---------- avisos ----------
+        float avisoBordeT;
+
+        /// Cuando el jugador quiere pasar el bañado, el monte, el cañadón o salir por el camino real, se le dice por qué no.
+        void AvisoDelBorde(float dt, Transform j)
+        {
+            if (avisoBordeT > 0) { avisoBordeT -= dt; return; }
+            var q = j.position + j.forward * 3;
+            var z = BordesPago.Zona(q.x, -q.z);
+            if (z == ZonaBorde.Adentro || BordesPago.Zona(j.position.x, -j.position.z) != ZonaBorde.Adentro) return;
+            Decir(BordesPago.Aviso(z));
+            avisoBordeT = 10;
+        }
+
         public void Decir(string t)
         {
             aviso = t;
@@ -326,6 +339,7 @@ namespace Argentina1860
             if (jugador == null) return;
             var p = jugador.transform.position;
             foreach (var n in npcs) if (n != null) n.Actualizar(dt, p);
+            AvisoDelBorde(dt, jugador.transform);
 
             var kb = Keyboard.current;
             bool Tecla(Key k) => kb != null && kb[k].wasPressedThisFrame;
@@ -442,8 +456,8 @@ namespace Argentina1860
             if (avisoT > 0 && !string.IsNullOrEmpty(aviso))
             {
                 var tam = sAviso.CalcSize(new GUIContent(aviso));
-                float w = Mathf.Min(tam.x, Screen.width * 0.7f);
-                float h = sAviso.CalcHeight(new GUIContent(aviso), w);
+                float w = Mathf.Clamp(tam.x + 24, 280, Screen.width * 0.7f);
+                float h = sAviso.CalcHeight(new GUIContent(aviso), w) + 14;   // la cursiva no entra justa
                 var c0 = GUI.color;
                 GUI.color = new Color(1, 1, 1, Mathf.Clamp01(avisoT / 0.5f));
                 GUI.Label(new Rect((Screen.width - w) / 2, Screen.height - 140 - h, w, h), aviso, sAviso);

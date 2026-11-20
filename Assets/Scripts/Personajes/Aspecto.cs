@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Argentina1860
 {
-    public enum Estilo { Levita, Vestido, Sotana, Poncho, Pregonero }
-    public enum Sombrero { Ninguno, Copa, Ala, Bonete, Kepi, Gorra }
-    public enum Peinado { SegunEstilo, Puas, Corto, Canoso, Largo, Rodete }
+    public enum Estilo { Levita, Vestido, Sotana, Poncho, Pregonero, Quillango, Soldado, Mirinaque }
+    public enum Sombrero { Ninguno, Copa, Ala, Bonete, Kepi, Gorra, Vincha, Panuelo, Mantilla, Teja }
+    public enum Peinado { SegunEstilo, Puas, Corto, Canoso, Largo, Rodete, Trenzas }
     public enum Bigote { Ninguno, Fino, Manubrio }
-    public enum Accesorio { Ninguno, Fusil, Canasta, Barril, Guitarra, Cajon }
+    public enum Accesorio { Ninguno, Fusil, Canasta, Barril, Guitarra, Cajon, Lanza }
 
     /// <summary>
     /// Aspecto de un personaje low poly: sin cara (solo la nariz); la identidad está en el sombrero,
@@ -31,6 +31,8 @@ namespace Argentina1860
         public Color chaleco = Conv.Hex("#d9b45a");
         public Color pantalon = Conv.Hex("#8a8478");
         public Color poncho = Conv.Hex("#c0392b");
+        [Tooltip("Gaucho: el poncho doblado sobre el hombro, así se ven el tirador, el facón y el chiripá")]
+        public bool ponchoAlHombro;
 
         [Header("Sombrero y accesorios")]
         public Sombrero sombrero = Sombrero.Ninguno;
@@ -38,10 +40,15 @@ namespace Argentina1860
         public bool baston;
         public Accesorio accesorio = Accesorio.Ninguno;
         [Range(0.5f, 1.3f)] public float escala = 1;
+        [Tooltip("Flaco (0,85) a robusto (1,2)")]
+        [Range(0.85f, 1.2f)] public float contextura = 1;
+        [Tooltip("Variante de la ropa dentro del estilo (0 a 3): guardas del poncho, delantal o franja de la pollera, volados del miriñaque, levita o saco, uniforme, poncho encima o chiripá del soldado...")]
+        [Range(0, 3)] public int variante;
 
         public Peinado PeinadoReal => peinado != Peinado.SegunEstilo ? peinado
-            : estilo == Estilo.Vestido ? Peinado.Rodete
-            : estilo == Estilo.Poncho ? Peinado.Largo
+            : estilo == Estilo.Vestido || estilo == Estilo.Mirinaque ? Peinado.Rodete
+            : estilo == Estilo.Soldado ? Peinado.Corto
+            : estilo == Estilo.Poncho || estilo == Estilo.Quillango ? Peinado.Largo
             : estilo == Estilo.Sotana ? Peinado.Canoso
             : Peinado.Puas;
     }

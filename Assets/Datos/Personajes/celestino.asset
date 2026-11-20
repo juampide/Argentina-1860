@@ -27,11 +27,14 @@ MonoBehaviour:
     chaleco: {r: 0.6039216, g: 0.2901961, b: 0.1882353, a: 1}
     pantalon: {r: 0.43137255, g: 0.41960785, b: 0.4, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    ponchoAlHombro: 0
     sombrero: 2
     colorSombrero: {r: 0.12156863, g: 0.105882354, b: 0.09411765, a: 1}
     baston: 1
     accesorio: 0
     escala: 1
+    contextura: 1.12
+    variante: 2
   lineas:
   - Vos sos el muchacho nuevo. En La Soledad el que trabaja bien no pasa hambre, y el que no, se va por donde vino.
   - "Habl\xE1 con Anselmo, que \xE9l reparte las tareas. Y cuid\xE1 mis caballos como si fueran tuyos."

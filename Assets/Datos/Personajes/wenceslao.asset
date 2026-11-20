@@ -22,16 +22,19 @@ MonoBehaviour:
     peinado: 0
     barba: 1
     bigote: 0
-    ropa: {r: 0.18431373, g: 0.24705882, b: 0.4, a: 1}
+    ropa: {r: 0.3529412, g: 0.16470589, b: 0.13333334, a: 1}
     ropa2: {r: 0.95686275, g: 0.93333334, b: 0.8627451, a: 1}
-    chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
+    chaleco: {r: 0.9372549, g: 0.9019608, b: 0.8156863, a: 1}
     pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
     poncho: {r: 0.2901961, g: 0.3529412, b: 0.2901961, a: 1}
+    ponchoAlHombro: 0
     sombrero: 2
     colorSombrero: {r: 0.3529412, g: 0.2901961, b: 0.22745098, a: 1}
     baston: 0
     accesorio: 0
     escala: 1
+    contextura: 0.9
+    variante: 2
   lineas:
   - "El campo habla, muchacho, solo hay que saber leerlo. Mir\xE1 esa huella: venado, de esta ma\xF1ana."
   - "Y fijate en el sur. Hace d\xEDas que los p\xE1jaros se levantan sin motivo. No me gusta nada."

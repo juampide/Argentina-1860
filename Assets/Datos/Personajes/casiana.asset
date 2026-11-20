@@ -27,11 +27,14 @@ MonoBehaviour:
     chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
     pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
-    sombrero: 0
-    colorSombrero: {r: 0.23137255, g: 0.18431373, b: 0.15294118, a: 1}
+    ponchoAlHombro: 0
+    sombrero: 7
+    colorSombrero: {r: 0.18431373, g: 0.22745098, b: 0.2901961, a: 1}
     baston: 0
     accesorio: 2
     escala: 0.95
+    contextura: 1
+    variante: 3
   lineas:
   - "Ten\xE9s cara de cansado. Si te duele algo, tengo yuyos para todo, menos para los males del alma."
   - No me gustan los uniformes ni los papeles. Los de la autoridad siempre llegan cuando ya es tarde.

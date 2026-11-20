@@ -9,7 +9,7 @@ namespace Argentina1860
     /// <summary>
     /// Fauna y eventos del pago (fauna.js): animales que pastan, caminan y huyen; caballos en potreros, corrales y palenque;
     /// carretas de bueyes por el camino real; caranchos en vuelo; un director que hace pasar algo cerca del jugador
-    /// (cruces de ñandúes y venados, tropillas, jinetes al galope, bandadas) y el minijuego del arreo de vacas.
+    /// (jinetes al galope por el camino real, perdices que se vuelan) y el minijuego del arreo de vacas.
     /// Toda la lógica usa coordenadas del prototipo (x este, z sur) y se pasa a Unity al ubicar cada modelo.
     /// </summary>
     public partial class Fauna : MonoBehaviour
@@ -23,7 +23,7 @@ namespace Argentina1860
         float tiempo;
 
         static float Alt(float x, float z) => Terreno.Altura(new Vector3(x, 0, -z));
-        static bool EnMapa(float x, float z) => Mathf.Abs(x) < 1560 && Mathf.Abs(z) < 1160;
+        static bool EnMapa(float x, float z) => Mathf.Abs(x) < 1560 && Mathf.Abs(z) < 1160 && !BordesPago.Fuera(x, z);
         static float Mix(float a, float b, float t) => a + (b - a) * t;
         static float Hs(double i) => MapaPago.Hs(i);
         static float Ang(float a) => Mathf.Atan2(Mathf.Sin(a), Mathf.Cos(a));
@@ -31,7 +31,7 @@ namespace Argentina1860
         /// Lugar libre: fuera del agua y sin colisionadores (casas, cercos, personas, animales) en el radio.
         public static bool Libre(float x, float z, float r = 0.7f, Transform ignorar = null)
         {
-            if (MapaPago.EnAgua(x, z)) return false;
+            if (MapaPago.Bloqueado(x, z)) return false;
             int n = Physics.OverlapSphereNonAlloc(new Vector3(x, Alt(x, z) + 1.0f, -z), r, buf, ~0, QueryTriggerInteraction.Ignore);
             for (int i = 0; i < n; i++)
             {
@@ -561,29 +561,6 @@ namespace Argentina1860
             return g;
         }
 
-        void NuevoGrupoCruce(Vector2 p, string esp, int cant, float sep)
-        {
-            float dist = 55 + Random.value * 25, lado = Random.value < 0.5f ? -1 : 1, nx = -vz * lado, nz = vx * lado, vel = ESP[esp].velH * (esp == "nandu" ? 1 : 0.9f);
-            float cx = p.x + vx * dist, cz = p.y + vz * dist;
-            var e = new Evento { tipo = "cruce", g = GrupoEvento("cruce " + esp), sx = cx - nx * 50, sz = cz - nz * 50, dx = nx, dz = nz, vel = vel, largo = 100 };
-            for (int i = 0; i < cant; i++) e.items.Add(new Item { m = ModelosFauna.Crear(esp, e.g), off = i * sep + Random.value * 1.5f, lat = (Random.value - 0.5f) * 5 });
-            evs.Add(e);
-        }
-
-        void NuevaTropilla(Vector2 p, int cant)
-        {
-            float dist = 60 + Random.value * 25, lado = Random.value < 0.5f ? -1 : 1, nx = -vz * lado, nz = vx * lado;
-            float cx = p.x + vx * dist, cz = p.y + vz * dist;
-            var e = new Evento { tipo = "cruce", g = GrupoEvento("tropilla"), sx = cx - nx * 60, sz = cz - nz * 60, dx = nx, dz = nz, vel = 11, largo = 125 };
-            for (int i = 0; i < cant; i++)
-            {
-                var m = ModelosFauna.Caballo(e.g, Aleat(new[] { "#7a4a2a", "#2a2018", "#a8754a", "#c9a779", "#5a3a24" }), Random.value < 0.5f);
-                m.raiz.localScale = Vector3.one * 0.95f;
-                e.items.Add(new Item { m = m, off = i * 4.5f + Random.value * 2, lat = (Random.value - 0.5f) * 6, caballo = true });
-            }
-            evs.Add(e);
-        }
-
         bool NuevoJinete(Vector2 p)
         {
             int bi = 0; float bd = 1e9f;
@@ -600,6 +577,7 @@ namespace Argentina1860
             var asp = new Aspecto { estilo = Estilo.Poncho, poncho = Conv.Hex(Aleat(new[] { "#7a3a2a", "#3a4a6a", "#4a5a3a", "#8a6a3a" })), sombrero = Sombrero.Ala, colorSombrero = Conv.Hex("#3a2a20"), bigote = Bigote.Manubrio, pelo = Conv.Hex("#2a1c14"), piel = Conv.Hex("#c99a74") };
             e.jinete = ConstructorPersonaje.Construir(montura, asp, null);
             e.jinete.Montar();
+            Caja(e.c.raiz, new Vector3(0, 1.1f, 0), new Vector3(0.9f, 2.2f, 2.4f), Quaternion.identity);   // no se lo atraviesa
             evs.Add(e);
             return true;
         }
@@ -624,15 +602,13 @@ namespace Argentina1860
             return true;
         }
 
+        /// Lo que pasa cerca del jugador además de la fauna del pago: un jinete por el camino real o perdices
+        /// que se vuelan de golpe. (Los cruces de ñandúes, venados y tropillas que aparecían de la nada y corrían
+        /// en línea recta se sacaron: esos animales ya viven en el pago con conducta propia.)
         void Lanzar(Vector2 p)
         {
-            float op = Random.value;
-            if (op < 0.2f) NuevoGrupoCruce(p, "nandu", 2 + Random.Range(0, 2), 2.4f);
-            else if (op < 0.38f) NuevoGrupoCruce(p, "venado", 2 + Random.Range(0, 3), 3.2f);
-            else if (op < 0.46f) NuevoGrupoCruce(p, "zorro", 1, 2);
-            else if (op < 0.6f) { if (!NuevaBandada(p)) NuevoGrupoCruce(p, "perdiz", 4, 1.4f); }
-            else if (op < 0.8f) { if (!NuevoJinete(p)) NuevaTropilla(p, 3); }
-            else NuevaTropilla(p, 4 + Random.Range(0, 2));
+            if (Random.value < 0.55f) { if (!NuevoJinete(p)) NuevaBandada(p); }
+            else NuevaBandada(p);
         }
 
         void Director(float dt, Vector2 p)
@@ -649,26 +625,14 @@ namespace Argentina1860
             }
             previo = p;
             prox -= dt;
-            if (prox <= 0) { prox = 7 + Random.value * 7; if (evs.Count < 3) Lanzar(p); }
+            if (prox <= 0) { prox = 20 + Random.value * 25; if (evs.Count < 2) Lanzar(p); }
 
             for (int k = evs.Count - 1; k >= 0; k--)
             {
                 var e = evs[k];
                 e.t += dt;
                 bool fin = false;
-                if (e.tipo == "cruce")
-                {
-                    float rec = e.vel * e.t;
-                    foreach (var it in e.items)
-                    {
-                        float q = rec - it.off, x = e.sx + e.dx * q + (-e.dz) * it.lat, z = e.sz + e.dz * q + e.dx * it.lat;
-                        Ubicar(it.m.raiz, x, z, Mathf.Atan2(e.dx, e.dz), 0, it.caballo ? Mathf.Abs(Mathf.Sin(e.t * 9 + it.off)) * 0.12f : 0);
-                        if (it.caballo) { it.m.Andar(e.t * 10 + it.off, 0.9f); it.m.AnimarCaballo(e.t * 2.2f + it.off, 0, true); }
-                        else { float f = e.t * 8 + it.off; it.m.Bailar(Mathf.Sin(f) * 0.9f); }
-                    }
-                    if (rec > e.largo + e.items.Count * 6) fin = true;
-                }
-                else if (e.tipo == "ruta")
+                if (e.tipo == "ruta")
                 {
                     e.s += e.sg * e.vel * dt;
                     if (e.s < 8 || e.s > largoRuta - 8) fin = true;
