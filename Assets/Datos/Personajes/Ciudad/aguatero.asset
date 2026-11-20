@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 019ad227a4a1147b5ac143c2174def25, type: 3}
+  m_Name: aguatero
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.FichaPersonaje
+  id: aguatero
+  nombre: El aguatero
+  lugar: Plaza de la Victoria
+  aspecto:
+    estilo: 3
+    piel: {r: 0.8509804, g: 0.63529414, b: 0.47843137, a: 1}
+    pelo: {r: 0.3529412, g: 0.2901961, b: 0.22745098, a: 1}
+    peinado: 0
+    barba: 1
+    bigote: 0
+    ropa: {r: 0.18431373, g: 0.24705882, b: 0.4, a: 1}
+    ropa2: {r: 0.95686275, g: 0.93333334, b: 0.8627451, a: 1}
+    chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
+    pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
+    poncho: {r: 0.24705882, g: 0.47843137, b: 0.5411765, a: 1}
+    sombrero: 2
+    colorSombrero: {r: 0.72156864, g: 0.6039216, b: 0.41568628, a: 1}
+    baston: 0
+    accesorio: 3
+    escala: 1
+  lineas:
+  - "\xA1Agua fresca del r\xEDo, a un real el balde!"
+  - "Cada a\xF1o tengo que bajar m\xE1s lejos con la carreta: el r\xEDo se aleja y la ciudad se va comiendo la costa."
+  personalidad: 
+  sabe: 
+  noSabe: 

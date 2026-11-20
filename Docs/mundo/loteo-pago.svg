@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -60 3280 2560" font-family="Georgia, serif">
+<rect x="-40" y="-60" width="3280" height="2560" fill="#f3ead6"/>
+<rect x="0" y="0" width="3200" height="2400" fill="#dfe3b8" stroke="#8a7a5a" stroke-width="4"/>
+<rect x="0" y="1550" width="1500" height="850" fill="#cbd49a" opacity="0.9"/>
+<text x="300" y="2250" font-size="56" fill="#5d6a2c" font-style="italic">pajonal</text>
+<polygon points="0,0 1300,0 1180,800 1150,1280 800,1360 400,1440 0,1480" fill="#e9d9a8" opacity="0.85" stroke="#7a5a2a" stroke-width="6" stroke-dasharray="30 14"/>
+<text x="90" y="560" font-size="64" fill="#5a3f17" font-weight="bold">Estancia La Soledad</text>
+<text x="90" y="625" font-size="40" fill="#5a3f17">(sigue fuera del mapa, al norte y al oeste)</text>
+<rect x="170" y="80" width="690" height="340" fill="#d4c48a" stroke="#6b4a22" stroke-width="5"/>
+<text x="240" y="270" font-size="44" fill="#5a3f17">potreros (palo a pique)</text>
+<rect x="790" y="650" width="160" height="130" fill="#b9c77a" stroke="#4d6b2a" stroke-width="6"/>
+<text x="960" y="700" font-size="34" fill="#3e5a1e">quinta y monte</text><text x="960" y="740" font-size="34" fill="#3e5a1e">frutal (tuna)</text>
+<rect x="900" y="150" width="230" height="200" fill="#e8c860" stroke="#7a5a2a" stroke-width="6"/>
+<text x="900" y="135" font-size="34" fill="#5a3f17">chacra de la estancia</text>
+<polygon points="1620,1257 1770,1254 1770,834 1620,837" fill="#e8c860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="1770,1254 1920,1251 1920,831 1770,834" fill="#e8c860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2290,1219 2440,1193 2440,773 2290,799" fill="#e8c860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2440,1193 2660,1147 2660,727 2440,773" fill="#e8c860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2660,1147 2810,1111 2810,691 2660,727" fill="#e8c860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2810,1111 2960,1070 2960,650 2810,691" fill="#e8c860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="1620,1281 1770,1278 1770,1698 1620,1701" fill="#a07a50" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="1770,1278 1920,1275 1920,1695 1770,1698" fill="#9cb860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2290,1243 2440,1217 2440,1637 2290,1663" fill="#a07a50" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2440,1217 2660,1171 2660,1591 2440,1637" fill="#9cb860" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2660,1171 2810,1135 2810,1555 2660,1591" fill="#a07a50" stroke="#5a3f17" stroke-width="5"/>
+<polygon points="2810,1135 2960,1094 2960,1514 2810,1555" fill="#9cb860" stroke="#5a3f17" stroke-width="5"/>
+<text x="1560" y="1800" font-size="44" fill="#5a3f17" font-weight="bold">Chacras de la posta</text>
+<text x="1560" y="1845" font-size="30" fill="#5a3f17">frente al camino real · zanja y bordo</text>
+<ellipse cx="2300" cy="450" rx="330" ry="200" fill="#8fae6a" opacity="0.8"/>
+<text x="2180" y="300" font-size="44" fill="#2f4a1a">monte</text>
+<ellipse cx="1700" cy="2050" rx="210" ry="140" fill="#9cc3cf"/>
+<text x="1600" y="2065" font-size="44" fill="#2a5060">laguna</text>
+<text x="2400" y="1830" font-size="50" fill="#5d6a2c" font-style="italic">campo abierto · majadas</text>
+<text x="2400" y="1880" font-size="34" fill="#5d6a2c">sin cercar, mojones · matorral</text>
+<text x="1300" y="2470" font-size="44" fill="#7a2a1a">↓ al sur: la frontera</text>
+<path d="M1400,-50 L1399,-32 L1398,-14 L1398,4 L1397,21 L1397,38 L1397,56 L1397,73 L1396,91 L1395,109 L1393,128 L1390,148 L1387,168 L1383,189 L1377,211 L1370,235 L1362,260 L1353,286 L1343,313 L1332,340 L1321,368 L1310,396 L1298,423 L1288,451 L1277,477 L1267,503 L1258,527 L1250,550 L1243,572 L1236,592 L1229,612 L1223,631 L1218,650 L1212,668 L1207,686 L1202,703 L1197,720 L1193,738 L1189,755 L1185,773 L1182,791 L1178,809 L1176,828 L1173,846 L1171,865 L1169,883 L1168,902 L1167,920 L1165,939 L1165,957 L1164,976 L1163,994 L1162,1013 L1161,1031 L1160,1050 L1159,1068 L1157,1087 L1155,1105 L1153,1123 L1151,1140 L1149,1158 L1147,1176 L1146,1195 L1145,1213 L1145,1232 L1145,1251 L1146,1270 L1148,1290 L1152,1310 L1156,1331 L1161,1353 L1167,1375 L1173,1398 L1180,1421 L1188,1444 L1196,1467 L1205,1490 L1213,1513 L1222,1536 L1231,1558 L1241,1579 L1250,1600 L1260,1620 L1270,1641 L1281,1661 L1292,1681 L1303,1701 L1315,1720 L1327,1739 L1339,1758 L1350,1776 L1362,1794 L1373,1811 L1384,1827 L1395,1842 L1405,1857 L1415,1871 L1424,1884 L1433,1896 L1442,1907 L1451,1918 L1460,1929 L1468,1939 L1477,1949 L1485,1959 L1494,1969 L1503,1979 L1511,1989 L1520,2000" fill="none" stroke="#6fa7bb" stroke-width="22"/>
+<path d="M750,800 L760,808 L770,816 L781,825 L791,833 L802,841 L812,850 L823,858 L833,867 L844,875 L854,883 L864,891 L873,899 L883,906 L891,913 L900,920 L908,926 L916,932 L924,937 L931,942 L938,947 L945,952 L951,956 L958,960 L964,965 L970,970 L976,975 L982,980 L988,986 L994,993 L1000,1000 L1006,1008 L1012,1016 L1017,1026 L1023,1035 L1029,1045 L1034,1055 L1039,1065 L1044,1076 L1050,1087 L1055,1097 L1060,1108 L1065,1119 L1070,1129 L1075,1140 L1080,1150 L1085,1160 L1090,1170 L1095,1180 L1099,1190 L1104,1200 L1109,1210 L1113,1220 L1118,1230 L1122,1240 L1127,1250 L1132,1260 L1136,1270 L1141,1280 L1145,1290 L1150,1300" fill="none" stroke="#9a7a50" stroke-width="7" stroke-dasharray="18 12"/>
+<path d="M590,900 L595,897 L600,894 L605,892 L610,889 L616,886 L621,883 L626,881 L631,878 L636,875 L641,872 L646,869 L651,867 L656,864 L661,861 L666,858 L671,856 L675,853 L680,850 L684,847 L689,844 L693,842 L697,839 L701,836 L705,833 L709,831 L712,828 L716,825 L720,822 L724,819 L727,817 L731,814 L735,811 L739,808 L742,806 L746,803 L750,800" fill="none" stroke="#9a7a50" stroke-width="7" stroke-dasharray="18 12"/>
+
+
+<path d="M750,800 L731,809 L712,819 L693,828 L674,838 L655,847 L635,856 L616,866 L597,875 L578,884 L559,894 L540,903 L521,912 L503,922 L485,931 L467,941 L450,950 L433,960 L415,969 L398,980 L380,990 L362,1000 L345,1011 L328,1021 L311,1031 L295,1041 L279,1051 L264,1061 L249,1070 L236,1078 L223,1086 L211,1093 L200,1100 L190,1106 L182,1111 L174,1116 L168,1120 L162,1123 L158,1126 L153,1129 L149,1131 L146,1134 L143,1136 L139,1138 L136,1140 L133,1142 L129,1144 L125,1147 L120,1150" fill="none" stroke="#9a7a50" stroke-width="7" stroke-dasharray="18 12"/>
+<path d="M750,800 L742,832 L733,864 L724,897 L716,930 L707,963 L698,996 L689,1030 L680,1062 L671,1095 L663,1127 L655,1159 L647,1189 L639,1219 L632,1247 L626,1274 L620,1300 L615,1324 L610,1347 L605,1369 L601,1390 L597,1410 L594,1429 L591,1448 L588,1466 L585,1483 L583,1500 L581,1517 L579,1533 L576,1550 L574,1566 L572,1583 L570,1600 L568,1617 L566,1634 L564,1650 L563,1666 L562,1682 L560,1697 L559,1713 L558,1728 L557,1743 L556,1758 L555,1774 L554,1789 L553,1804 L552,1819 L551,1834 L550,1850" fill="none" stroke="#9a7a50" stroke-width="7" stroke-dasharray="18 12"/>
+<path d="M750,800 L761,790 L772,780 L783,769 L794,759 L805,748 L816,738 L827,727 L838,717 L849,706 L860,696 L871,686 L882,676 L893,666 L904,656 L916,647 L927,637 L938,629 L950,620 L962,612 L974,604 L986,597 L998,589 L1010,582 L1022,576 L1034,569 L1046,563 L1059,556 L1071,550 L1084,544 L1096,538 L1108,532 L1121,526 L1133,519 L1145,513 L1158,507 L1170,500" fill="none" stroke="#9a7a50" stroke-width="7" stroke-dasharray="18 12"/>
+<path d="M-50,1500 L-17,1497 L16,1495 L49,1492 L83,1490 L116,1487 L150,1485 L183,1482 L216,1480 L249,1477 L282,1474 L314,1470 L346,1467 L378,1463 L409,1459 L440,1454 L470,1449 L500,1444 L530,1438 L560,1432 L590,1426 L619,1420 L648,1414 L676,1407 L705,1401 L733,1395 L761,1389 L788,1383 L815,1377 L842,1371 L867,1364 L892,1358 L917,1351 L941,1345 L965,1339 L989,1332 L1014,1326 L1039,1320 L1064,1315 L1090,1310 L1117,1305 L1146,1301 L1175,1297 L1205,1293 L1236,1290 L1266,1288 L1298,1285 L1330,1283 L1362,1281 L1396,1279 L1429,1278 L1463,1276 L1498,1275 L1533,1273 L1569,1272 L1605,1270 L1642,1268 L1680,1267 L1719,1266 L1759,1266 L1799,1265 L1840,1265 L1880,1264 L1922,1263 L1963,1262 L2004,1261 L2045,1259 L2086,1256 L2127,1252 L2167,1248 L2207,1243 L2247,1238 L2288,1232 L2328,1225 L2368,1219 L2408,1211 L2448,1204 L2488,1196 L2528,1188 L2568,1179 L2608,1170 L2648,1162 L2689,1153 L2729,1143 L2769,1134 L2809,1123 L2849,1113 L2889,1102 L2929,1091 L2969,1080 L3009,1068 L3049,1057 L3090,1045 L3130,1034 L3170,1022 L3210,1011 L3250,1000" fill="none" stroke="#7a5432" stroke-width="22"/>
+<text x="40" y="1430" font-size="40" fill="#5a3f17" transform="rotate(-3 40 1430)">camino real a Buenos Aires →</text>
+<circle cx="750" cy="750" r="22" fill="#7a2a1a" stroke="#fff" stroke-width="5"/>
+<text x="780" y="724" font-size="38" fill="#3a1a10" stroke="#f3ead6" stroke-width="8" paint-order="stroke">Estancia</text>
+<circle cx="590" cy="900" r="22" fill="#7a2a1a" stroke="#fff" stroke-width="5"/>
+<text x="620" y="874" font-size="38" fill="#3a1a10" stroke="#f3ead6" stroke-width="8" paint-order="stroke">Ranchos de peones</text>
+<circle cx="2150" cy="1250" r="22" fill="#7a2a1a" stroke="#fff" stroke-width="5"/>
+<text x="2180" y="1224" font-size="38" fill="#3a1a10" stroke="#f3ead6" stroke-width="8" paint-order="stroke">Posta y pulpería</text>
+<circle cx="1000" cy="1000" r="22" fill="#7a2a1a" stroke="#fff" stroke-width="5"/>
+<text x="1030" y="974" font-size="38" fill="#3a1a10" stroke="#f3ead6" stroke-width="8" paint-order="stroke">Rancho abandonado</text>
+<circle cx="120" cy="1150" r="22" fill="#7a2a1a" stroke="#fff" stroke-width="5"/>
+<text x="150" y="1124" font-size="38" fill="#3a1a10" stroke="#f3ead6" stroke-width="8" paint-order="stroke">Fortín</text>
+<circle cx="550" cy="1850" r="22" fill="#7a2a1a" stroke="#fff" stroke-width="5"/>
+<text x="580" y="1824" font-size="38" fill="#3a1a10" stroke="#f3ead6" stroke-width="8" paint-order="stroke">Puesto del baqueano</text>
+<circle cx="1170" cy="500" r="22" fill="#7a2a1a" stroke="#fff" stroke-width="5"/>
+<text x="1200" y="474" font-size="38" fill="#3a1a10" stroke="#f3ead6" stroke-width="8" paint-order="stroke">Rancho de Jacinta</text>
+<line x1="2700" y1="2300" x2="3200" y2="2300" stroke="#3a2a1a" stroke-width="8"/><text x="2800" y="2280" font-size="36" fill="#3a2a1a">500 m</text>
+<text x="3080" y="80" font-size="56" fill="#3a2a1a">N ↑</text>
+<text x="0" y="-15" font-size="44" fill="#3a2a1a" font-weight="bold">Propuesta de loteo del pago · 1867 · borrador</text>
+<rect x="2380" y="1020" width="800" height="0" fill="none"/>
+<path d="M2250,1240 L2255,820 L2290,600" fill="none" stroke="#9a7a50" stroke-width="10"/>
+<path d="M2250,1260 L2255,1700 L1950,1960 L1820,2000" fill="none" stroke="#9a7a50" stroke-width="10"/>
+<text x="2275" y="1040" font-size="30" fill="#5a3f17">callejón</text>
+<text x="2275" y="1500" font-size="30" fill="#5a3f17">callejón</text>
+<g font-size="32" fill="#3a2a1a">
+<rect x="2380" y="1990" width="800" height="250" fill="#f3ead6" opacity="0.92" stroke="#8a7a5a" stroke-width="3"/>
+<rect x="2400" y="2010" width="40" height="28" fill="#e8c860"/><text x="2455" y="2035">trigo o maíz</text>
+<rect x="2400" y="2055" width="40" height="28" fill="#a07a50"/><text x="2455" y="2080">tierra arada</text>
+<rect x="2400" y="2100" width="40" height="28" fill="#9cb860"/><text x="2455" y="2125">rastrojo, pastoreo o huerta</text>
+<line x1="2400" y1="2160" x2="2440" y2="2160" stroke="#9a7a50" stroke-width="7" stroke-dasharray="18 12"/><text x="2455" y="2170">senda actual</text>
+<line x1="2400" y1="2205" x2="2440" y2="2205" stroke="#9a7a50" stroke-width="10"/><text x="2455" y="2215">callejón propuesto</text>
+</g>
+</svg>

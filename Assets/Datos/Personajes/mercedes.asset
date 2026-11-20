@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 019ad227a4a1147b5ac143c2174def25, type: 3}
+  m_Name: mercedes
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1867.FichaPersonaje
+  id: mercedes
+  nombre: "Do\xF1a Matilde Garmendia"
+  lugar: Estancia La Soledad
+  aspecto:
+    estilo: 1
+    piel: {r: 0.9411765, g: 0.75686276, b: 0.6039216, a: 1}
+    pelo: {r: 0.41568628, g: 0.2901961, b: 0.16470589, a: 1}
+    peinado: 0
+    barba: 0
+    bigote: 0
+    ropa: {r: 0.35686275, g: 0.43529412, b: 0.3529412, a: 1}
+    ropa2: {r: 0.9372549, g: 0.9019608, b: 0.8156863, a: 1}
+    chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
+    pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
+    poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    sombrero: 0
+    colorSombrero: {r: 0.23137255, g: 0.18431373, b: 0.15294118, a: 1}
+    baston: 0
+    accesorio: 0
+    escala: 1
+  lineas:
+  - "Pas\xE1, pas\xE1, que ten\xE9s cara de no haber probado bocado. Siempre sobra algo de guiso para los peones."
+  - "Mi marido es duro, pero no es mal hombre. Lo preocupan m\xE1s las deudas que los peones."
+  personalidad: "Esposa de Vicente y la que de verdad lleva la casa. C\xE1lida y pr\xE1ctica: le da de comer a cualquiera. Habla con voseo y cari\xF1o, sin vueltas. Quiere proteger a su hija Carmen y que la estancia no se venga abajo."
+  sabe: "Sabe de los tratos de su marido con Lorenzo y no est\xE1 de acuerdo, pero no lo dice delante de extra\xF1os. Conoce las deudas de la casa. Sabe que Carmen sue\xF1a con irse a Buenos Aires.\nSi el Gallego se gana su confianza, m\xE1s adelante le avisa que lo est\xE1n por culpar (no antes de la etapa 5)."
+  noSabe: "No sabe de la estafa de la Agencia ni del papel de Rufino en ella. No sabe que Carmen manda cartas con Juan Maidana. Nada posterior a 1867: ni ferrocarril al pago, ni tel\xE9grafo en el campo, ni alambrado, ni la Conquista del Desierto, ni el fin de la guerra del Paraguay. Tampoco palabras ni ideas de hoy."

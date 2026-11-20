@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 019ad227a4a1147b5ac143c2174def25, type: 3}
+  m_Name: anselmo
+  m_EditorClassIdentifier: Assembly-CSharp::Argentina1860.FichaPersonaje
+  id: anselmo
+  nombre: Don Anselmo
+  lugar: Plaza de la Victoria (vende diarios)
+  aspecto:
+    estilo: 4
+    piel: {r: 0.9411765, g: 0.75686276, b: 0.6039216, a: 1}
+    pelo: {r: 0.3529412, g: 0.23921569, b: 0.14901961, a: 1}
+    peinado: 2
+    barba: 0
+    bigote: 2
+    ropa: {r: 0.5411765, g: 0.3529412, b: 0.22745098, a: 1}
+    ropa2: {r: 0.94509804, g: 0.91764706, b: 0.84705883, a: 1}
+    chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
+    pantalon: {r: 0.47843137, g: 0.45490196, b: 0.40784314, a: 1}
+    poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    sombrero: 5
+    colorSombrero: {r: 0.43529412, g: 0.47843137, b: 0.40784314, a: 1}
+    baston: 0
+    accesorio: 0
+    escala: 1
+  lineas:
+  - "Buen d\xEDa, forastero. Soy Anselmo, vendo diarios y noticias en la Plaza de la Victoria. Ac\xE1 se entera uno de todo antes que nadie."
+  - "Mire, justo necesitaba a alguien de confianza. Esta carta es para Do\xF1a Remedios, la pulpera. Es urgente y a m\xED no me da el tiempo."
+  - Se la encuentra hacia el oeste, cerca de una de las iglesias. Pregunte, que todos la conocen.
+  personalidad: 
+  sabe: 
+  noSabe: 
