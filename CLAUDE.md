@@ -58,6 +58,7 @@ Todo en **español rioplatense**: textos del juego, nombres, comentarios y mensa
 ## Probar
 
 - **F9** pasa del pago a Buenos Aires y viceversa (provisorio). En la ciudad, F1 a F8 llevan junto a cada personaje.
+- **F10** muestra cuadros por segundo y milisegundos por cuadro. El juego está limitado a 60 cuadros por segundo (`Juego/Rendimiento.cs`): no sacar el límite, sin él la máquina trabaja al máximo. Si algo nuevo hace bajar de 60, avisar a desarrollo.
 - Abrir `Assets/Escenas/Pago.unity`, Play y clic en la ventana Game. **F1 a F8** llevan a cada lugar (ranchos, estancia con Fermín, corral del arreo, pulpería con Isidro, pajonal, laguna, monte, fortín). M abre el mapa y E sirve para hablar.
 - Desde el agente, con el MCP: con Unity sin foco, el modo Play no avanza. Pausar y avanzar cuadros con `EditorApplication.Step()` dentro de `Unity_RunCommand`. **Al terminar, dejar `EditorApplication.isPaused = false` y salir de Play**: la pausa queda guardada y la próxima vez que la persona apriete Play, el juego arranca congelado.
 - `Unity_RunCommand` no ve el ensamblado de Editor (para correr un menú: `EditorApplication.ExecuteMenuItem`) y no permite `System.Reflection`.

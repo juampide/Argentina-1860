@@ -15,6 +15,7 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | E | hablar, avanzar el diálogo, abrir o cerrar la tranquera, salir de la tienda |
 | M | mapa grande |
 | Esc | cerrar el mapa o la tienda |
+| F10 | cuadros por segundo y milisegundos por cuadro (el juego está limitado a 60 cuadros por segundo en `Juego/Rendimiento.cs`) |
 
 ## Qué hay
 
