@@ -12,7 +12,10 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | Shift | correr |
 | Q / R | girar la vista de a 90° |
 | Rueda del mouse | zoom |
-| E | hablar, avanzar el diálogo, abrir o cerrar la tranquera, salir de la tienda |
+| E | hablar, avanzar el diálogo, abrir o cerrar la tranquera, salir de la tienda, montar o bajarse del caballo |
+| Shift a caballo | galopar (gasta aliento) |
+| H | silbarle al caballo para que venga |
+| F11 | darse el caballo (pruebas, hasta que esté la misión) |
 | M | mapa grande |
 | Esc | cerrar el mapa o la tienda |
 | F10 | cuadros por segundo y milisegundos por cuadro (el juego está limitado a 60 cuadros por segundo en `Juego/Rendimiento.cs`) |
@@ -26,6 +29,7 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 - **Fauna con vida propia**: vacas, caballos (potreros, corrales que se abren, atados al palenque), ñandúes, venados, zorros, pumas, carpinchos, coipos, vizcachas con vizcacheras, peludos, perdices, yararás y caranchos. **Eventos** cerca del jugador: cruces de animales, tropillas, jinetes al galope por el camino, bandadas y carretas de bueyes (Pascual camina junto a la primera).
 - **Minimapa** que gira con la cámara, con lugares y distancias, y **mapa grande** con la tecla M.
 - **Aspecto**: cámara isométrica, silueta del personaje cuando algo lo tapa, recorte tramado de árboles y cercos, suciedad procedural (barro, hollín, chorreaduras, grietas del adobe) y corrección de color polvorienta.
+- **Caballo propio** en los dos mundos: montar y bajarse, trote y galope con aliento, silbido para llamarlo. Cómo se consigue lo decide el guion (`Docs/guion/caballo.md`); por ahora F11 lo da para probar.
 - **Buenos Aires**: la ciudad armada desde el plano del Departamento Topográfico de 1867. Son 3.612 manzanas: en el centro, lotes con casas de paredes pastel, techos de teja o planos con cornisa, zócalo, puertas, ventanas con reja y balcones; más lejos, volúmenes simples. Veredas elevadas con cordón, calles empedradas, 35.660 árboles y farolas. Plaza de la Victoria con la Pirámide de Mayo, el Cabildo y la Recova, 16 iglesias (con la Catedral) y el río. Misión "La carta urgente" (Anselmo → Remedios → el sacristán → Anselmo) con haz de luz sobre el objetivo, ocho personajes, transeúntes, carros con caballo y minimapa.
 
 ## Qué se puede editar (diseño)
@@ -68,7 +72,7 @@ Una vez que el diseño empiece a editar el terreno o las construcciones a mano, 
 - `Mundo/`: `Casa`, `Cerco`, `Fogon`, `Palenque`, `Pozo`, `Sembrado`, `Huellas` (caminos con surcos), `Lindes` (zanjas, bordos, tunas, mojones, tranqueras) y `ObraMalla` (mallas grandes apoyadas en el terreno).
 - `Pago/LoteoPago` (datos del loteo) y `Pago/RelievePago` (rehace relieve, suelo y árboles a partir del loteo).
 - `Personajes/`: `Aspecto`, `FichaPersonaje`, `ConstructorPersonaje` (de `personaje.js`), animación y `NPC`.
-- `Juego/`: cámara isométrica, control del jugador, diálogos y HUD (provisorio, IMGUI).
+- `Juego/`: cámara isométrica, control del jugador (a pie y a caballo), diálogos y HUD (provisorio, IMGUI). `Caballeriza` (el caballo del jugador entre mundos, montar, silbar) y `CaballoMontable` (el caballo con recado, aliento y llamado) se instalan solos, sin estar en las escenas.
 - `Ciudad/`: `DatosCiudad` (lee el plano: `Assets/Datos/Ciudad`), `Ciudad` (arma manzanas, monumentos, iglesias, farolas, suelo y río), `ArbolesCiudad` (árboles por GPU), `ModelosCiudad` (carro y texturas pintadas por código) y `JuegoCiudad` (misión, personajes, transeúntes, carros, minimapa).
 - `Editor/`: los generadores del pago y de la ciudad (menú *Argentina 1860*) y los datos del elenco.
 

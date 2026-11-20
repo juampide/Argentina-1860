@@ -21,6 +21,20 @@ namespace Argentina1860
             foreach (var c in codos) c.localRotation = Conv.Rot(-0.9f, 0, 0);
         }
 
+        /// Jinete en movimiento: la pose de Montar con el vaivén del paso. fase: la del caballo; g: 0 quieto o al trote,
+        /// 1 al galope (se inclina hacia adelante y acompaña la hamaca); t: tiempo, para la cabeza en reposo.
+        public void Jinete(float fase, float v, float g, float t)
+        {
+            if (cuerpo == null) return;
+            Montar();
+            float trote = Mathf.Min(1, v) * (1 - g);
+            cuerpo.localPosition = Conv.P(0, Mathf.Abs(Mathf.Sin(fase)) * (0.05f * trote + 0.025f * g), 0);
+            cuerpo.localRotation = Conv.Rot(0.12f * g + Mathf.Sin(fase) * 0.05f * g, 0, 0);   // positivo: hacia adelante (como Cocinando)
+            torso.localScale = Vector3.one;
+            float reposo = 1 - Mathf.Min(1, v);
+            cab.localRotation = Conv.Rot(0, Mathf.Sin(t * 0.37f) * 0.25f * reposo, 0);
+        }
+
         /// Sentado en un tronco, charlando: muslos adelante, rodillas dobladas, manos sobre las rodillas.
         /// gesto (0 a 1) levanta una mano como quien cuenta algo; mira gira la cabeza hacia los otros (radianes).
         /// baja: cuánto baja la cadera (con vestido, menos, porque no hay piernas).
