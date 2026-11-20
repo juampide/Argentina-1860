@@ -7,7 +7,7 @@ namespace Argentina1860
     public enum Sombrero { Ninguno, Copa, Ala, Bonete, Kepi, Gorra, Vincha, Panuelo, Mantilla, Teja }
     public enum Peinado { SegunEstilo, Puas, Corto, Canoso, Largo, Rodete, Trenzas }
     public enum Bigote { Ninguno, Fino, Manubrio }
-    public enum Accesorio { Ninguno, Fusil, Canasta, Barril, Guitarra, Cajon, Lanza }
+    public enum Accesorio { Ninguno, Fusil, Canasta, Barril, Guitarra, Cajon, Lanza, Farol }
 
     /// <summary>
     /// Aspecto de un personaje low poly: sin cara (solo la nariz); la identidad está en el sombrero,

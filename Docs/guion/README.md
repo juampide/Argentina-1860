@@ -9,6 +9,7 @@ Guion y diseño narrativo, en texto. Lo escribe el lado de diseño (ver `CLAUDE.
 | `charla-ia.md` | Charla con IA por opciones (tres tonos y despedirse), relación, seducción y peleas, misiones secundarias y personajes secundarios. |
 | `voz.md` | Cómo habla cada grupo en 1867, basado en el estudio de Perna: qué rasgos usar, cuáles no y el vocabulario de época. |
 | `arco-pago.md` | La historia del pago por etapas, desde que llega el Gallego estafado hasta que huye a Buenos Aires como forajido. |
+| `misiones.md` | Las misiones del acto 1: la rama principal (P1 a P7), las secundarias (S1 a S11) con lo que cada una cambia en la historia, los oficios y un cuadro que las conecta. |
 | `caballo.md` | El caballo del Gallego: qué ya funciona en el juego y las **decisiones pendientes** (cómo lo consigue, si aprende a montar, qué pasa en el malón, robo de caballos). |
 | `contexto-1867.md` | *(pendiente)* Datos de época para mantener el tono y no meter anacronismos. |
 

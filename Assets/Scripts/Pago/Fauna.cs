@@ -158,6 +158,8 @@ namespace Argentina1860
         readonly List<Vuelo> vuelos = new List<Vuelo>();
 
         NPC pascual;
+        /// Mientras una misión usa a Juan Maidana (la llegada en su carreta), la carreta del camino no lo mueve.
+        public static bool PascualPrestado;
 
         int sem = 1;
         float Rnd() => Hs(sem++);
@@ -840,14 +842,8 @@ namespace Argentina1860
                 c.fase += dt * 1.4f * 1.4f;
                 foreach (var r in c.b.ruedas) r.localRotation = Conv.Rot(c.fase * c.dir, 0, 0);
                 foreach (var b in c.b.bueyes) b.Bailar(Mathf.Sin(c.fase * 2) * 0.5f);
-                if (i == 0 && pascual != null)   // Pascual camina junto a su carreta, al costado de los bueyes
-                {
-                    float s1 = Mathf.Sin(ang), c1 = Mathf.Cos(ang);
-                    float nx = pos.x + 2.2f * c1 + 5.8f * s1, nz = pos.z - 2.2f * s1 + 5.8f * c1;
-                    pascual.transform.position = new Vector3(nx, Alt(nx, nz), -nz);
-                    pascual.transform.rotation = Conv.Yaw(ang) * Quaternion.Euler(0, 180, 0);
-                    pascual.Modelo.Anim?.Animar(frame * 0.17f, 0.8f);
-                }
+                if (i == 0 && pascual != null && !PascualPrestado)   // Pascual maneja su carreta sentado adelante, con la picana
+                    Carrero.Ubicar(pascual.transform, pascual.Modelo.Anim, c.b.raiz, frame * 0.17f);
             }
 
             ActualizarConducta(dt, p, t);
