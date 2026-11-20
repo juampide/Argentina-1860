@@ -5,7 +5,7 @@ namespace Argentina1860
 {
     /// <summary>
     /// Limita los cuadros por segundo: sin límite, Unity dibuja cientos por segundo (más de 500 en la ciudad) y la
-    /// máquina trabaja al máximo sin que se note en pantalla. F10 muestra cuadros por segundo y milisegundos por cuadro.
+    /// máquina trabaja al máximo sin que se note en pantalla. La tecla 0 muestra cuadros por segundo y milisegundos por cuadro.
     /// Se instala solo; no hace falta ponerlo en las escenas.
     /// </summary>
     public class Rendimiento : MonoBehaviour
@@ -31,8 +31,7 @@ namespace Argentina1860
 
         void Update()
         {
-            var kb = Keyboard.current;
-            if (kb != null && kb.f10Key.wasPressedThisFrame) ver = !ver;
+            if (Teclas.Numero(Teclas.RENDIMIENTO)) ver = !ver;
             float dt = Time.unscaledDeltaTime;
             acum += dt; cuadros++; peorVentana = Mathf.Max(peorVentana, dt);
             if (acum >= 0.5f) { promedio = acum / cuadros; peor = peorVentana; acum = 0; cuadros = 0; peorVentana = 0; }

@@ -52,6 +52,7 @@ Shader "Argentina/Mundo"
         float4 _XrayJug;   // xyz: pecho del jugador, w: altura de sus pies
         float4 _XrayDir;   // dirección cámara → jugador
         float _XrayRad;    // radio del hueco (0 = apagado)
+        float _XrayMax;    // cuánto se borra en el centro del hueco (1 todo; menos deja ver el árbol como un fantasma)
         float _Humedad;    // 0 seco, 1 empapado (la pone Ambiente.cs con la lluvia)
         float _LucesNoche; // 0 de día, 1 de noche (Ambiente.cs): las ventanas se encienden
         float4 _Viento;    // xy: hacia dónde sopla (x, z de Unity), z: fuerza de 0 a 1 (Ambiente.cs)
@@ -111,7 +112,9 @@ Shader "Argentina/Mundo"
                 float ad = dot(rel, -_XrayDir.xyz);          // cuánto está hacia la cámara
                 float3 lat = rel + _XrayDir.xyz * ad;         // distancia al rayo cámara→jugador
                 float dd = length(lat);
-                h = (1.0 - smoothstep(_XrayRad * 0.55, _XrayRad, dd)) * smoothstep(0.4, 2.0, ad) * smoothstep(0.7, 1.7, wp.y - _XrayJug.w);
+                // se va borrando de a poco desde el borde hacia el centro, y nunca del todo: el árbol queda a medias,
+                // como un fantasma, en vez de abrirse un agujero
+                h = _XrayMax * (1.0 - smoothstep(_XrayRad * 0.2, _XrayRad, dd)) * smoothstep(0.4, 2.5, ad) * smoothstep(0.5, 1.9, wp.y - _XrayJug.w);
             }
             // cultivos: se abren alrededor del jugador (o de su caballo), como cuando uno se mete en el trigal
             if (_Pisable > 0.0)

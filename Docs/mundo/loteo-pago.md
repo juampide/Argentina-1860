@@ -10,7 +10,7 @@ Estado: **en el juego** (primera versión). Plano de la idea: `loteo-pago.svg`; 
 - **Caminos**: **Construcciones → Camino real (huellas)** y **Sendas (huellas)**. Se rearman solos desde el loteo.
 - **Terreno**: después de cambiar lotes o caminos hay que rehacer el relieve (caminos hundidos y zanjas), la pintura del suelo y los árboles con `RelievePago` (por ahora desde el MCP; queda pedido un menú para desarrollo). Eso pisa lo que se haya esculpido o pintado a mano.
 
-Las posiciones de la estancia, la posta y los demás sitios no se movieron (los usan la fauna, el mapa y las teclas F1–F8): lo que cambió es todo lo que los rodea.
+Las posiciones de la estancia, la posta y los demás sitios no se movieron (los usan la fauna, el mapa y las teclas 1 a 8): lo que cambió es todo lo que los rodea.
 
 ## El problema
 

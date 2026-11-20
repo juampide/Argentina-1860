@@ -17,8 +17,9 @@ namespace Argentina1860
         public ControlJugador jugador;
         public CamaraIsometrica camara;
         public Ciudad ciudad;
-        public int monedas;
-        [Tooltip("F1 a F8 llevan al jugador junto a cada personaje (pruebas)")]
+        /// La plata es la de la partida: la que se trae del pago y la que se gana acá.
+        public int monedas { get => Partida.Monedas; set => Partida.Monedas = value; }
+        [Tooltip("Las teclas 1 a 8 llevan al jugador junto a cada personaje (pruebas)")]
         public bool viajeRapido = true;
 
         int q;   // etapa de la misión
@@ -299,13 +300,12 @@ namespace Argentina1860
             mapa.Apply(true);
         }
 
-        void ViajeRapido(Func<Key, bool> tecla)
+        void ViajeRapido()
         {
             var orden = new[] { "anselmo", "remedios", "sacristan", "paseante", "soldado", "aguatero", "vendedora", "lustra" };
-            var teclas = new[] { Key.F1, Key.F2, Key.F3, Key.F4, Key.F5, Key.F6, Key.F7, Key.F8 };
             for (int i = 0; i < orden.Length; i++)
             {
-                if (!tecla(teclas[i])) continue;
+                if (!Teclas.Numero(i + 1)) continue;
                 var n = npcs.FirstOrDefault(m => m.Ficha != null && m.Ficha.id == orden[i]);
                 if (n == null) continue;
                 var p = n.transform.position + new Vector3(2.5f, 0, 0);
@@ -343,13 +343,14 @@ namespace Argentina1860
             var kb = Keyboard.current;
             bool Tecla(Key k) => kb != null && kb[k].wasPressedThisFrame;
             bool e = Tecla(Key.E);
+            if (Oficios.Ocupado) return;   // con el morral abierto
             if (hablando != null)
             {
                 jugador.MirarA(hablando.transform.position);
                 if (e || Tecla(Key.Space) || Tecla(Key.Enter)) Avanzar();
                 return;
             }
-            if (viajeRapido) ViajeRapido(Tecla);
+            if (viajeRapido) ViajeRapido();
             cercano = null;
             float mejor = 4.5f;
             foreach (var n in npcs)
@@ -427,9 +428,9 @@ namespace Argentina1860
 
             if (tiempo < 20)
             {
-                GUILayout.BeginArea(new Rect(Screen.width - 296, 16, 280, 200));
+                GUILayout.BeginArea(new Rect(Screen.width - 296, 16, 280, 230));
                 GUILayout.BeginVertical(sCaja);
-                GUILayout.Label("WASD / flechas: caminar\nShift: correr\nQ / R: girar la vista\nRueda: zoom\nE: hablar\nF9: volver al pago" + (viajeRapido ? "\nF1–F8: viaje rápido (pruebas)" : ""), sAyuda);
+                GUILayout.Label("WASD / flechas: caminar\nShift: correr\nQ / R: girar la vista\nRueda: zoom\nE: hablar\nI: morral\n9: volver al pago" + (viajeRapido ? "\n1–8: viaje rápido (pruebas)" : ""), sAyuda);
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
             }

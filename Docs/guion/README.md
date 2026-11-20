@@ -26,3 +26,4 @@ Guion y diseño narrativo, en texto. Lo escribe el lado de diseño (ver `CLAUDE.
 - Los nombres viejos siguen en `Assets/Scripts/Editor/DatosPago.cs` (datos del generador). No afecta al juego porque el generador no pisa las fichas existentes, pero conviene actualizarlo.
 - El diálogo por opciones (`charla-ia.md`) necesita código nuevo: queda para desarrollo.
 - **Caballo** (`caballo.md`): desarrollo ya hizo montar, trotar, galopar y silbar. Falta que diseño decida cómo se consigue para armar la misión.
+- **Economía y oficios** (`../mundo/economia.md`): desarrollo hizo la partida común, el morral, el hambre y el cansancio, la pesca y las recetas que se aprenden. Falta que diseño decida precios, quién enseña qué receta, los próximos oficios (leña, changas, caza) y para qué junta plata el Gallego.

@@ -35,6 +35,7 @@ Todo en **español rioplatense**: textos del juego, nombres, comentarios y mensa
 | Configuración del proyecto, paquetes, renderer | `ProjectSettings/`, `Packages/`, `Assets/Settings/` | Desarrollo |
 | Personajes de Buenos Aires | `Assets/Datos/Personajes/Ciudad/*.asset` y escena `Assets/Escenas/BuenosAires.unity` (objeto **Personajes**) | Diseño |
 | Detalle de la ciudad (radios de casas, decoración, centro) y materiales de la ciudad | Objeto **Ciudad** en `BuenosAires.unity`, `Assets/Arte/Materiales/Ciudad` | Diseño |
+| Objetos (mercadería, herramientas, peces, comida) y recetas: precios, pesos, peces, quién enseña qué | `Assets/Resources/Objetos/*.asset` y `Assets/Resources/Recetas/*.asset` (ver `Docs/mundo/economia.md`) | Diseño |
 | Datos del plano de 1867 | `Assets/Datos/Ciudad` (no se editan a mano) | Desarrollo |
 
 ## Cómo está armado (lo que hay que saber para no romper nada)
@@ -57,12 +58,13 @@ Todo en **español rioplatense**: textos del juego, nombres, comentarios y mensa
 
 ## Probar
 
-- **F9** pasa del pago a Buenos Aires y viceversa (provisorio). En la ciudad, F1 a F8 llevan junto a cada personaje.
+- **9** pasa del pago a Buenos Aires y viceversa (provisorio). En la ciudad, **1 a 8** llevan junto a cada personaje. Las teclas de prueba van en la fila de números (también el teclado numérico), nunca en F1 a F12: chocan con los atajos de muchos teclados.
 - **Tests**: menú *Argentina 1860 → Tests* (lógica: segundos; juego: unos 30 s, cargan las escenas). Desde el agente: `EditorApplication.ExecuteMenuItem("Argentina 1860/Tests/Correr tests de lógica (rápidos)")` o `"…/Correr tests del juego (cargan las escenas)"`, esperar y leer `Logs/tests.txt` (empieza con `OK` o `FALLAN`). Desarrollo los corre antes de subir código. Si diseño cambia datos (fichas, plano, materiales) y un test falla, avisar a desarrollo en vez de tocar el test.
-- La **O** da el caballo (truco de pruebas, `Caballeriza.TRUCOS`). E monta o baja, Shift galopa, H lo llama. Cómo se consigue en la historia es una decisión de diseño pendiente: `Docs/guion/caballo.md`.
+- La **O** da el caballo y la **P** da $50 (trucos de pruebas, se apagan juntos con `Caballeriza.TRUCOS`). E monta o baja, Shift galopa, H lo llama. Cómo se consigue en la historia es una decisión de diseño pendiente: `Docs/guion/caballo.md`.
+- **F** pesca (mirando al agua, con línea, anzuelo y carnada), junta lombrices en la orilla o abre el fogón (cocinar y descansar). **I** abre el morral. La plata, el morral y las recetas están en `Partida` y pasan de un mundo al otro. Desde el agente: `Partida.Dar("linea")`, `Oficios.Instancia.EmpezarPesca()` y `Oficios.ApretarPrueba` (decide la tecla de pescar; volver a null).
 - Desde el agente, para mover al jugador sin teclado (con Unity sin foco no llega): `ControlJugador.EntradaPrueba = new Vector2(x, y)` y `ControlJugador.CorrerPrueba`. Volver a `null` al terminar.
-- **F10** muestra cuadros por segundo y milisegundos por cuadro. El juego está limitado a 60 cuadros por segundo (`Juego/Rendimiento.cs`): no sacar el límite, sin él la máquina trabaja al máximo. Si algo nuevo hace bajar de 60, avisar a desarrollo.
-- Abrir `Assets/Escenas/Pago.unity`, Play y clic en la ventana Game. **F1 a F8** llevan a cada lugar (ranchos, estancia con Fermín, corral del arreo, pulpería con Isidro, pajonal, laguna, monte, fortín). M abre el mapa y E sirve para hablar.
+- **0** muestra cuadros por segundo y milisegundos por cuadro. El juego está limitado a 60 cuadros por segundo (`Juego/Rendimiento.cs`): no sacar el límite, sin él la máquina trabaja al máximo. Si algo nuevo hace bajar de 60, avisar a desarrollo.
+- Abrir `Assets/Escenas/Pago.unity`, Play y clic en la ventana Game. **1 a 8** llevan a cada lugar (ranchos, estancia con Fermín, corral del arreo, pulpería con Isidro, pajonal, laguna, monte, fortín). M abre el mapa y E sirve para hablar.
 - Desde el agente, con el MCP: con Unity sin foco, el modo Play no avanza. Pausar y avanzar cuadros con `EditorApplication.Step()` dentro de `Unity_RunCommand`. **Al terminar, dejar `EditorApplication.isPaused = false` y salir de Play**: la pausa queda guardada y la próxima vez que la persona apriete Play, el juego arranca congelado.
 - `Unity_RunCommand` no ve el ensamblado de Editor (para correr un menú: `EditorApplication.ExecuteMenuItem`) y no permite `System.Reflection`.
 - Los mensajes "NoSubscription" y "Nature/Soft Occlusion shader" en la consola son esperables y no indican un problema.

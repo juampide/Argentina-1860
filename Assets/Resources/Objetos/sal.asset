@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e9cb48c9a1d43fe8552fdf3ab9a10c, type: 3}
+  m_Name: sal
+  m_EditorClassIdentifier: Argentina1860::Argentina1860.FichaObjeto
+  id: sal
+  nombre: Sal
+  descripcion: Sal gruesa de las salinas. Sirve para guardar la carne y el pescado.
+  tipo: 0
+  categoria: 
+  peso: 1
+  precio: 3
+  pulperiaVende: 1
+  pulperiaCompra: 1
+  conNoticias: 1
+  alimenta: 0
+  alComer: 
+  enLaguna: 0
+  enArroyo: 0
+  abundancia: 1
+  fuerza: 0.4
+  hora: 0
+  nivelMinimo: 1

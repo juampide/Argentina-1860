@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e9cb48c9a1d43fe8552fdf3ab9a10c, type: 3}
+  m_Name: pescado_asado
+  m_EditorClassIdentifier: Argentina1860::Argentina1860.FichaObjeto
+  id: pescado_asado
+  nombre: Pescado asado
+  descripcion: "Pescado a las brasas. Hay que comerlo en el d\xEDa."
+  tipo: 4
+  categoria: 
+  peso: 0.3
+  precio: 0
+  pulperiaVende: 0
+  pulperiaCompra: 0
+  conNoticias: 0
+  alimenta: 0.4
+  alComer: Pescado asado a las brasas. Con un poco de sal, una gloria.
+  enLaguna: 0
+  enArroyo: 0
+  abundancia: 1
+  fuerza: 0.4
+  hora: 0
+  nivelMinimo: 1

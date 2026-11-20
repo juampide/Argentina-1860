@@ -28,6 +28,42 @@ namespace Argentina1860.Herramientas
         const string MUNDO = "Assets/Mundo/Pago";
         const string CAPAS = "Assets/Mundo/Pago/Capas";
         const string FLORA = "Assets/Mundo/Pago/Flora";
+
+        /// Colisión de cada árbol: una cápsula del grosor del tronco (no de la copa, para no frenarse en una rama).
+        /// El terreno la escala con cada árbol. Las matas (cortadera) no llevan: se atraviesan.
+        public static readonly Dictionary<string, (float radio, float alto)> TRONCOS = new Dictionary<string, (float, float)>
+        {
+            { "ombu", (1.3f, 6f) },
+            { "tala", (0.3f, 2.6f) },
+            { "espinillo", (0.22f, 2.4f) },
+            { "coronillo", (0.38f, 3.2f) },
+            { "sauce", (0.42f, 3.2f) },
+            { "ceibo", (0.35f, 2.8f) },
+        };
+
+        /// Les pone la cápsula del tronco a los árboles ya generados, sin tocar la malla, los materiales ni el terreno.
+        [MenuItem("Argentina 1860/Pago/Colisión de los troncos")]
+        public static void ColisionTroncos()
+        {
+            foreach (var kv in TRONCOS)
+            {
+                string ruta = $"{FLORA}/{kv.Key}.prefab";
+                if (AssetDatabase.LoadAssetAtPath<GameObject>(ruta) == null) continue;
+                var raiz = PrefabUtility.LoadPrefabContents(ruta);
+                var cc = raiz.GetComponent<CapsuleCollider>();
+                if (cc == null) cc = raiz.AddComponent<CapsuleCollider>();
+                cc.center = new Vector3(0, kv.Value.alto / 2, 0); cc.radius = kv.Value.radio; cc.height = kv.Value.alto; cc.direction = 1;
+                PrefabUtility.SaveAsPrefabAsset(raiz, ruta);
+                PrefabUtility.UnloadPrefabContents(raiz);
+            }
+            foreach (var t in Object.FindObjectsByType<Terrain>())
+            {
+                t.terrainData.RefreshPrototypes();
+                var col = t.GetComponent<TerrainCollider>();
+                if (col != null) { col.enabled = false; col.enabled = true; }   // rearma los troncos del colisionador
+            }
+            Debug.Log("Pago: troncos con colisión (" + string.Join(", ", TRONCOS.Keys) + ").");
+        }
         const string FICHAS = "Assets/Datos/Personajes";
         const string RES = "Assets/Resources";
         static readonly Color HORIZONTE = Conv.Hex("#f6e6c8");
@@ -497,10 +533,10 @@ namespace Argentina1860.Herramientas
                 var mr = go.AddComponent<MeshRenderer>();
                 mr.sharedMaterials = mats.Select(MaterialColor).ToArray();
                 mr.shadowCastingMode = ShadowCastingMode.TwoSided;
-                if (esp == "ombu")
+                if (TRONCOS.TryGetValue(esp, out var tr))
                 {
                     var cc = go.AddComponent<CapsuleCollider>();
-                    cc.center = new Vector3(0, 3, 0); cc.radius = 1.3f; cc.height = 6;
+                    cc.center = new Vector3(0, tr.alto / 2, 0); cc.radius = tr.radio; cc.height = tr.alto;
                 }
                 var prefab = PrefabUtility.SaveAsPrefabAsset(go, $"{FLORA}/{esp}.prefab");
                 Object.DestroyImmediate(go);

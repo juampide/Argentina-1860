@@ -41,6 +41,12 @@ namespace Argentina1860
         public CaballoMontable Montura { get; private set; }
         /// Velocidad actual a caballo (m/s).
         public float VelocidadMontado => velMont;
+        /// Va corriendo a pie (Shift).
+        public bool Corriendo { get; private set; }
+        /// Otro sistema mueve el cuerpo (sentado en el fogón, agachado juntando): no se pisa con la animación de caminar.
+        public bool AnimaOtro { get; set; }
+        /// El modelo del personaje (para animarlo desde afuera).
+        public ModeloPersonaje Personaje => modelo;
 
         void Awake()
         {
@@ -124,9 +130,11 @@ namespace Argentina1860
             if (Montura != null) { AlTrote(dt, hay, dir, corre); return; }
 
             var mov = Vector3.zero;
+            Corriendo = hay && corre;
             if (hay)
             {
-                float v = corre ? velocidadCorrer : velocidad;
+                // con hambre o cansancio no da para correr (Partida.FactorCorrer baja hasta dejarlo caminando)
+                float v = corre ? Mathf.Lerp(velocidad, velocidadCorrer, Partida.FactorCorrer) : velocidad;
                 mov = dir * v * dt;
                 if (bloquearAgua)
                 {
@@ -143,7 +151,7 @@ namespace Argentina1860
 
             vy = cc.isGrounded ? -2f : vy - 20f * dt;
             cc.Move(mov + Vector3.up * vy * dt);
-            modelo.Anim?.Animar(andar, vel);
+            if (!AnimaOtro) modelo.Anim?.Animar(andar, vel);
         }
 
         /// A caballo: el caballo va siempre hacia adelante y gira hacia donde apuntan las teclas, más despacio cuanto

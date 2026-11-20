@@ -56,6 +56,30 @@ namespace Argentina1860.Tests
             Assert.IsFalse(ControlJugador.AguaEn(jug.transform.position.x, -jug.transform.position.z), "el jugador arranca en el agua");
         }
 
+        /// Un rayo a la altura del pecho, desde dos metros, tiene que chocar con el tronco de cada árbol (la cortadera no:
+        /// es una mata). Así se encontró que solo el ombú tenía colisión.
+        [UnityTest]
+        public IEnumerator Pago_LosArbolesBloquean()
+        {
+            yield return Cargar(CambioDeMundo.PAGO);
+            var t = Terrain.activeTerrain;
+            var td = t.terrainData;
+            var protos = td.treePrototypes;
+            var probados = new int[protos.Length];
+            foreach (var ti in td.treeInstances)
+            {
+                string esp = protos[ti.prototypeIndex].prefab.name;
+                if (esp == "cortadera" || probados[ti.prototypeIndex] >= 15 || ti.heightScale < 0.8f) continue;
+                var p = Vector3.Scale(ti.position, td.size) + t.transform.position;
+                var desde = p + new Vector3(2f, 1f, 0);
+                if (Physics.CheckSphere(desde, 0.3f, ~0, QueryTriggerInteraction.Ignore)) continue;   // otro árbol pegado o una loma: probar otro
+                Assert.IsTrue(Physics.Raycast(desde, Vector3.left, out var h, 2.5f, ~0, QueryTriggerInteraction.Ignore), $"se atraviesa el {esp} en {p}");
+                probados[ti.prototypeIndex]++;
+            }
+            for (int i = 0; i < protos.Length; i++)
+                if (protos[i].prefab.name != "cortadera") Assert.Greater(probados[i], 0, $"no se probó ningún {protos[i].prefab.name}");
+        }
+
         // ---------- ciudad ----------
         [UnityTest]
         public IEnumerator Ciudad_CargaConJugadorYPersonajes()

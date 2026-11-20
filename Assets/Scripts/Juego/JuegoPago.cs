@@ -21,16 +21,13 @@ namespace Argentina1860
         public string misionTitulo = "Etapa 1 · Sin nada";
         [TextArea] public string misionTexto = "Conocé a la gente del pago. Anselmo, el capataz, reparte las tareas en los corrales de la estancia.";
 
-        [Header("Estado")]
-        public int monedas;
-        public float habArreo, habComercio;
-        public readonly Dictionary<string, int> inventario = new Dictionary<string, int>();
-        readonly Dictionary<string, float> costo = new Dictionary<string, float>();
+        // la plata, el morral y las habilidades viven en Partida (pasan de un mundo al otro)
+        public int monedas { get => Partida.Monedas; set => Partida.Monedas = value; }
         bool arreoVisto, pulperiaVista;
         Fauna.ResultadoArreo arreoUlt;
 
-        public int NivelArreo => 1 + Mathf.FloorToInt(habArreo / 6);
-        public int NivelComercio => 1 + Mathf.FloorToInt(habComercio / 6);
+        public int NivelArreo => Partida.Nivel(Partida.ARREO);
+        public int NivelComercio => Partida.Nivel(Partida.COMERCIO);
 
         const float DISTANCIA_HABLAR = 4.5f, DISTANCIA_ETIQUETA = 28f;
 
@@ -41,6 +38,7 @@ namespace Argentina1860
         int linea;
         bool tienda, mapaGrande, cercaTranquera;
         string tiendaMsg = "";
+        Vector2 tiendaScroll;
         float tiempo, avisoT;
         string aviso;
         Mercado mercado;
@@ -88,7 +86,7 @@ namespace Argentina1860
         void FinArreo(Fauna.ResultadoArreo r)
         {
             int antes = NivelArreo;
-            monedas += r.pago; habArreo += r.xp; arreoUlt = r;
+            monedas += r.pago; Partida.Ganar(Partida.ARREO, r.xp, avisar: false); arreoUlt = r;
             if (r.ok) { misionTitulo = "Tarea cumplida"; misionTexto = "Hablá con Anselmo si querés otra tanda de vacas."; }
             else { misionTitulo = "Se acabó el tiempo"; misionTexto = $"Metiste {r.dentro} de {Fauna.ArreoTotal}. Hablá con Anselmo para intentarlo de nuevo."; }
             Decir((r.ok ? $"¡Todas adentro! Ganaste ${r.pago}." : $"Tiempo. Cobrás ${r.pago} por {r.dentro} vacas.") + (NivelArreo > antes ? $" Arreo sube a nivel {NivelArreo}." : ""));
@@ -122,10 +120,19 @@ namespace Argentina1860
             {
                 var l = pulperiaVista
                     ? new[] { "Pase, pase. Mire cómo anda la yerba hoy." }
-                    : new[] { "Buenas, buenas. Tengo yerba, tabaco, caña, tela y sal. Los precios cambian según llegue o no la carreta.", "Yo le vendo un poco más caro de lo que le compro, así vivo. Pero el que sabe tratar, se va ganando mejor precio. Mire, mire." };
+                    : new[] { "Buenas, buenas. Tengo yerba, tabaco, caña, tela y sal, y para el que pesca, anzuelos, línea y achuras. El pescado también se lo compro. Los precios cambian según llegue o no la carreta.", "Yo le vendo un poco más caro de lo que le compro, así vivo. Pero el que sabe tratar, se va ganando mejor precio. Mire, mire." };
                 return (l, () => { pulperiaVista = true; AbrirTienda(); });
             }
-            return (n.Lineas, null);
+            return ConRecetas(id, n.Lineas);
+        }
+
+        /// Si el personaje enseña una receta que el Gallego no sabe, después de sus líneas se la enseña (una por charla).
+        (string[] l, Action fin) ConRecetas(string id, string[] lineas)
+        {
+            var r = Catalogo.QueEnsena(id).FirstOrDefault(x => !Partida.Sabe(x));
+            if (r == null) return (lineas, null);
+            var ensena = r.alEnsenar != null && r.alEnsenar.Length > 0 ? r.alEnsenar : new[] { $"Le voy a enseñar a hacer {r.nombre.ToLowerInvariant()}." };
+            return (lineas.Concat(ensena).ToArray(), () => Partida.Aprender(r));
         }
 
         /// Abre un diálogo con el personaje (también sirve para disparar diálogos desde misiones o eventos).
@@ -185,24 +192,26 @@ namespace Argentina1860
         void Operar(bool compra, Mercado.Bien b)
         {
             int niv = NivelComercio;
-            inventario.TryGetValue(b.id, out int n);
+            int n = Partida.Cantidad(b.id);
             if (compra)
             {
                 int c = mercado.Compra(b, niv);
-                if (monedas < c) return;
-                costo.TryGetValue(b.id, out float cp);
-                costo[b.id] = (cp * n + c) / (n + 1);
-                monedas -= c; inventario[b.id] = n + 1;
+                if (!b.vende || monedas < c) return;
+                if (b.ficha != null && !Partida.Entra(b.ficha)) { tiendaMsg = $"No te entra en el morral ({Partida.Peso:0.#} de {Partida.CargaMaxima:0} kg)."; return; }
+                Partida.RegistrarCompra(b.id, c, n);
+                monedas -= c;
+                Partida.Dar(b.id, 1, forzar: true);
                 tiendaMsg = $"Compraste {b.nombre} por ${c}.";
             }
             else
             {
-                if (n < 1) return;
-                int v = mercado.Venta(b, niv), antes = NivelComercio;
-                float gan = v - (costo.TryGetValue(b.id, out float cp) ? cp : v);
-                monedas += v; inventario[b.id] = n - 1; habComercio += 0.5f + Mathf.Max(0, gan) * 0.4f;
+                if (!b.compra || n < 1) return;
+                int v = mercado.Venta(b, niv);
+                float gan = v - Partida.CostoPromedio(b.id);   // lo que se pescó o se juntó no costó nada
+                bool sube = Partida.Ganar(Partida.COMERCIO, 0.5f + Mathf.Max(0, gan) * 0.4f, avisar: false);
+                monedas += v; Partida.Sacar(b.id);
                 tiendaMsg = $"Vendiste {b.nombre} por ${v}" + (gan > 0 ? $" (ganancia ${Conv.RoundJS(gan)})." : gan < 0 ? $" (perdiste ${Conv.RoundJS(-gan)})." : ".");
-                if (NivelComercio > antes) tiendaMsg += $" Comercio sube a nivel {NivelComercio}.";
+                if (sube) tiendaMsg += $" Comercio sube a nivel {NivelComercio}.";
             }
         }
 
@@ -289,31 +298,31 @@ namespace Argentina1860
             return null;
         }
 
-        // ---------- viaje rápido para probar (F1 a F8) ----------
+        // ---------- viaje rápido para probar (teclas 1 a 8) ----------
         [Header("Pruebas")]
-        [Tooltip("F1 a F8 llevan al jugador a cada lugar del pago")]
+        [Tooltip("Las teclas 1 a 8 llevan al jugador a cada lugar del pago")]
         public bool viajeRapido = true;
 
-        static readonly (Key k, string n, float kx, float ky, float dx, float dz)[] DESTINOS =
+        static readonly (int k, string n, float kx, float ky, float dx, float dz)[] DESTINOS =
         {
-            (Key.F1, "Ranchos de peones", 0.59f, 0.9f, 3, 12),
-            (Key.F2, "Estancia (Anselmo)", 0.75f, 0.75f, 26, 36),
-            (Key.F3, "Corral del arreo", 0.75f, 0.75f, -20, 62),
-            (Key.F4, "Pulpería (Ramón)", 2.15f, 1.25f, 0, -2),
-            (Key.F5, "Pajonal", 0.95f, 1.62f, 0, 0),
-            (Key.F6, "Laguna", 1.7f, 1.85f, 0, 0),
-            (Key.F7, "Monte", 2.3f, 0.7f, 0, 0),
-            (Key.F8, "Fortín", 0.12f, 1.15f, 0, 14),
+            (1, "Ranchos de peones", 0.59f, 0.9f, 3, 12),
+            (2, "Estancia (Anselmo)", 0.75f, 0.75f, 26, 36),
+            (3, "Corral del arreo", 0.75f, 0.75f, -20, 62),
+            (4, "Pulpería (Ramón)", 2.15f, 1.25f, 0, -2),
+            (5, "Pajonal", 0.95f, 1.62f, 0, 0),
+            (6, "Laguna", 1.7f, 1.85f, 0, 0),
+            (7, "Monte", 2.3f, 0.7f, 0, 0),
+            (8, "Fortín", 0.12f, 1.15f, 0, 14),
         };
 
-        void ViajeRapido(Func<Key, bool> tecla)
+        void ViajeRapido()
         {
             foreach (var d in DESTINOS)
             {
-                if (!tecla(d.k)) continue;
+                if (!Teclas.Numero(d.k)) continue;
                 var k = MapaPago.K(d.kx, d.ky);
                 float x = k.x + d.dx, z = k.y + d.dz;
-                if (d.k == Key.F3 && fauna != null && fauna.Rodeo != Vector2.zero) { x = fauna.Rodeo.x; z = fauna.Rodeo.y + 18; }
+                if (d.k == 3 && fauna != null && fauna.Rodeo != Vector2.zero) { x = fauna.Rodeo.x; z = fauna.Rodeo.y + 18; }
                 var p = new Vector3(x, 0, -z);
                 p.y = Terreno.Altura(p) + 0.3f;
                 var cc = jugador.GetComponent<CharacterController>();
@@ -344,6 +353,7 @@ namespace Argentina1860
             var kb = Keyboard.current;
             bool Tecla(Key k) => kb != null && kb[k].wasPressedThisFrame;
             bool e = Tecla(Key.E);
+            if (Oficios.Ocupado) return;   // pescando, cocinando o con el morral abierto
 
             if (tienda) { if (e || Tecla(Key.Escape)) CerrarTienda(); return; }
             if (hablando != null)
@@ -352,7 +362,7 @@ namespace Argentina1860
                 if (e || Tecla(Key.Space) || Tecla(Key.Enter)) Avanzar();
                 return;
             }
-            if (viajeRapido) ViajeRapido(Tecla);
+            if (viajeRapido) ViajeRapido();
             if (Tecla(Key.M)) mapaGrande = !mapaGrande;
             if (Tecla(Key.Escape)) mapaGrande = false;
 
@@ -426,10 +436,7 @@ namespace Argentina1860
             GUILayout.Label(misionTitulo, sTitulo);
             GUILayout.Label(misionTexto, sTexto);
             GUILayout.Label("$ " + monedas, sTexto);
-            var objetos = inventario.Where(kv => kv.Value > 0).Select(kv => $"{mercado.PorId(kv.Key)?.nombre ?? kv.Key} ×{kv.Value}").ToList();
-            objetos.Add($"Arreo nv {NivelArreo}");
-            objetos.Add($"Comercio nv {NivelComercio}");
-            GUILayout.Label(string.Join(" · ", objetos), sAyuda);
+            GUILayout.Label($"Morral {Partida.Peso:0.#} kg (I) · Arreo nv {NivelArreo} · Comercio nv {NivelComercio} · Pesca nv {Partida.Nivel(Partida.PESCA)}", sAyuda);
             GUILayout.EndVertical();
             GUILayout.EndArea();
 
@@ -445,9 +452,9 @@ namespace Argentina1860
             // ayuda de controles (se va sola)
             if (tiempo < 25)
             {
-                GUILayout.BeginArea(new Rect(Screen.width - 296, 16, 280, 220));
+                GUILayout.BeginArea(new Rect(Screen.width - 296, 16, 280, 290));
                 GUILayout.BeginVertical(sCaja);
-                GUILayout.Label("WASD / flechas: caminar\nShift: correr\nQ / R: girar la vista\nRueda: zoom\nE: hablar, tranquera\nM: mapa grande\nEsc: cerrar" + (viajeRapido ? "\nF1–F8: viaje rápido (pruebas)" : ""), sAyuda);
+                GUILayout.Label("WASD / flechas: caminar\nShift: correr\nQ / R: girar la vista\nRueda: zoom\nE: hablar, tranquera\nF: pescar, juntar, fogón\nI: morral\nM: mapa grande\nEsc: cerrar\n9: ir a Buenos Aires (pruebas)" +(viajeRapido ? "\n1–8: viaje rápido (pruebas)" : ""), sAyuda);
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
             }
@@ -497,10 +504,11 @@ namespace Argentina1860
         void DibujarTienda()
         {
             float w = Mathf.Min(700, Screen.width - 32);
-            GUILayout.BeginArea(new Rect((Screen.width - w) / 2, Screen.height / 2 - 190, w, 380));
+            float h = Mathf.Min(460, Screen.height - 60);
+            GUILayout.BeginArea(new Rect((Screen.width - w) / 2, (Screen.height - h) / 2, w, h));
             GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
             GUILayout.Label("Pulpería de Don Ramón", sTitulo);
-            GUILayout.Label($"Tenés ${monedas} · Comercio nivel {NivelComercio} (a más nivel, mejor precio). Los precios cambian con las noticias del camino.", sAyuda);
+            GUILayout.Label($"Tenés ${monedas} · Morral {Partida.Peso:0.#} de {Partida.CargaMaxima:0} kg · Comercio nivel {NivelComercio} (a más nivel, mejor precio). Los precios cambian con las noticias del camino.", sAyuda);
             GUILayout.Space(6);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Mercadería", sCelda, GUILayout.Width(w * 0.3f));
@@ -509,28 +517,37 @@ namespace Argentina1860
             GUILayout.Label("Ramón compra a", sCelda);
             GUILayout.EndHorizontal();
             int niv = NivelComercio;
+            tiendaScroll = GUILayout.BeginScrollView(tiendaScroll);
             foreach (var b in mercado.bienes)
             {
                 int c = mercado.Compra(b, niv), v = mercado.Venta(b, niv);
-                inventario.TryGetValue(b.id, out int n);
+                int n = Partida.Cantidad(b.id);
                 float rel = b.precio / b.base_;
                 string tend = rel > 1.12f ? "▲ cara" : rel < 0.9f ? "▼ barata" : "·";
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"{b.nombre}  (tenés {n})", sCelda, GUILayout.Width(w * 0.3f));
                 GUILayout.Label(tend, sCelda, GUILayout.Width(w * 0.15f));
                 GUILayout.BeginHorizontal(GUILayout.Width(w * 0.25f));
-                GUILayout.Label("$" + c, sCelda, GUILayout.Width(40));
-                GUI.enabled = monedas >= c;
-                if (GUILayout.Button("Comprar", sBoton, GUILayout.Width(80))) Operar(true, b);
-                GUI.enabled = true;
+                if (b.vende)
+                {
+                    GUILayout.Label("$" + c, sCelda, GUILayout.Width(40));
+                    GUI.enabled = monedas >= c;
+                    if (GUILayout.Button("Comprar", sBoton, GUILayout.Width(80))) Operar(true, b);
+                    GUI.enabled = true;
+                }
+                else GUILayout.Label("no vende", sCelda);
                 GUILayout.EndHorizontal();
-                GUILayout.Label("$" + v, sCelda, GUILayout.Width(40));
-                GUI.enabled = n >= 1;
-                if (GUILayout.Button("Vender", sBoton, GUILayout.Width(80))) Operar(false, b);
-                GUI.enabled = true;
+                if (b.compra)
+                {
+                    GUILayout.Label("$" + v, sCelda, GUILayout.Width(40));
+                    GUI.enabled = n >= 1;
+                    if (GUILayout.Button("Vender", sBoton, GUILayout.Width(80))) Operar(false, b);
+                    GUI.enabled = true;
+                }
+                else GUILayout.Label("no compra", sCelda);
                 GUILayout.EndHorizontal();
             }
-            GUILayout.FlexibleSpace();
+            GUILayout.EndScrollView();
             GUILayout.Label(tiendaMsg, sTexto);
             GUILayout.EndVertical();
             GUILayout.EndArea();

@@ -18,7 +18,9 @@ namespace Argentina1860
         public float distancia = 70;
         [Tooltip("Radio del hueco tramado en árboles y cercos que tapan al jugador (metros)")]
         public float radioRecorte = 5.2f;
-        static readonly int idXrayJug = Shader.PropertyToID("_XrayJug"), idXrayDir = Shader.PropertyToID("_XrayDir"), idXrayRad = Shader.PropertyToID("_XrayRad");
+        [Tooltip("Cuánto se borran en el centro del hueco (1 = del todo; 0,75 deja ver el árbol a medias, como un fantasma)")]
+        [Range(0, 1)] public float transparenciaRecorte = 0.75f;
+        static readonly int idXrayJug = Shader.PropertyToID("_XrayJug"), idXrayDir = Shader.PropertyToID("_XrayDir"), idXrayRad = Shader.PropertyToID("_XrayRad"), idXrayMax = Shader.PropertyToID("_XrayMax");
 
         float yaw = Mathf.PI * 0.75f, yawVis, vistaAct;
         Vector3 foco;
@@ -86,6 +88,7 @@ namespace Argentina1860
             Shader.SetGlobalVector(idXrayJug, new Vector4(pj.x, pj.y + 1, pj.z, pj.y));
             Shader.SetGlobalVector(idXrayDir, (mira - pos).normalized);
             Shader.SetGlobalFloat(idXrayRad, Application.isPlaying ? radioRecorte : 0);
+            Shader.SetGlobalFloat(idXrayMax, transparenciaRecorte);
             // en modo edición solo se toca la cámara si cambió algo, para no marcar la escena como modificada
             if (!Application.isPlaying && (pos - transform.position).sqrMagnitude < 1e-4f && Mathf.Abs(cam.orthographicSize - vistaAct) < 1e-3f) return;
             cam.orthographic = true;

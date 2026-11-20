@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Argentina1860
@@ -15,6 +16,9 @@ namespace Argentina1860
             public string id, nombre;
             public float base_, ruido = 1, mult = 1;
             public int precio;
+            /// Don Ramón lo vende / lo compra / las noticias del camino mueven su precio.
+            public bool vende = true, compra = true, noticias = true;
+            public FichaObjeto ficha;
         }
 
         static readonly (string id, string nombre, float base_)[] BIENES =
@@ -37,7 +41,11 @@ namespace Argentina1860
         public Mercado(Action<string> aviso)
         {
             this.aviso = aviso;
-            foreach (var b in BIENES) bienes.Add(new Bien { id = b.id, nombre = b.nombre, base_ = b.base_, precio = (int)b.base_ });
+            // lo que dicen las fichas de objeto (Resources/Objetos); si no hay ninguna, la lista de siempre
+            foreach (var o in Catalogo.Objetos.Where(o => o.pulperiaVende || o.pulperiaCompra).OrderBy(o => o.tipo).ThenBy(o => o.nombre))
+                bienes.Add(new Bien { id = o.id, nombre = o.nombre, base_ = Mathf.Max(1, o.precio), precio = Mathf.Max(1, (int)o.precio), vende = o.pulperiaVende, compra = o.pulperiaCompra, noticias = o.conNoticias, ficha = o });
+            if (bienes.Count == 0)
+                foreach (var b in BIENES) bienes.Add(new Bien { id = b.id, nombre = b.nombre, base_ = b.base_, precio = (int)b.base_ });
             prox = 50 + UnityEngine.Random.value * 40;
             Recalcular();
         }
@@ -66,7 +74,9 @@ namespace Argentina1860
             if (prox <= 0)
             {
                 prox = 70 + UnityEngine.Random.value * 60;
-                var b = bienes[UnityEngine.Random.Range(0, bienes.Count)];
+                var conNoticias = bienes.Where(x => x.noticias).ToList();
+                if (conNoticias.Count == 0) conNoticias = bienes;
+                var b = conNoticias[UnityEngine.Random.Range(0, conNoticias.Count)];
                 var n = NOTICIAS[UnityEngine.Random.Range(0, NOTICIAS.Length)];
                 b.mult = Mathf.Clamp(b.mult * n.f, 0.55f, 1.8f);
                 aviso?.Invoke(n.t(b.nombre));

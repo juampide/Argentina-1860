@@ -4,7 +4,7 @@ Rol de exploración en 3D, *low poly* sucio y de época, ambientado en la Argent
 
 Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.unity`) y **Buenos Aires** (escena `Assets/Escenas/BuenosAires.unity`).
 
-**Abrir:** en Unity Hub, *Add → Add project from disk* y elegir la carpeta raíz del repo. Después abrir una de las dos escenas, darle Play y hacer clic en la ventana Game. **F9** pasa de un mundo al otro (provisorio, hasta que esté el paso de la historia). F1 a F8 llevan a cada lugar del pago o junto a cada personaje de la ciudad (viaje rápido para pruebas; se apaga en el objeto **Juego**).
+**Abrir:** en Unity Hub, *Add → Add project from disk* y elegir la carpeta raíz del repo. Después abrir una de las dos escenas, darle Play y hacer clic en la ventana Game. **9** pasa de un mundo al otro (provisorio, hasta que esté el paso de la historia). Las teclas 1 a 8 llevan a cada lugar del pago o junto a cada personaje de la ciudad (viaje rápido para pruebas; se apaga en el objeto **Juego**).
 
 | Tecla | Acción |
 |---|---|
@@ -16,9 +16,14 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | Shift a caballo | galopar (gasta aliento) |
 | H | silbarle al caballo para que venga |
 | O | darse el caballo (pruebas, hasta que esté la misión) |
+| P | darse $50 (pruebas; se apaga con `Caballeriza.TRUCOS`, igual que la O) |
+| F | pescar (mirando a la laguna o al arroyo), juntar lombrices en la orilla, cocinar o descansar en un fogón encendido |
+| I | morral: lo que llevás, comer, tirar, habilidades y recetas |
 | M | mapa grande |
-| Esc | cerrar el mapa o la tienda |
-| F10 | cuadros por segundo y milisegundos por cuadro (el juego está limitado a 60 cuadros por segundo en `Juego/Rendimiento.cs`) |
+| Esc | cerrar el mapa, la tienda o el morral; dejar de pescar o de cocinar |
+| 1 a 8 | viaje rápido a cada lugar del pago o junto a cada personaje de la ciudad (pruebas) |
+| 9 | pasar del pago a Buenos Aires y viceversa (provisorio) |
+| 0 | cuadros por segundo y milisegundos por cuadro (el juego está limitado a 60 cuadros por segundo en `Juego/Rendimiento.cs`) |
 
 ## Qué hay
 
@@ -31,6 +36,7 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 - **Minimapa** que gira con la cámara, con lugares y distancias, y **mapa grande** con la tecla M.
 - **Aspecto**: cámara isométrica, silueta del personaje cuando algo lo tapa, recorte tramado de árboles y cercos, suciedad procedural (barro, hollín, chorreaduras, grietas del adobe) y corrección de color polvorienta.
 - **Caballo propio** en los dos mundos: montar y bajarse, trote y galope con aliento, silbido para llamarlo. Cómo se consigue lo decide el guion (`Docs/guion/caballo.md`); por ahora la O lo da para probar.
+- **Economía y oficios** (`Docs/mundo/economia.md`): una sola partida para los dos mundos (plata, morral con peso, habilidades, recetas). Hambre y cansancio suaves, que solo dan desventajas. **Pesca** en la laguna y el arroyo (pejerrey, tararira, bagre, mojarra), con corcho y tensión de la línea. Lombrices en la orilla. **Recetas que se aprenden**: pescado asado en el fogón; pescado salado, que enseña Jacinta. La pulpería compra y vende según las fichas de objeto.
 - **Buenos Aires**: la ciudad armada desde el plano del Departamento Topográfico de 1867. Son 3.612 manzanas: en el centro, lotes con casas de paredes pastel, techos de teja o planos con cornisa, zócalo, puertas, ventanas con reja y balcones; más lejos, volúmenes simples. Veredas elevadas con cordón, calles empedradas, 35.660 árboles y farolas. Plaza de la Victoria con la Pirámide de Mayo, el Cabildo y la Recova, 16 iglesias (con la Catedral) y el río. Misión "La carta urgente" (Anselmo → Remedios → el sacristán → Anselmo) con haz de luz sobre el objetivo, ocho personajes, transeúntes, carros con caballo y minimapa.
 
 ## Qué se puede editar (diseño)
@@ -38,7 +44,7 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | Qué | Dónde | Cómo |
 |---|---|---|
 | Relieve, caminos y agua | objeto **Terreno** | Herramientas de Terrain de Unity: esculpir y pintar con las 4 capas (pasto verde, pasto seco, tierra, agua) |
-| Árboles y matas | objeto **Terreno** → pestaña de árboles | Pintar o borrar. Especies en `Assets/Mundo/Pago/Flora` |
+| Árboles y matas | objeto **Terreno** → pestaña de árboles | Pintar o borrar. Especies en `Assets/Mundo/Pago/Flora`. Los árboles tienen colisión en el tronco (las matas no); si se agrega una especie, pedir a desarrollo que la sume a `GeneradorPago.TRONCOS` |
 | Casas, cercos, fogones, palenques, pozos, carteles, mástil | **Construcciones** | Mover, rotar o duplicar el objeto y cambiar las medidas en el Inspector. La pieza se rearma sola. Rancho de peones y pulpería son edificios con interior |
 | Suciedad, grietas y recorte de cada material | Materiales en `Assets/Arte/Materiales` (shader `Argentina/Mundo`) | Valores *Suciedad*, *Grietas* y *Recorte tramado* |
 | Personajes: nombre, aspecto, diálogos | `Assets/Datos/Personajes/*.asset` | Editar la ficha. El modelo cambia al instante. Tiene campos para el futuro NPC con LLM (personalidad, qué sabe y qué no) |
@@ -55,6 +61,9 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | Puentes del arroyo | **Construcciones → Puentes del arroyo** (componente `PuentesArroyo`) | Se arman solos donde un camino del loteo cruza el arroyo: ancho, apoyos sobre la orilla y cuántos tablones faltan. Si cambia el trazado, volver a hundir el cauce y pintarlo de agua con `PuentesArroyo.HundirCauces` (MCP) |
 | Fortín | **Construcciones → Fortín**: `Estacada`, `Mangrullo`, `Casa` | Puntos de la estacada, lado del portón, alto y foso; alto del mangrullo |
 | Toldería | **Construcciones → Toldería (tierra adentro)** (componente `Tolderia`) | Cantidad de toldos, gente y caballos, y semilla. El fuego es el `Fogon` hijo |
+| Objetos: mercadería, herramientas, carnada, peces, comida | `Assets/Resources/Objetos/*.asset` (*Create → Argentina 1860 → Ficha de objeto*) | Nombre, descripción, peso, precio, si la pulpería lo vende o lo compra, cuánto alimenta. En los peces: dónde viven, cuánto abundan, cuánto tiran y a qué hora pican. Ver `Docs/mundo/economia.md` |
+| Recetas | `Assets/Resources/Recetas/*.asset` (*Create → Argentina 1860 → Receta*) | Ingredientes, resultado, dónde se hace, si se sabe desde el principio, quién la enseña y qué dice al enseñarla |
+| Árboles y cercos que tapan al jugador | Cámara → componente `CamaraIsometrica` | *Radio recorte* (metros) y *Transparencia recorte* (1 se borran del todo; 0,75 quedan a medias, como un fantasma) |
 | Pasto corto cerca de la gente y pisadas | **Juego** → componente `Pasto` | Altura y alcance del pasto comido, segundos que tarda en levantarse una mata pisada y cuánto se dobla |
 
 Los objetos hijos `_generado` no se guardan en la escena y no se editan a mano: salen de los parámetros del componente.
@@ -80,8 +89,9 @@ Una vez que el diseño empiece a editar el terreno o las construcciones a mano, 
 - `Pago/LoteoPago` (datos del loteo) y `Pago/RelievePago` (rehace relieve, suelo y árboles a partir del loteo).
 - `Personajes/`: `Aspecto`, `FichaPersonaje`, `ConstructorPersonaje` (de `personaje.js`), animación y `NPC`.
 - `Juego/`: cámara isométrica, control del jugador (a pie y a caballo), diálogos y HUD (provisorio, IMGUI). `Caballeriza` (el caballo del jugador entre mundos, montar, silbar) y `CaballoMontable` (el caballo con recado, aliento y llamado) se instalan solos, sin estar en las escenas.
+- `Economia/`: `Partida` (plata, morral, habilidades, recetas, hambre y cansancio; pasa de un mundo al otro), `FichaObjeto`, `FichaReceta`, `Catalogo` (lee las fichas de `Resources`), `Recetario`, `LancePesca` (la pesca sin pantalla) y `Oficios` (morral, pesca, lombrices y fogón; se instala solo, como `Caballeriza`).
 - `Ciudad/`: `DatosCiudad` (lee el plano: `Assets/Datos/Ciudad`), `Ciudad` (arma manzanas, monumentos, iglesias, farolas, suelo y río), `ArbolesCiudad` (árboles por GPU), `ModelosCiudad` (carro y texturas pintadas por código) y `JuegoCiudad` (misión, personajes, transeúntes, carros, minimapa).
-- `Editor/`: los generadores del pago y de la ciudad (menú *Argentina 1860*) y los datos del elenco.
+- `Editor/`: los generadores del pago y de la ciudad (menú *Argentina 1860*), los datos del elenco y `FichasEconomia` (*Argentina 1860 → Economía → Crear las fichas que falten*: no pisa las existentes).
 
 El código del juego está en el ensamblado `Argentina1860` (`Assets/Scripts`) y las herramientas del editor en `Argentina1860.Editor` (`Assets/Scripts/Editor`). Un script nuevo dentro de esas carpetas entra solo en el ensamblado que corresponde.
 
@@ -89,8 +99,8 @@ El código del juego está en el ensamblado `Argentina1860` (`Assets/Scripts`) y
 
 Menú **Argentina 1860 → Tests**, o la ventana *Window → General → Test Runner*. El resumen queda en `Logs/tests.txt`.
 
-- **Tests de lógica** (`EditMode`, unos 3 segundos): conversión de coordenadas y colores, caras de las mallas, agua del pago, obstáculos y veredas de la ciudad, datos del plano de 1867, precios de la pulpería y aliento del caballo.
-- **Tests del juego** (`PlayMode`, unos 30 segundos): cargan el pago y la ciudad y revisan que el jugador esté en el piso, que estén los personajes, que las casas bloqueen y las veredas se suban, y que el caballo galope, se baje, venga al silbarle y cambie de mundo montado. Cualquier error en la consola hace fallar el test. Hay que guardar la escena antes de correrlos.
+- **Tests de lógica** (`EditMode`, unos 3 segundos): conversión de coordenadas y colores, caras de las mallas, agua del pago, obstáculos y veredas de la ciudad, datos del plano de 1867, precios de la pulpería, aliento del caballo, morral, recetas, hambre y cansancio, el lance de pesca y que las fichas de objeto y receta estén completas.
+- **Tests del juego** (`PlayMode`, unos 45 segundos): cargan el pago y la ciudad y revisan que el jugador esté en el piso, que estén los personajes, que las casas bloqueen y las veredas se suban, que el caballo galope, se baje, venga al silbarle y cambie de mundo montado, que se pueda pescar en la laguna y que la plata y el morral pasen a la ciudad. Cualquier error en la consola hace fallar el test. Hay que guardar la escena antes de correrlos.
 
 Conviene correr los dos antes de subir cambios de código.
 
@@ -111,7 +121,7 @@ Ajustar la ruta a la versión de Unity instalada (en Windows: `C:\Program Files\
 
 - La interfaz es provisoria (IMGUI): falta diseñarla.
 - La ciudad todavía no tiene el clima, la noche ni el pasto corto que tiene el pago.
-- El paso del pago a la ciudad dentro de la historia (hoy es la tecla F9).
+- El paso del pago a la ciudad dentro de la historia (hoy es la tecla 9).
 - Hoja de ruta del diseño (del prototipo): doma de caballos y faena con minijuegos, combate a pie y a caballo, interiores de la estancia y los demás ranchos, el malón que arrasa el pago, NPC con modelo de lenguaje.
 
 ## Datos y créditos
