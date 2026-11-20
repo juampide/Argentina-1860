@@ -460,6 +460,7 @@ namespace Argentina1860
             foreach (var r in rodillas) anim.rodillas.Add(mapa[r]);
             foreach (var b in brazos) anim.brazos.Add(mapa[b]);
             foreach (var c in codos) anim.codos.Add(mapa[c]);
+            if (o.accesorio == Accesorio.Farol && codos.Count > 0) Farol.Colgar(mapa[codos[0]]);   // farol de aceite en la mano izquierda (solo de noche)
             anim.Animar(0, 0);
             return anim;
         }

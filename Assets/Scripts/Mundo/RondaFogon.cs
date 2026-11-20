@@ -131,6 +131,8 @@ namespace Argentina1860
                 bool cocinero = i == 0 && f.coccion != Coccion.Nada;
                 bool mujer = !f.soldados && (cocinero ? f.coccion == Coccion.Olla : rnd.NextDouble() < 0.3);
                 var a = f.soldados ? Soldado() : mujer ? Paisana() : Paisano(cocinero && f.coccion == Coccion.Asado);
+                // el primero que no cocina vuelve a su casa con farol (de día no se ve: Farol.soloDeNoche)
+                if (!cocinero && i == (f.coccion != Coccion.Nada ? 1 : 0) && !f.soldados) a.accesorio = Accesorio.Farol;
                 gente.Add(new Comensal
                 {
                     aspecto = a,

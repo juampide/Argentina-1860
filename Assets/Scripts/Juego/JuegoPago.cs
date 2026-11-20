@@ -92,9 +92,32 @@ namespace Argentina1860
             Decir((r.ok ? $"¡Todas adentro! Ganaste ${r.pago}." : $"Tiempo. Cobrás ${r.pago} por {r.dentro} vacas.") + (NivelArreo > antes ? $" Arreo sube a nivel {NivelArreo}." : ""));
         }
 
+        // ---------- misiones ----------
+        /// Una misión en curso (por ejemplo LlegadaP1) puede tomar el diálogo de un personaje: si devuelve algo,
+        /// se usa eso en vez de las líneas de la ficha. Las líneas que empiezan con "Gallego: " las dice el
+        /// jugador, y las que empiezan con "(" son acotaciones, sin nombre.
+        public static Func<NPC, (string[] l, Action fin)?> DialogoMision;
+
+        /// Cambia la tarea que se muestra arriba a la izquierda.
+        public void Mision(string titulo, string texto)
+        {
+            misionTitulo = titulo;
+            misionTexto = texto;
+        }
+
+        /// Quién dice la línea y qué dice (ver DialogoMision).
+        (string quien, string texto) PartirLinea(string l, NPC n)
+        {
+            if (l.StartsWith("Gallego: ")) return ("El Gallego", l.Substring(9));
+            if (l.StartsWith("(")) return ("", l);
+            return (n != null ? n.Nombre : "", l);
+        }
+
         // ---------- diálogos con lógica propia ----------
         (string[] l, Action fin) Dialogo(NPC n)
         {
+            var mision = DialogoMision?.Invoke(n);
+            if (mision.HasValue) return mision.Value;
             string id = n.Ficha != null ? n.Ficha.id : "";
             if (id == "fermin" && fauna != null)
             {
@@ -158,8 +181,10 @@ namespace Argentina1860
             }
         }
 
-        void Avanzar()
+        /// Pasa a la línea siguiente del diálogo abierto (E). Público para poder probar las misiones desde el editor.
+        public void Avanzar()
         {
+            if (hablando == null) return;
             linea++;
             if (linea < lineas.Length) return;
             var fin = alTerminar;
@@ -486,8 +511,9 @@ namespace Argentina1860
                 float w = Mathf.Min(760, Screen.width - 32);
                 GUILayout.BeginArea(new Rect((Screen.width - w) / 2, Screen.height - 190, w, 174));
                 GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
-                GUILayout.Label(hablando.Nombre, sTitulo);
-                GUILayout.Label(lineas[Mathf.Min(linea, lineas.Length - 1)], sTexto);
+                var (quien, texto) = PartirLinea(lineas[Mathf.Min(linea, lineas.Length - 1)], hablando);
+                GUILayout.Label(quien, sTitulo);
+                GUILayout.Label(texto, sTexto);
                 GUILayout.FlexibleSpace();
                 GUILayout.Label("E para seguir", sAyuda);
                 GUILayout.EndVertical();

@@ -22,6 +22,7 @@ Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.
 | M | mapa grande |
 | Esc | cerrar el mapa, la tienda o el morral; dejar de pescar o de cocinar |
 | 1 a 8 | viaje rápido a cada lugar del pago o junto a cada personaje de la ciudad (pruebas) |
+| Backspace | saltea la llegada en carreta (P1) y deja al Gallego en la mañana siguiente |
 | 9 | pasar del pago a Buenos Aires y viceversa (provisorio) |
 | 0 | cuadros por segundo y milisegundos por cuadro (el juego está limitado a 60 cuadros por segundo en `Juego/Rendimiento.cs`) |
 
