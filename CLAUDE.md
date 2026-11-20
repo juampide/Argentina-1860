@@ -33,7 +33,9 @@ Todo en **español rioplatense**: textos del juego, nombres, comentarios y mensa
 | Historia, guion, biblia de personajes, notas de época | `Docs/` (Markdown) | Diseño |
 | Código C#, shaders, generador del pago | `Assets/Scripts`, `Assets/Shaders` | Desarrollo |
 | Configuración del proyecto, paquetes, renderer | `ProjectSettings/`, `Packages/`, `Assets/Settings/` | Desarrollo |
-| Referencia para migrar la ciudad | `prototipo-ciudad/` (no se edita, se borra al terminar) | Desarrollo |
+| Personajes de Buenos Aires | `Assets/Datos/Personajes/Ciudad/*.asset` y escena `Assets/Escenas/BuenosAires.unity` (objeto **Personajes**) | Diseño |
+| Detalle de la ciudad (radios de casas, decoración, centro) y materiales de la ciudad | Objeto **Ciudad** en `BuenosAires.unity`, `Assets/Arte/Materiales/Ciudad` | Diseño |
+| Datos del plano de 1867 | `Assets/Datos/Ciudad` (no se editan a mano) | Desarrollo |
 
 ## Cómo está armado (lo que hay que saber para no romper nada)
 
@@ -41,6 +43,7 @@ Todo en **español rioplatense**: textos del juego, nombres, comentarios y mensa
 - **El aspecto de un personaje está en su ficha.** Cambiar estilo, colores, sombrero, peinado o accesorio en la ficha rearma el modelo al instante. Para crear un personaje nuevo: crear la ficha (*Create → Argentina 1860 → Ficha de personaje*) y un objeto en la escena con `ModeloPersonaje` (con la ficha asignada), `NPC` y un `CapsuleCollider` (centro y 0,9, radio 0,4, alto 1,8), en la capa **Personaje**.
 - **Diálogos.** Las líneas de la ficha son el diálogo básico. Fermín (arreo) e Isidro (pulpería) tienen lógica propia en `JuegoPago.Dialogo()`: cambiar sus textos ahí es diseño, pero cambiar la lógica es desarrollo. Los campos *personalidad*, *sabe* y *noSabe* son para el futuro NPC con modelo de lenguaje: escribirlos pensando en eso (quién es, cómo habla, qué sabe en 1867 y qué no puede saber).
 - **Generador del pago** (menú *Argentina 1860 → Pago*). Rearma la escena a partir de los datos del prototipo. **No correr *Generar todo*, *2 · Terreno*, *3 · Flora*, *4 · Construcciones* ni *5 · Personajes* después de haber editado esas cosas a mano: los reemplaza.** Las fichas y los materiales existentes no se pisan. Ante la duda, no correrlo y preguntar.
+- **Buenos Aires** sale de los datos del plano: el componente `Ciudad` arma manzanas, monumentos, iglesias y farolas al abrir la escena y al dar Play (no se guardan en la escena). El menú *Argentina 1860 → Ciudad → Generar Buenos Aires* **vuelve a crear la escena `BuenosAires.unity` desde cero**: no correrlo si ya se editó esa escena a mano. Las fichas existentes no se pisan.
 - **Coordenadas.** El prototipo usaba x hacia el este y z hacia el sur. En Unity el norte del mapa es +Z. `MapaPago.K(kx, ky)` pasa del mapa en km a metros del prototipo, y `MapaPago.AUnity` pasa a Unity.
 - **No editar a mano el YAML** de escenas, prefabs o materiales (`.unity`, `.prefab`, `.mat`): los GUID y fileID se rompen fácil. Usar el MCP de Unity (herramientas de escena y GameObjects, o `Unity_RunCommand` con C#) o pedirle a la persona que lo haga en el editor.
 
@@ -54,6 +57,7 @@ Todo en **español rioplatense**: textos del juego, nombres, comentarios y mensa
 
 ## Probar
 
+- **F9** pasa del pago a Buenos Aires y viceversa (provisorio). En la ciudad, F1 a F8 llevan junto a cada personaje.
 - Abrir `Assets/Escenas/Pago.unity`, Play y clic en la ventana Game. **F1 a F8** llevan a cada lugar (ranchos, estancia con Fermín, corral del arreo, pulpería con Isidro, pajonal, laguna, monte, fortín). M abre el mapa y E sirve para hablar.
 - Desde el agente, con el MCP: con Unity sin foco, el modo Play no avanza. Pausar y avanzar cuadros con `EditorApplication.Step()` dentro de `Unity_RunCommand`. **Al terminar, dejar `EditorApplication.isPaused = false` y salir de Play**: la pausa queda guardada y la próxima vez que la persona apriete Play, el juego arranca congelado.
 - `Unity_RunCommand` no ve el ensamblado de Editor (para correr un menú: `EditorApplication.ExecuteMenuItem`) y no permite `System.Reflection`.

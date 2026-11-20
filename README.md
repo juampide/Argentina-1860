@@ -2,9 +2,9 @@
 
 Rol de exploración en 3D, *low poly* sucio y de época, ambientado en la Argentina de 1867. Proyecto en **Unity 6 (6000.6.9f1) con URP**, migrado del prototipo web en three.js (que sigue entero en la rama `main`).
 
-El **pago** (campo) está migrado completo. La **ciudad** (Buenos Aires) todavía no: lo que hace falta para migrarla está en `prototipo-ciudad/` (código de referencia, datos del plano y texturas) y se borra cuando termine la migración.
+Están migrados los dos mundos: el **pago** (campo, escena `Assets/Escenas/Pago.unity`) y **Buenos Aires** (escena `Assets/Escenas/BuenosAires.unity`).
 
-**Abrir:** en Unity Hub, *Add → Add project from disk* y elegir la carpeta raíz del repo. Después abrir `Assets/Escenas/Pago.unity`, darle Play y hacer clic en la ventana Game. F1 a F8 llevan a cada lugar del pago (viaje rápido para pruebas; se apaga en el objeto **Juego**).
+**Abrir:** en Unity Hub, *Add → Add project from disk* y elegir la carpeta raíz del repo. Después abrir una de las dos escenas, darle Play y hacer clic en la ventana Game. **F9** pasa de un mundo al otro (provisorio, hasta que esté el paso de la historia). F1 a F8 llevan a cada lugar del pago o junto a cada personaje de la ciudad (viaje rápido para pruebas; se apaga en el objeto **Juego**).
 
 | Tecla | Acción |
 |---|---|
@@ -25,6 +25,7 @@ El **pago** (campo) está migrado completo. La **ciudad** (Buenos Aires) todaví
 - **Fauna con vida propia**: vacas, caballos (potreros, corrales que se abren, atados al palenque), ñandúes, venados, zorros, pumas, carpinchos, coipos, vizcachas con vizcacheras, peludos, perdices, yararás y caranchos. **Eventos** cerca del jugador: cruces de animales, tropillas, jinetes al galope por el camino, bandadas y carretas de bueyes (Pascual camina junto a la primera).
 - **Minimapa** que gira con la cámara, con lugares y distancias, y **mapa grande** con la tecla M.
 - **Aspecto**: cámara isométrica, silueta del personaje cuando algo lo tapa, recorte tramado de árboles y cercos, suciedad procedural (barro, hollín, chorreaduras, grietas del adobe) y corrección de color polvorienta.
+- **Buenos Aires**: la ciudad armada desde el plano del Departamento Topográfico de 1867. Son 3.612 manzanas: en el centro, lotes con casas de paredes pastel, techos de teja o planos con cornisa, zócalo, puertas, ventanas con reja y balcones; más lejos, volúmenes simples. Veredas elevadas con cordón, calles empedradas, 35.660 árboles y farolas. Plaza de la Victoria con la Pirámide de Mayo, el Cabildo y la Recova, 16 iglesias (con la Catedral) y el río. Misión "La carta urgente" (Anselmo → Remedios → el sacristán → Anselmo) con haz de luz sobre el objetivo, ocho personajes, transeúntes, carros con caballo y minimapa.
 
 ## Qué se puede editar (diseño)
 
@@ -67,7 +68,8 @@ Una vez que el diseño empiece a editar el terreno o las construcciones a mano, 
 - `Pago/LoteoPago` (datos del loteo) y `Pago/RelievePago` (rehace relieve, suelo y árboles a partir del loteo).
 - `Personajes/`: `Aspecto`, `FichaPersonaje`, `ConstructorPersonaje` (de `personaje.js`), animación y `NPC`.
 - `Juego/`: cámara isométrica, control del jugador, diálogos y HUD (provisorio, IMGUI).
-- `Editor/`: el generador del pago y los datos del elenco.
+- `Ciudad/`: `DatosCiudad` (lee el plano: `Assets/Datos/Ciudad`), `Ciudad` (arma manzanas, monumentos, iglesias, farolas, suelo y río), `ArbolesCiudad` (árboles por GPU), `ModelosCiudad` (carro y texturas pintadas por código) y `JuegoCiudad` (misión, personajes, transeúntes, carros, minimapa).
+- `Editor/`: los generadores del pago y de la ciudad (menú *Argentina 1860*) y los datos del elenco.
 
 **Coordenadas.** El prototipo usa x hacia el este y z hacia el sur. En Unity la z queda al revés (el norte del mapa es +Z). `MapaPago` trabaja en coordenadas del prototipo. Para pasar a Unity se usa `MapaPago.AUnity` o `Conv.P`.
 
@@ -84,8 +86,9 @@ Ajustar la ruta a la versión de Unity instalada (en Windows: `C:\Program Files\
 
 ## Falta portar
 
-- La ciudad (Buenos Aires 1867): manzanas desde los datos del plano, misión "La carta urgente", transeúntes y carros. Referencia en `prototipo-ciudad/` (`src/ciudad.js`, la parte de la ciudad de `src/main.js`, `src/colision.js` para las veredas, `src/animales.js` para el carro; datos en `public/datos` y `public/plano`; `decode.mjs` inspecciona `ciudad.pak`).
 - La interfaz es provisoria (IMGUI): falta diseñarla.
+- La ciudad todavía no tiene el clima, la noche ni el pasto corto que tiene el pago.
+- El paso del pago a la ciudad dentro de la historia (hoy es la tecla F9).
 - Hoja de ruta del diseño (del prototipo): doma de caballos y faena con minijuegos, combate a pie y a caballo, interiores de la estancia y los demás ranchos, el malón que arrasa el pago, NPC con modelo de lenguaje.
 
 ## Datos y créditos

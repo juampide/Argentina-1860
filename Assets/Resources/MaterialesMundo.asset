@@ -76,3 +76,29 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 1fefa52156bc445d3b85995069b9bbea, type: 2}
   - nombre: ventana
     material: {fileID: 2100000, guid: 58ceeb5e0d1ee43b98be2ba9ba1dbc8c, type: 2}
+  - nombre: revoque
+    material: {fileID: 2100000, guid: 77136fee4d9e34c99a7a4ee8f3725612, type: 2}
+  - nombre: ladrillo
+    material: {fileID: 2100000, guid: 6831ea7b591a045eebfbbca727513969, type: 2}
+  - nombre: sillar
+    material: {fileID: 2100000, guid: 2f6ac672c33194c35b2ca9ddf93a6c66, type: 2}
+  - nombre: travertino
+    material: {fileID: 2100000, guid: cb8f5e8a245b34c409ba4ae6fe6c753e, type: 2}
+  - nombre: vereda
+    material: {fileID: 2100000, guid: da9813dc24c9949c69fb336b509e7701, type: 2}
+  - nombre: calle
+    material: {fileID: 2100000, guid: fa00c3da7eb6540de8d9b9c11b5b1314, type: 2}
+  - nombre: patio
+    material: {fileID: 2100000, guid: 25fcea3e90b224e61ba4820375ffb1e1, type: 2}
+  - nombre: suelo_ciudad
+    material: {fileID: 2100000, guid: 1757c3d8008024f5498d9b0b1b446c0a, type: 2}
+  - nombre: agua_ciudad
+    material: {fileID: 2100000, guid: ea4c488213eb44d068894787a381b1ef, type: 2}
+  - nombre: vanos
+    material: {fileID: 2100000, guid: b94d5e7e7cf654f31b57991cfc906e07, type: 2}
+  - nombre: arco1
+    material: {fileID: 2100000, guid: f6615df46669b47e38c6b8b0605f8760, type: 2}
+  - nombre: arco2
+    material: {fileID: 2100000, guid: 98b31bc3e10e34ed9bb24a564d3d93e3, type: 2}
+  - nombre: haz
+    material: {fileID: 2100000, guid: eee10a7d5c0e7470b94903a138cc01d8, type: 2}

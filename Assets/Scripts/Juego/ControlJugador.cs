@@ -16,6 +16,9 @@ namespace Argentina1860
         [Tooltip("Impide entrar al agua del pago")]
         public bool bloquearAgua = true;
 
+        /// Qué es agua en el mundo actual (x, z del prototipo). Por defecto el pago; la ciudad pone el río del plano.
+        public static System.Func<float, float, bool> AguaEn = MapaPago.EnAgua;
+
         CharacterController cc;
         ModeloPersonaje modelo;
         float andar, vel, vy;
@@ -66,8 +69,8 @@ namespace Argentina1860
                 if (bloquearAgua)
                 {
                     var p = transform.position;
-                    if (MapaPago.EnAgua(p.x + mov.x, -p.z)) mov.x = 0;
-                    if (MapaPago.EnAgua(p.x + mov.x, -(p.z + mov.z))) mov.z = 0;
+                    if (AguaEn(p.x + mov.x, -p.z)) mov.x = 0;
+                    if (AguaEn(p.x + mov.x, -(p.z + mov.z))) mov.z = 0;
                 }
                 var giro = Quaternion.LookRotation(dir);
                 transform.rotation = Quaternion.Slerp(transform.rotation, giro, Mathf.Min(1, dt * 12));

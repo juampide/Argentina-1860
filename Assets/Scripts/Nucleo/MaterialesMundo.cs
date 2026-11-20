@@ -70,6 +70,17 @@ namespace Argentina1860
             }
             if (cache.TryGetValue(clave, out var c) && c != null) return c;
 
+            // "base*#rrggbb": copia del material con nombre "base" teñida con ese color (paredes pastel, tejas de distinto tono)
+            int estrella = clave.IndexOf('*');
+            if (estrella > 0)
+            {
+                var b = Mat(clave.Substring(0, estrella));
+                var t = new Material(b) { name = clave, hideFlags = HideFlags.DontSave };
+                t.color = b.color * Conv.Hex(clave.Substring(estrella + 1));
+                cache[clave] = t;
+                return t;
+            }
+
             Material mat;
             if (mm != null && mm.baseColor != null) mat = new Material(mm.baseColor);
             else

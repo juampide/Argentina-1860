@@ -19,6 +19,16 @@ namespace Argentina1860
         /// Agrega un triángulo suelto (orden antihorario visto desde afuera, como en three.js).
         public void Tri(Vector3 a, Vector3 b, Vector3 c) => T(a, b, c);
 
+        /// Triángulo con UV propias.
+        public void TriUV(Vector3 a, Vector3 b, Vector3 c, Vector2 ua, Vector2 ub, Vector2 uc) => T(a, b, c, ua, ub, uc);
+
+        /// Cuadrilátero a-b-c-d (antihorario visto desde afuera) con UV propias.
+        public void QuadUV(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector2 ua, Vector2 ub, Vector2 uc, Vector2 ud)
+        {
+            T(a, b, c, ua, ub, uc);
+            T(a, c, d, ua, uc, ud);
+        }
+
         void T(Vector3 a, Vector3 b, Vector3 c, Vector2 ua, Vector2 ub, Vector2 uc)
         {
             v.Add(a); v.Add(b); v.Add(c);
