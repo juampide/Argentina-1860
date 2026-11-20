@@ -102,3 +102,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 98b31bc3e10e34ed9bb24a564d3d93e3, type: 2}
   - nombre: haz
     material: {fileID: 2100000, guid: eee10a7d5c0e7470b94903a138cc01d8, type: 2}
+  - nombre: pampa
+    material: {fileID: 2100000, guid: 604fbc4a94a2f44ba8529878bc4f94e0, type: 2}
+  - nombre: agua_viva
+    material: {fileID: 2100000, guid: 0faafcedeaf1240e9bd73dd98a9bf425, type: 2}

@@ -24,14 +24,17 @@ MonoBehaviour:
     bigote: 0
     ropa: {r: 0.3529412, g: 0.22745098, b: 0.16470589, a: 1}
     ropa2: {r: 0.84705883, g: 0.8117647, b: 0.72156864, a: 1}
-    chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
+    chaleco: {r: 0.47843137, g: 0.16470589, b: 0.13333334, a: 1}
     pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
-    sombrero: 0
-    colorSombrero: {r: 0.22745098, g: 0.18039216, b: 0.14901961, a: 1}
+    ponchoAlHombro: 0
+    sombrero: 7
+    colorSombrero: {r: 0.78431374, g: 0.627451, b: 0.3137255, a: 1}
     baston: 0
     accesorio: 0
     escala: 0.98
+    contextura: 1.1
+    variante: 2
   lineas:
   - "\xA1Caballos de remuda, los mejores del camino! Cambio, alquilo o vendo. Pero r\xE1pido, que el coche no espera."
   - Los viajeros traen noticias del este. Dicen que se viene tiempo de leva.

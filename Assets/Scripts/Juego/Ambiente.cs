@@ -55,7 +55,7 @@ namespace Argentina1860
         /// Cuánta luz hay (0 de noche cerrada a 1 a pleno día): para oscurecer partículas que no reciben luz.
         public static float Claridad => Mathf.Lerp(0.2f, 1, 1 - LucesDeNoche) * (1 - 0.3f * TiempoNubes);
 
-        static readonly int idViento = Shader.PropertyToID("_Viento"), idHumedad = Shader.PropertyToID("_Humedad"), idLucesNoche = Shader.PropertyToID("_LucesNoche");
+        static readonly int idViento = Shader.PropertyToID("_Viento"), idHumedad = Shader.PropertyToID("_Humedad"), idLucesNoche = Shader.PropertyToID("_LucesNoche"), idLluvia = Shader.PropertyToID("_Lluvia");
 
         [Header("Mirada (pampa gris y melancólica)")]
         [Tooltip("Color de la niebla de día; el horizonte se funde con él")]
@@ -138,6 +138,7 @@ namespace Argentina1860
             Shader.SetGlobalVector(idViento, new Vector4(dir.x, dir.y, viento, 0));
             Shader.SetGlobalFloat(idHumedad, humedad);
             Shader.SetGlobalFloat(idLucesNoche, LucesDeNoche);
+            Shader.SetGlobalFloat(idLluvia, Lluvia);   // gotas en el agua
             Posproceso();
         }
 

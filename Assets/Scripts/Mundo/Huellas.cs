@@ -169,7 +169,7 @@ namespace Argentina1860
                         if (!real) h = MapaPago.Mix(-0.16f, h, MapaPago.SStep(0, 0.55f, punta));   // se hunde de a poco en el patio o en el otro camino
                         fila[c] = Punto(p, n, lado, h);
                     }
-                    bool agua = MapaPago.EnAgua(p.x, p.y) && MapaPago.DistCamino(p.x, p.y) >= 0;
+                    bool agua = MapaPago.EnArroyo(p.x, p.y) || (MapaPago.EnAgua(p.x, p.y) && MapaPago.DistCamino(p.x, p.y) >= 0);   // sobre el arroyo va el puente
                     if (filaA != null && !agua)
                     {
                         for (int c = 0; c < cols; c++)
@@ -247,6 +247,7 @@ namespace Argentina1860
             float rLat = todo ? Mathf.Abs(b - a) / 2 + anchoHuella * 0.8f : anchoHuella * 0.55f;
             float rLong = 1.5f + Hash(sem * 3.9f) * 3f;
             var c = p + n * cen;
+            if (MapaPago.DistArroyo(c.x, c.y) < rLong + 9) return;   // cerca del arroyo no: quedaría flotando sobre el cauce
             float nivel = Alto(new Vector3(c.x, 0, -c.y)) + tAlto - surcos[0].hondo * 0.45f;   // el agua queda horizontal
             const int lados = 12;
             var centro = transform.InverseTransformPoint(new Vector3(c.x, nivel, -c.y));

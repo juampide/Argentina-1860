@@ -17,6 +17,8 @@ Shader "Argentina/Mundo"
         _Absorbe("Se moja con la lluvia (0 = nada, 1 = suelo de tierra)", Range(0, 1)) = 0.35
         _Ventana("Ventana: se enciende de noche (0 = no, 1 = sí)", Range(0, 1)) = 0
         [Toggle] _Xray("Recorte tramado cuando tapa al jugador", Float) = 0
+        _Pisable("Se abre alrededor del jugador al pasar (cultivos)", Range(0, 1)) = 0
+        _Mece("Se mece con el viento (árboles y matas)", Range(0, 2)) = 0
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("Caras", Float) = 0
     }
 
@@ -39,6 +41,8 @@ Shader "Argentina/Mundo"
             half _Absorbe;
             half _Ventana;
             half _Xray;
+            half _Pisable;
+            half _Mece;
             half _Cull;
         CBUFFER_END
 
@@ -50,6 +54,28 @@ Shader "Argentina/Mundo"
         float _XrayRad;    // radio del hueco (0 = apagado)
         float _Humedad;    // 0 seco, 1 empapado (la pone Ambiente.cs con la lluvia)
         float _LucesNoche; // 0 de día, 1 de noche (Ambiente.cs): las ventanas se encienden
+        float4 _Viento;    // xy: hacia dónde sopla (x, z de Unity), z: fuerza de 0 a 1 (Ambiente.cs)
+
+        // Posición en el mundo, con el balanceo del viento para árboles y matas (_Mece > 0): el pie queda firme,
+        // la copa va y viene con las ráfagas que recorren el campo, y las hojas tiemblan un poco.
+        float3 Mecer(float3 pos)
+        {
+            float3 wp = TransformObjectToWorld(pos);
+            if (_Mece <= 0.0) return wp;
+            float3 piv = TransformObjectToWorld(float3(0, 0, 0));
+            float h = max(0.0, wp.y - piv.y);
+            float t = _Time.y;
+            float f = saturate(_Viento.z);
+            float2 dv = dot(_Viento.xy, _Viento.xy) > 0.01 ? normalize(_Viento.xy) : float2(0.6, 0.8);
+            float fase = dot(piv.xz, dv) * 0.06 - t * (0.8 + 1.8 * f);
+            float rafaga = 0.5 + 0.5 * sin(fase) * sin(fase * 0.43 + piv.x * 0.03);
+            float vaiven = sin(t * (0.9 + f) + piv.x * 0.37 + piv.z * 0.29);
+            float k = _Mece * h * h * 0.006;
+            float empuje = (0.2 + 1.4 * f * rafaga) + vaiven * (0.25 + 0.5 * f);
+            wp.xz += dv * k * empuje + float2(-dv.y, dv.x) * k * vaiven * 0.3;
+            wp += sin(t * 6.0 + pos.x * 3.1 + pos.z * 2.3 + piv.x) * 0.02 * _Mece * saturate(h / 3.0) * (0.3 + f);
+            return wp;
+        }
 
         float sH(float2 p) { return frac(sin(dot(p, float2(127.1, 311.7))) * 43758.5453); }
         float sN(float2 p)
@@ -77,12 +103,20 @@ Shader "Argentina/Mundo"
 
         float Hueco(float3 wp)
         {
-            if (_Xray < 0.5 || _XrayRad <= 0.0) return 0.0;
-            float3 rel = wp - _XrayJug.xyz;
-            float ad = dot(rel, -_XrayDir.xyz);          // cuánto está hacia la cámara
-            float3 lat = rel + _XrayDir.xyz * ad;         // distancia al rayo cámara→jugador
-            float dd = length(lat);
-            return (1.0 - smoothstep(_XrayRad * 0.55, _XrayRad, dd)) * smoothstep(0.4, 2.0, ad) * smoothstep(0.7, 1.7, wp.y - _XrayJug.w);
+            if (_XrayRad <= 0.0) return 0.0;
+            float h = 0.0;
+            if (_Xray >= 0.5)
+            {
+                float3 rel = wp - _XrayJug.xyz;
+                float ad = dot(rel, -_XrayDir.xyz);          // cuánto está hacia la cámara
+                float3 lat = rel + _XrayDir.xyz * ad;         // distancia al rayo cámara→jugador
+                float dd = length(lat);
+                h = (1.0 - smoothstep(_XrayRad * 0.55, _XrayRad, dd)) * smoothstep(0.4, 2.0, ad) * smoothstep(0.7, 1.7, wp.y - _XrayJug.w);
+            }
+            // cultivos: se abren alrededor del jugador (o de su caballo), como cuando uno se mete en el trigal
+            if (_Pisable > 0.0)
+                h = max(h, _Pisable * (1.0 - smoothstep(0.8, 1.6, length(wp.xz - _XrayJug.xz))) * step(_XrayJug.w + 0.06, wp.y));
+            return h;
         }
 
         float Trama(float4 positionCS) { return frac(52.9829189 * frac(dot(positionCS.xy, float2(0.06711056, 0.00583715)))); }
@@ -135,14 +169,14 @@ Shader "Argentina/Mundo"
                 Varyings o = (Varyings)0;
                 UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_TRANSFER_INSTANCE_ID(i, o);
-                VertexPositionInputs vp = GetVertexPositionInputs(i.positionOS.xyz);
+                float3 wpos = Mecer(i.positionOS.xyz);
                 VertexNormalInputs vn = GetVertexNormalInputs(i.normalOS, i.tangentOS);
-                o.positionCS = vp.positionCS;
-                o.positionWS = vp.positionWS;
+                o.positionCS = TransformWorldToHClip(wpos);
+                o.positionWS = wpos;
                 o.normalWS = vn.normalWS;
                 o.tangentWS = float4(vn.tangentWS, i.tangentOS.w * GetOddNegativeScale());
                 o.uv = TRANSFORM_TEX(i.uv, _BaseMap);
-                o.fog = ComputeFogFactor(vp.positionCS.z);
+                o.fog = ComputeFogFactor(o.positionCS.z);
                 return o;
             }
 
@@ -151,7 +185,7 @@ Shader "Argentina/Mundo"
                 UNITY_SETUP_INSTANCE_ID(i);
                 float h = Hueco(i.positionWS);
                 clip(Trama(i.positionCS) - h);
-                if (!frente && h > 0.02)   // interior de lo que se ve por el hueco: oscuro, como una sección
+                if (!frente && h > 0.02 && _Pisable < 0.5)   // interior de lo que se ve por el hueco: oscuro, como una sección (no en los cultivos)
                 {
                     float k = saturate((i.positionWS.y - _XrayJug.w) / 3.2);
                     return half4(lerp(half3(0.075, 0.055, 0.04), half3(0.2, 0.15, 0.11), k), 1);
@@ -241,7 +275,7 @@ Shader "Argentina/Mundo"
             float4 vs(Atributos i) : SV_POSITION
             {
                 UNITY_SETUP_INSTANCE_ID(i);
-                float3 wp = TransformObjectToWorld(i.positionOS.xyz);
+                float3 wp = Mecer(i.positionOS.xyz);
                 float3 nw = TransformObjectToWorldNormal(i.normalOS);
                 float4 cs = TransformWorldToHClip(ApplyShadowBias(wp, nw, _MainLightPosition.xyz));
                 #if UNITY_REVERSED_Z
@@ -276,7 +310,7 @@ Shader "Argentina/Mundo"
             {
                 Varyings o;
                 UNITY_SETUP_INSTANCE_ID(i);
-                o.wp = TransformObjectToWorld(i.positionOS.xyz);
+                o.wp = Mecer(i.positionOS.xyz);
                 o.positionCS = TransformWorldToHClip(o.wp);
                 return o;
             }
@@ -309,7 +343,7 @@ Shader "Argentina/Mundo"
             {
                 Varyings o;
                 UNITY_SETUP_INSTANCE_ID(i);
-                o.wp = TransformObjectToWorld(i.positionOS.xyz);
+                o.wp = Mecer(i.positionOS.xyz);
                 o.positionCS = TransformWorldToHClip(o.wp);
                 o.n = TransformObjectToWorldNormal(i.normalOS);
                 return o;

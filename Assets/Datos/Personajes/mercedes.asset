@@ -16,22 +16,25 @@ MonoBehaviour:
   nombre: "Do\xF1a Matilde Garmendia"
   lugar: Estancia La Soledad
   aspecto:
-    estilo: 1
+    estilo: 7
     piel: {r: 0.9411765, g: 0.75686276, b: 0.6039216, a: 1}
     pelo: {r: 0.41568628, g: 0.2901961, b: 0.16470589, a: 1}
     peinado: 0
     barba: 0
     bigote: 0
     ropa: {r: 0.35686275, g: 0.43529412, b: 0.3529412, a: 1}
-    ropa2: {r: 0.9372549, g: 0.9019608, b: 0.8156863, a: 1}
+    ropa2: {r: 0.9372549, g: 0.9019608, b: 0.8392157, a: 1}
     chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
     pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    ponchoAlHombro: 0
     sombrero: 0
     colorSombrero: {r: 0.23137255, g: 0.18431373, b: 0.15294118, a: 1}
     baston: 0
     accesorio: 0
     escala: 1
+    contextura: 1.08
+    variante: 1
   lineas:
   - "Pas\xE1, pas\xE1, que ten\xE9s cara de no haber probado bocado. Siempre sobra algo de guiso para los peones."
   - "Mi marido es duro, pero no es mal hombre. Lo preocupan m\xE1s las deudas que los peones."

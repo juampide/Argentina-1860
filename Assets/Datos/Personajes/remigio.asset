@@ -27,11 +27,14 @@ MonoBehaviour:
     chaleco: {r: 0.5411765, g: 0.5411765, b: 0.5254902, a: 1}
     pantalon: {r: 0.3529412, g: 0.3529412, b: 0.3764706, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    ponchoAlHombro: 0
     sombrero: 1
     colorSombrero: {r: 0.23137255, g: 0.18431373, b: 0.15294118, a: 1}
     baston: 1
     accesorio: 0
     escala: 1
+    contextura: 1.15
+    variante: 0
   lineas:
   - "Soy el juez de paz. Si busc\xE1s trabajo, and\xE1 con tu papeleta de conchabo en regla; no quiero problemas."
   - "Ando de paso por la pulper\xEDa. Los tiempos est\xE1n dif\xEDciles y el gobierno pide hombres."

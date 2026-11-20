@@ -27,11 +27,14 @@ MonoBehaviour:
     chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
     pantalon: {r: 0.3529412, g: 0.3254902, b: 0.28235295, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    ponchoAlHombro: 0
     sombrero: 5
     colorSombrero: {r: 0.16470589, g: 0.16470589, b: 0.16470589, a: 1}
     baston: 0
     accesorio: 0
     escala: 1
+    contextura: 1.1
+    variante: 0
   lineas:
   - Buenas, buenas. Tengo yerba, tabaco, telas, aguardiente y lo que se le ocurra al cliente. Y si no tiene plata, ya veremos.
   - Todo se anota en la libreta. Yo anoto y no olvido.

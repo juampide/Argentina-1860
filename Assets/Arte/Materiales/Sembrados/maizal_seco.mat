@@ -106,6 +106,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _Pisable: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ScreenSpaceReflections: 1
@@ -117,6 +118,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _Suciedad: 0.3
     - _Surface: 0
+    - _Ventana: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _Xray: 0

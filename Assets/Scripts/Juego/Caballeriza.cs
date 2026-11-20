@@ -11,11 +11,11 @@ namespace Argentina1860
     /// Se instala solo, como CambioDeMundo; no hace falta ponerlo en las escenas.
     ///
     /// Cómo se consigue el caballo lo decide el guion (ver Docs/guion/caballo.md). Mientras tanto, con
-    /// <see cref="TRUCOS"/> activado, F11 da uno para probar.
+    /// <see cref="TRUCOS"/> activado, O da uno para probar.
     /// </summary>
     public class Caballeriza : MonoBehaviour
     {
-        /// F11 da un caballo (para probar hasta que esté la misión). Apagar antes de publicar el juego.
+        /// O da un caballo (para probar hasta que esté la misión). Apagar antes de publicar el juego.
         public const bool TRUCOS = true;
 
         // estado del jugador que pasa de un mundo al otro (después irá a la partida guardada)
@@ -69,7 +69,7 @@ namespace Argentina1860
             Nombre = "Moro"; Pelaje = "#5c6168"; Calcetines = true;
         }
 
-        /// Da el caballo al jugador y lo pone a su lado (lo usan las misiones; F11 en pruebas).
+        /// Da el caballo al jugador y lo pone a su lado (lo usan las misiones; la O en pruebas).
         public void DarCaballo(string nombre = null, string pelaje = null)
         {
             if (nombre != null) Nombre = nombre;
@@ -97,7 +97,7 @@ namespace Argentina1860
             var kb = Keyboard.current;
             if (kb == null) return;
 
-            if (TRUCOS && kb.f11Key.wasPressedThisFrame && !TieneCaballo)
+            if (TRUCOS && kb.oKey.wasPressedThisFrame && !TieneCaballo)
             {
                 DarCaballo();
                 Avisar($"Te dieron el {Nombre} (pruebas). E para montarlo, H para silbarle.");
@@ -220,7 +220,7 @@ namespace Argentina1860
             }
             else if (TRUCOS && !TieneCaballo && tiempo < 25)
             {
-                GUI.Label(new Rect(16, Screen.height - 44, 260, 28), "F11: darte un caballo (pruebas)", sEtiqueta);
+                GUI.Label(new Rect(16, Screen.height - 44, 260, 28), "O: darte un caballo (pruebas)", sEtiqueta);
             }
 
             if (avisoT > 0 && !string.IsNullOrEmpty(aviso))

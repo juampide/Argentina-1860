@@ -10,7 +10,7 @@ Estado: **en el juego** la parte de manejo (desarrollo). Todo lo que es historia
 - **Silbido** con H: el caballo viene trotando. Si quedó muy lejos, aparece a unos 30 metros y llega solo.
 - **Anda en los dos mundos**: si el Gallego cambia de mundo montado, llega montado.
 - El caballo es un criollo de pelaje **moro** (gris azulado, con calcetines blancos), se llama **Moro** y lleva recado: pelero, cojinillo y estribos.
-- **Para probar**: F11 da el caballo. Es un truco para pruebas y se va a sacar cuando esté la misión.
+- **Para probar**: la O da el caballo. Es un truco para pruebas y se va a sacar cuando esté la misión.
 
 Todavía no hay forma de conseguirlo dentro de la historia: eso es lo que hay que decidir.
 
@@ -61,7 +61,7 @@ El Gallego "nunca anduvo a caballo en campo abierto" (`protagonista.md`). Opcion
 
 ## Pendiente con desarrollo
 
-- Cuando se decida cómo se consigue: crear la misión y sacar el truco F11 (`Caballeriza.TRUCOS`). Desde el código, una misión da el caballo con `Caballeriza.Instancia.DarCaballo("Nombre", "#color")`.
+- Cuando se decida cómo se consigue: crear la misión y sacar el truco de la O (`Caballeriza.TRUCOS`). Desde el código, una misión da el caballo con `Caballeriza.Instancia.DarCaballo("Nombre", "#color")`.
 - Si hay aprendizaje de jinete: agregar la habilidad y que limite el galope.
 - Sistema de dueños, testigos y persecución (robo de caballos y carros).
 - Guardar la partida: hoy el caballo se pierde al cerrar el juego.

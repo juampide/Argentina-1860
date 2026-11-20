@@ -257,7 +257,7 @@ namespace Argentina1860
         static bool FueraDelMapa(float x, float z) => x < -ANCHO / 2 || x > ANCHO / 2 || z < -ALTO / 2 || z > ALTO / 2;
 
         /// Distancia con signo al borde de la laguna (negativa adentro).
-        static float DistLaguna(float x, float z)
+        public static float DistLaguna(float x, float z)
         {
             var c = K(LAGUNA_C);
             float rx = LAGUNA_RX * 1000, ry = LAGUNA_RY * 1000;
@@ -305,6 +305,7 @@ namespace Argentina1860
                 float c = CorteAgua(x, z);
                 if (c > 0) h -= 1.5f * Mathf.Min(1, c * 1.4f);
             }
+            h -= BordesPago.Hundido(x, z);   // cañadón de la frontera y bañado del norte
             return h;
         }
 
@@ -312,9 +313,27 @@ namespace Argentina1860
         {
             if (FueraDelMapa(x, z)) return true;
             Asegurar();
-            if (caminos.Muestra(x, z) < 0) return false;   // el camino cruza el arroyo por el paso
+            if (caminos.Muestra(x, z) < -1.0f) return false;   // el camino cruza el arroyo por el puente (solo por el medio)
             return arroyo.Muestra(x, z) < 4.5f || DistLaguna(x, z) < 0;
         }
+
+        /// El agua del arroyo, aunque pase un camino por encima (para el puente y las huellas).
+        public static bool EnArroyo(float x, float z)
+        {
+            if (FueraDelMapa(x, z)) return false;
+            Asegurar();
+            return arroyo.Muestra(x, z) < 4.5f;
+        }
+
+        /// Distancia al eje del arroyo (hasta 60 m).
+        public static float DistArroyo(float x, float z)
+        {
+            Asegurar();
+            return arroyo.Muestra(x, z);
+        }
+
+        /// Donde no pueden ir el jugador ni el caballo: el agua y lo que queda fuera de los bordes del pago.
+        public static bool Bloqueado(float x, float z) => EnAgua(x, z) || BordesPago.Fuera(x, z);
 
         public static bool EnCamino(float x, float z)
         {
@@ -322,7 +341,7 @@ namespace Argentina1860
             return caminos.Muestra(x, z) < 0;
         }
 
-        public static bool PuedeCrecer(float x, float z) => !EnAgua(x, z) && !EnCamino(x, z);
+        public static bool PuedeCrecer(float x, float z) => !EnAgua(x, z) && !EnCamino(x, z) && !BordesPago.SinPasto(x, z);
 
         /// Distancia al borde del camino real o de una senda (negativa sobre el camino), hasta 30 m.
         public static float DistCamino(float x, float z)
@@ -389,7 +408,7 @@ namespace Argentina1860
             Hacia(ref w, 2, g);
             Hacia(ref w, 2, orilla * 0.8f);
             Hacia(ref w, 3, agua);
-            return w;
+            return BordesPago.PesosSuelo(x, z, w);
         }
 
         static void Hacia(ref Vector4 w, int k, float f)

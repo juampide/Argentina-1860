@@ -16,22 +16,25 @@ MonoBehaviour:
   nombre: El centinela
   lugar: Frente al Cabildo
   aspecto:
-    estilo: 0
+    estilo: 6
     piel: {r: 0.9411765, g: 0.75686276, b: 0.6039216, a: 1}
     pelo: {r: 0.22745098, g: 0.16470589, b: 0.10980392, a: 1}
     peinado: 2
     barba: 0
     bigote: 2
-    ropa: {r: 0.17254902, g: 0.24313726, b: 0.41960785, a: 1}
+    ropa: {r: 0.18431373, g: 0.22745098, b: 0.33333334, a: 1}
     ropa2: {r: 0.95686275, g: 0.93333334, b: 0.8627451, a: 1}
     chaleco: {r: 0.7882353, g: 0.63529414, b: 0.15294118, a: 1}
-    pantalon: {r: 0.7019608, g: 0.20392157, b: 0.16862746, a: 1}
+    pantalon: {r: 0.78431374, g: 0.7529412, b: 0.65882355, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    ponchoAlHombro: 0
     sombrero: 4
     colorSombrero: {r: 0.23137255, g: 0.18431373, b: 0.15294118, a: 1}
     baston: 0
     accesorio: 1
     escala: 1
+    contextura: 1
+    variante: 0
   lineas:
   - "Alto ah\xED, ciudadano... ah, es usted. Circule nom\xE1s, circule."
   - El Cabildo ya no es lo que era, pero la guardia es la guardia. Cuando cae el sol, esta plaza se pone brava.

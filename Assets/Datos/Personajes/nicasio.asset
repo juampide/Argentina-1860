@@ -16,22 +16,25 @@ MonoBehaviour:
   nombre: Santos Sosa
   lugar: Ranchos de peones
   aspecto:
-    estilo: 4
+    estilo: 3
     piel: {r: 0.8509804, g: 0.63529414, b: 0.47843137, a: 1}
     pelo: {r: 0.22745098, g: 0.16470589, b: 0.10980392, a: 1}
     peinado: 1
     barba: 0
     bigote: 0
-    ropa: {r: 0.41568628, g: 0.47843137, b: 0.2901961, a: 1}
+    ropa: {r: 0.18431373, g: 0.22745098, b: 0.33333334, a: 1}
     ropa2: {r: 0.9372549, g: 0.9019608, b: 0.8156863, a: 1}
     chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
     pantalon: {r: 0.47843137, g: 0.4392157, b: 0.3764706, a: 1}
-    poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    poncho: {r: 0.5411765, g: 0.41568628, b: 0.22745098, a: 1}
+    ponchoAlHombro: 1
     sombrero: 2
     colorSombrero: {r: 0.84705883, g: 0.7529412, b: 0.47843137, a: 1}
     baston: 0
     accesorio: 0
     escala: 1
+    contextura: 0.92
+    variante: 0
   lineas:
   - "\xA1Che, qu\xE9 tal! Yo soy Santos, hace dos a\xF1os que estoy ac\xE1. Sentate junto al fog\xF3n, que hay mate."
   - "Si me acompa\xF1\xE1s en la faena te ense\xF1o a sacar un cuero entero sin cortarlo. Pero no le cuentes a Anselmo que te lo ense\xF1\xE9 yo."

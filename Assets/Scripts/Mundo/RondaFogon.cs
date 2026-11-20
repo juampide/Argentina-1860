@@ -144,45 +144,18 @@ namespace Argentina1860
             }
         }
 
-        static readonly string[] PONCHOS = { "#7a2e22", "#5a4632", "#3e4a5a", "#8a6a3a", "#4a3a2e", "#6e5a44", "#2f3a2e" };
-        static readonly string[] PIELES = { "#e8b48c", "#d29a72", "#b97d58", "#a06a48", "#f0c19a" };
-        static readonly string[] PELOS = { "#1d1714", "#2e221a", "#3a2a1c", "#4a3a2a", "#8a8078" };
-        static readonly string[] VESTIDOS = { "#5a4a3e", "#3e3a44", "#6a4a3a", "#4a5048", "#7a6450", "#3a3a3a" };
 
-        string Uno(string[] l) => l[rnd.Next(l.Length)];
-        Color Hex(string[] l) => Conv.Hex(Uno(l));
 
         Aspecto Paisano(bool asador)
         {
-            var a = new Aspecto { estilo = Estilo.Poncho, piel = Hex(PIELES), pelo = Hex(PELOS), poncho = Hex(PONCHOS) };
-            a.sombrero = rnd.NextDouble() < 0.55 ? Sombrero.Ala : rnd.NextDouble() < 0.5 ? Sombrero.Gorra : Sombrero.Ninguno;
-            a.colorSombrero = Conv.Hex(rnd.NextDouble() < 0.5 ? "#2e2620" : "#5a4a38");
-            a.bigote = rnd.NextDouble() < 0.45 ? Bigote.Fino : Bigote.Ninguno;
-            a.barba = !asador && rnd.NextDouble() < 0.3;
-            a.escala = 0.94f + (float)rnd.NextDouble() * 0.1f;
+            var a = Variedad.Gaucho(rnd);
+            if (asador) a.ponchoAlHombro = true;   // al fuego, el poncho estorba
+            a.accesorio = Accesorio.Ninguno;
             return a;
         }
 
-        Aspecto Paisana()
-        {
-            var a = new Aspecto { estilo = Estilo.Vestido, piel = Hex(PIELES), pelo = Hex(PELOS), ropa = Hex(VESTIDOS) };
-            a.ropa2 = Conv.Hex(rnd.NextDouble() < 0.5 ? "#d9cfb8" : "#8a3a2a");   // chal
-            a.escala = 0.9f + (float)rnd.NextDouble() * 0.07f;
-            return a;
-        }
-
-        Aspecto Soldado()
-        {
-            var a = new Aspecto { estilo = Estilo.Levita, piel = Hex(PIELES), pelo = Hex(PELOS) };
-            a.ropa = Conv.Hex("#2f3a55");
-            a.chaleco = Conv.Hex("#2f3a55");
-            a.pantalon = Conv.Hex(rnd.NextDouble() < 0.6 ? "#c8c0a8" : "#2f3a55");
-            a.sombrero = Sombrero.Kepi;
-            a.colorSombrero = Conv.Hex("#3a3a48");
-            a.bigote = rnd.NextDouble() < 0.6 ? Bigote.Fino : Bigote.Ninguno;
-            a.escala = 0.95f + (float)rnd.NextDouble() * 0.08f;
-            return a;
-        }
+        Aspecto Paisana() => Variedad.Paisana(rnd);
+        Aspecto Soldado() => Variedad.Soldado(rnd);
 
         // ---------- moverse ----------
 

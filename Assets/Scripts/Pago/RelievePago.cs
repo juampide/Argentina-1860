@@ -144,6 +144,126 @@ namespace Argentina1860
             td.SetAlphamaps(0, 0, a);
         }
 
+        // ---------- lomadas ----------
+
+        /// Suma lomadas y bajos suaves en el campo abierto, para que el pago no se vea como una mesa: ondulaciones
+        /// largas (de unos 500 m), lomas medianas y desparejo chico. No toca los sitios poblados, los caminos, el agua,
+        /// los sembrados, los alrededores de cada construcción ni la franja de los bordes; ahí se funde de a poco.
+        /// Es aditivo: correrlo dos veces suma dos veces. Después acomoda la altura de los árboles.
+        /// protegidos: centros (metros del prototipo) de construcciones que no se tienen que mover, con su radio.
+        public static void Lomadas(Terrain t, IList<Vector3> protegidos, float fuerza = 1, float largas = 1.5f, float medias = 0.6f, float chicas = 0.18f, float frecMedia = 0.008f)
+        {
+            var td = t.terrainData; var pos = t.transform.position; var size = td.size;
+            int res = td.heightmapResolution;
+            var h = td.GetHeights(0, 0, res, res);
+            for (int i = 0; i < res; i++)
+                for (int j = 0; j < res; j++)
+                {
+                    float x = pos.x + (float)j / (res - 1) * size.x, z = -(pos.z + (float)i / (res - 1) * size.z);
+                    float w = 1;
+                    var p = new Vector2(x, z);
+                    foreach (var s in MapaPago.SITIOS) w = Mathf.Min(w, SStep(s.r * 1.3f, s.r * 2.6f, Vector2.Distance(p, s.p)));
+                    if (w <= 0) continue;
+                    w = Mathf.Min(w, SStep(8, 29, MapaPago.DistCamino(x, z)));
+                    w = Mathf.Min(w, SStep(10, 35, MapaPago.DistArroyo(x, z)));
+                    w = Mathf.Min(w, SStep(10, 45, MapaPago.DistLaguna(x, z)));
+                    if (w <= 0 || BordesPago.EnFranja(x, z) || Sembrado.Ocupa(x, z)) continue;
+                    if (protegidos != null)
+                        foreach (var q in protegidos)
+                        {
+                            float d = Vector2.Distance(p, new Vector2(q.x, q.y));
+                            if (d < q.z * 2.5f) w = Mathf.Min(w, SStep(q.z, q.z * 2.5f, d));
+                        }
+                    if (w <= 0) continue;
+                    float lomas = largas * N(x * 0.0021 + 3.7, z * 0.0021 - 8.1)                     // ondulación larga
+                                + medias * N(x * frecMedia - 11 + frecMedia * 500, z * frecMedia + 4)   // lomas
+                                + chicas * N(x * 0.03 + 5, z * 0.03 - 2);                          // desparejo
+                    h[i, j] = Mathf.Clamp01(h[i, j] + lomas * w * fuerza / size.y);
+                }
+            td.SetHeights(0, 0, h);
+
+            var arboles = td.treeInstances;
+            for (int k = 0; k < arboles.Length; k++)
+            {
+                var w = Vector3.Scale(arboles[k].position, size) + pos;
+                arboles[k].position.y = t.SampleHeight(w) / size.y;
+            }
+            td.treeInstances = arboles;
+            t.Flush();
+        }
+
+        // ---------- bordes del pago ----------
+
+        /// Arma los bordes (BordesPago) sobre el terreno sin tocar el resto del pago: hunde el cañadón y el bañado,
+        /// pinta la barranca, el agua y la pampa de tierra adentro, y planta el monte, el juncal y los sauces.
+        /// Correrlo de nuevo no vuelve a hundir lo que ya está hundido. Devuelve cuántas plantas puso.
+        public static int Bordes(Terrain t)
+        {
+            var td = t.terrainData; var pos = t.transform.position; var size = td.size;
+
+            // 1. relieve: solo donde el borde hunde el suelo
+            int res = td.heightmapResolution;
+            var h = td.GetHeights(0, 0, res, res);
+            for (int i = 0; i < res; i++)
+                for (int j = 0; j < res; j++)
+                {
+                    float x = pos.x + (float)j / (res - 1) * size.x, z = -(pos.z + (float)i / (res - 1) * size.z);
+                    float hund = BordesPago.Hundido(x, z);
+                    if (hund < 0.02f) continue;
+                    float sin = MapaPago.Altura(x, z) + hund;          // como era el suelo antes del borde
+                    float actual = h[i, j] * size.y + pos.y;
+                    if (actual < sin - hund * 0.5f) continue;          // ya estaba hundido
+                    float detalle = Mathf.Clamp(actual - sin, -0.4f, 0.4f) * (1 - SStep(0.5f, 2, hund));
+                    h[i, j] = Mathf.Clamp01((sin - hund + detalle - pos.y) / size.y);
+                }
+            td.SetHeights(0, 0, h);
+
+            // 2. suelo: la franja del borde se vuelve a pintar entera
+            int ar = td.alphamapResolution;
+            var a = td.GetAlphamaps(0, 0, ar, ar);
+            for (int i = 0; i < ar; i++)
+                for (int j = 0; j < ar; j++)
+                {
+                    float x = pos.x + (j + 0.5f) / ar * size.x, z = -(pos.z + (i + 0.5f) / ar * size.z);
+                    if (!BordesPago.EnFranja(x, z)) continue;
+                    var w = MapaPago.PesosSuelo(x, z);
+                    a[i, j, 0] = w.x; a[i, j, 1] = w.y; a[i, j, 2] = w.z; a[i, j, 3] = w.w;
+                }
+            td.SetAlphamaps(0, 0, a);
+
+            // 3. árboles: se saca lo que había en la franja y se planta el borde
+            var protos = td.treePrototypes;
+            int Idx(string n) { for (int i = 0; i < protos.Length; i++) if (protos[i].prefab != null && protos[i].prefab.name == n) return i; return -1; }
+            var lista = new List<TreeInstance>();
+            foreach (var ti in td.treeInstances)
+            {
+                var w = Vector3.Scale(ti.position, size) + pos;
+                if (BordesPago.EnFranja(w.x, -w.z)) continue;
+                lista.Add(ti);
+            }
+            int puestas = 0, sem = 0;
+            foreach (var p in BordesPago.Plantas())
+            {
+                int proto = Idx(p.especie);
+                if (proto < 0) continue;
+                sem++;
+                var w = new Vector3(p.x, 0, -p.z);
+                var n = new Vector3((w.x - pos.x) / size.x, t.SampleHeight(w) / size.y, (w.z - pos.z) / size.z);
+                if (n.x < 0 || n.x > 1 || n.z < 0 || n.z > 1) continue;
+                float tono = 0.78f + 0.22f * H(sem + 5);
+                lista.Add(new TreeInstance
+                {
+                    prototypeIndex = proto, position = n,
+                    widthScale = p.escala * (0.9f + 0.2f * H(sem + 1)), heightScale = p.escala * (0.85f + 0.3f * H(sem + 2)),
+                    rotation = H(sem + 3) * Mathf.PI * 2, color = new Color(tono, tono, tono, 1), lightmapColor = Color.white
+                });
+                puestas++;
+            }
+            td.treeInstances = lista.ToArray();
+            t.Flush();
+            return puestas;
+        }
+
         // ---------- árboles ----------
         static float H(double i) => MapaPago.Hs(i * 3.17 + 911);
 

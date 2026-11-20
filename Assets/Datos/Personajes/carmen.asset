@@ -16,7 +16,7 @@ MonoBehaviour:
   nombre: Carmen Larralde
   lugar: Estancia La Soledad
   aspecto:
-    estilo: 1
+    estilo: 7
     piel: {r: 0.9411765, g: 0.75686276, b: 0.6039216, a: 1}
     pelo: {r: 0.16470589, g: 0.101960786, b: 0.07058824, a: 1}
     peinado: 4
@@ -27,11 +27,14 @@ MonoBehaviour:
     chaleco: {r: 0.8509804, g: 0.7058824, b: 0.3529412, a: 1}
     pantalon: {r: 0.5411765, g: 0.5176471, b: 0.47058824, a: 1}
     poncho: {r: 0.7529412, g: 0.22352941, b: 0.16862746, a: 1}
+    ponchoAlHombro: 0
     sombrero: 0
     colorSombrero: {r: 0.23137255, g: 0.18431373, b: 0.15294118, a: 1}
     baston: 0
     accesorio: 0
     escala: 0.9
+    contextura: 0.9
+    variante: 0
   lineas:
   - "\xBFEs verdad que en Buenos Aires hay calles empedradas y teatros? Me lo cont\xF3 un carretero y no le cre\xED."
   - "Alg\xFAn d\xEDa me voy de ac\xE1. Pero no se lo cuentes a mi padre."
