@@ -10,6 +10,7 @@ Guion y diseño narrativo, en texto. Lo escribe el lado de diseño (ver `CLAUDE.
 | `voz.md` | Cómo habla cada grupo en 1867, basado en el estudio de Perna: qué rasgos usar, cuáles no y el vocabulario de época. |
 | `arco-pago.md` | La historia del pago por etapas, desde que llega el Gallego estafado hasta que huye a Buenos Aires como forajido. |
 | `caballo.md` | El caballo del Gallego: qué ya funciona en el juego y las **decisiones pendientes** (cómo lo consigue, si aprende a montar, qué pasa en el malón, robo de caballos). |
+| `cinematicas.md` | Cómo contamos con la cámara: corte directo, solo texto, cámara de película en las conversaciones importantes, escenas clave y misiones por momentos. Decisiones acordadas y lo que desarrollo tiene que armar. |
 | `contexto-1867.md` | *(pendiente)* Datos de época para mantener el tono y no meter anacronismos. |
 
 ## Convenciones
