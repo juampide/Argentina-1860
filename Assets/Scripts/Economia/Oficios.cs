@@ -508,15 +508,13 @@ namespace Argentina1860
         void Estilos()
         {
             if (sCaja != null && papel != null) return;
-            papel = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
-            papel.SetPixel(0, 0, new Color(0.945f, 0.902f, 0.804f, 0.94f));
-            papel.Apply();
+            papel = Ui.Papel;
             blanco = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
             blanco.SetPixel(0, 0, Color.white);
             blanco.Apply();
             var tinta = new Color(0.165f, 0.133f, 0.106f);
             sCaja = new GUIStyle(GUI.skin.box) { padding = new RectOffset(14, 14, 10, 12) };
-            sCaja.normal.background = papel;
+            sCaja.normal.background = papel; sCaja.border = Ui.Borde;
             sTitulo = new GUIStyle(GUI.skin.label) { fontSize = 17, fontStyle = FontStyle.Bold, wordWrap = true };
             sTitulo.normal.textColor = new Color(0.48f, 0.11f, 0.08f);
             sTexto = new GUIStyle(GUI.skin.label) { fontSize = 14, wordWrap = true };
@@ -524,7 +522,7 @@ namespace Argentina1860
             sAyuda = new GUIStyle(sTexto) { fontSize = 12 };
             sCelda = new GUIStyle(sTexto) { wordWrap = false };
             sEtiqueta = new GUIStyle(GUI.skin.box) { fontSize = 13, alignment = TextAnchor.MiddleCenter, padding = new RectOffset(8, 8, 3, 4) };
-            sEtiqueta.normal.background = papel;
+            sEtiqueta.normal.background = papel; sEtiqueta.border = Ui.Borde;
             sEtiqueta.normal.textColor = tinta;
             sBoton = new GUIStyle(GUI.skin.button) { fontSize = 13 };
         }
@@ -541,6 +539,7 @@ namespace Argentina1860
 
         void OnGUI()
         {
+            GUI.matrix = Ui.Matriz;
             if (!listo || jug == null) return;
             Estilos();
 
@@ -549,29 +548,29 @@ namespace Argentina1860
             switch (haciendo)
             {
                 case Haciendo.Nada:
-                    if (textoAccion != null && !jug.Bloqueado) Etiqueta(textoAccion, Screen.height - 124);
+                    if (textoAccion != null && !jug.Bloqueado) Etiqueta(textoAccion, Ui.Alto - 124);
                     break;
                 case Haciendo.Morral: PanelMorral(); break;
                 case Haciendo.Fogon: PanelFogon(); break;
                 case Haciendo.Pescando: PanelPesca(); break;
                 case Haciendo.Juntando:
                 case Haciendo.Cocinando:
-                    Etiqueta(haciendo == Haciendo.Juntando ? "Juntando lombrices…  (Esc: dejar)" : $"Cocinando {receta?.nombre}…  (Esc: dejar)", Screen.height - 150);
-                    Barra(new Rect(Screen.width / 2 - 120, Screen.height - 120, 240, 12), trabajoT / trabajoDur, new Color(0.55f, 0.36f, 0.16f));
+                    Etiqueta(haciendo == Haciendo.Juntando ? "Juntando lombrices…  (Esc: dejar)" : $"Cocinando {receta?.nombre}…  (Esc: dejar)", Ui.Alto - 150);
+                    Barra(new Rect(Ui.Ancho / 2 - 120, Ui.Alto - 120, 240, 12), trabajoT / trabajoDur, new Color(0.55f, 0.36f, 0.16f));
                     break;
                 case Haciendo.Descansando:
-                    Etiqueta("Descansando junto al fogón…  (F o moverse: levantarse)", Screen.height - 150);
-                    Barra(new Rect(Screen.width / 2 - 120, Screen.height - 120, 240, 12), 1 - Partida.Cansancio, new Color(0.35f, 0.5f, 0.3f));
+                    Etiqueta("Descansando junto al fogón…  (F o moverse: levantarse)", Ui.Alto - 150);
+                    Barra(new Rect(Ui.Ancho / 2 - 120, Ui.Alto - 120, 240, 12), 1 - Partida.Cansancio, new Color(0.35f, 0.5f, 0.3f));
                     break;
             }
 
-            if (avisoT > 0 && !string.IsNullOrEmpty(aviso)) Etiqueta(aviso, Screen.height - 200);
+            if (avisoT > 0 && !string.IsNullOrEmpty(aviso)) Etiqueta(aviso, Ui.Alto - 200);
         }
 
         void Etiqueta(string t, float y)
         {
             var tam = sEtiqueta.CalcSize(new GUIContent(t));
-            GUI.Label(new Rect((Screen.width - tam.x) / 2, y, tam.x, tam.y), t, sEtiqueta);
+            GUI.Label(new Rect((Ui.Ancho - tam.x) / 2, y, tam.x, tam.y), t, sEtiqueta);
         }
 
         /// Hambre y cansancio arriba al centro, solo cuando ya se notan (o con el morral abierto).
@@ -579,7 +578,7 @@ namespace Argentina1860
         {
             bool ver = haciendo == Haciendo.Morral || Partida.Hambre > 0.45f || Partida.Cansancio > 0.45f;
             if (!ver) return;
-            float w = 300, x = (Screen.width - w) / 2;
+            float w = 300, x = (Ui.Ancho - w) / 2;
             GUI.Box(new Rect(x, 10, w, 30), GUIContent.none, sCaja);
             GUI.Label(new Rect(x + 10, 14, 60, 20), "Hambre", sAyuda);
             Barra(new Rect(x + 66, 19, 70, 10), Partida.Hambre, Partida.Hambre > Partida.UMBRAL ? new Color(0.6f, 0.2f, 0.12f) : new Color(0.62f, 0.48f, 0.25f));
@@ -589,8 +588,8 @@ namespace Argentina1860
 
         void PanelMorral()
         {
-            float w = Mathf.Min(560, Screen.width - 32), h = Mathf.Min(460, Screen.height - 80);
-            GUILayout.BeginArea(new Rect((Screen.width - w) / 2, (Screen.height - h) / 2, w, h));
+            float w = Mathf.Min(560, Ui.Ancho - 32), h = Mathf.Min(460, Ui.Alto - 80);
+            GUILayout.BeginArea(new Rect((Ui.Ancho - w) / 2, (Ui.Alto - h) / 2, w, h));
             GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
             GUILayout.Label("Morral", sTitulo);
             GUILayout.Label($"$ {Partida.Monedas}  ·  Carga {Partida.Peso:0.#} de {Partida.CargaMaxima:0} kg{(Caballeriza.TieneCaballo ? " (con las alforjas del caballo)" : "")}", sTexto);
@@ -628,8 +627,8 @@ namespace Argentina1860
 
         void PanelFogon()
         {
-            float w = Mathf.Min(560, Screen.width - 32), h = Mathf.Min(400, Screen.height - 80);
-            GUILayout.BeginArea(new Rect((Screen.width - w) / 2, (Screen.height - h) / 2, w, h));
+            float w = Mathf.Min(560, Ui.Ancho - 32), h = Mathf.Min(400, Ui.Alto - 80);
+            GUILayout.BeginArea(new Rect((Ui.Ancho - w) / 2, (Ui.Alto - h) / 2, w, h));
             GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
             GUILayout.Label("Junto al fogón", sTitulo);
             scroll = GUILayout.BeginScrollView(scroll);
@@ -678,11 +677,11 @@ namespace Argentina1860
                 EstadoLance.Peleando => "Mantené F para recoger, soltá si la línea se tensa demasiado",
                 _ => "",
             };
-            if (txt.Length > 0) Etiqueta(txt, Screen.height - 160);
+            if (txt.Length > 0) Etiqueta(txt, Ui.Alto - 160);
             if (lance.Estado != EstadoLance.Peleando) return;
 
             // tensión: franja buena en verde; si llega a la derecha se corta
-            float w = 300, x = (Screen.width - w) / 2, y = Screen.height - 124;
+            float w = 300, x = (Ui.Ancho - w) / 2, y = Ui.Alto - 124;
             var c0 = GUI.color;
             GUI.color = new Color(0.2f, 0.16f, 0.12f, 0.6f);
             GUI.DrawTexture(new Rect(x, y, w, 16), blanco);

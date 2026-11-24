@@ -62,7 +62,10 @@ namespace Argentina1860
         public Color nieblaDia = new Color(0.72f, 0.74f, 0.71f);
         [Tooltip("Niebla baja que se junta en los bajos al amanecer y después de llover")]
         [Range(0, 1)] public float nieblaMatinal = 0.7f;
-        const float LAT = -34.6f, DECL = -19f;
+        const float LAT = -34.6f;
+        [Header("Estación")]
+        [Tooltip("Declinación del sol: 23,4 es el solsticio de invierno austral (sol bajo, que a mediodía queda a unos 32° y da sombras largas todo el día); 0 el equinoccio; -23,4 el verano (casi cenital)")]
+        [Range(-23.4f, 23.4f)] public float declinacion = 23.4f;
 
         // destinos del clima actual
         float nubObj, lluviaObj, vientoObj, rumboObj, duracion, humedad;
@@ -199,7 +202,7 @@ namespace Argentina1860
         void Sol(float dt)
         {
             // la hora del reloj va unos 40 minutos adelante del sol: el mediodía solar cae a las 12:40 y el sol se pone pasadas las 19:30
-            float h = (hora - 12.65f) * 15 * Mathf.Deg2Rad, fi = LAT * Mathf.Deg2Rad, de = DECL * Mathf.Deg2Rad;
+            float h = (hora - 12.65f) * 15 * Mathf.Deg2Rad, fi = LAT * Mathf.Deg2Rad, de = declinacion * Mathf.Deg2Rad;
             float este = -Mathf.Cos(de) * Mathf.Sin(h);
             float norte = Mathf.Cos(fi) * Mathf.Sin(de) - Mathf.Sin(fi) * Mathf.Cos(de) * Mathf.Cos(h);
             float arriba = Mathf.Sin(fi) * Mathf.Sin(de) + Mathf.Cos(fi) * Mathf.Cos(de) * Mathf.Cos(h);
@@ -216,9 +219,9 @@ namespace Argentina1860
                 var dirSol = arriba > -0.05f ? haciaSol : new Vector3(haciaSol.x, 0.02f, haciaSol.z).normalized;
                 sol.transform.rotation = Quaternion.LookRotation(-dirSol);
                 var dorado = new Color(1f, 0.58f, 0.32f);
-                var mediodia = new Color(1f, 0.9f, 0.74f);
+                var mediodia = new Color(1f, 0.86f, 0.68f);   // sol de invierno: siempre un poco cálido
                 sol.color = Color.Lerp(Color.Lerp(mediodia, dorado, bajo), new Color(0.8f, 0.82f, 0.86f), cubierto * 0.6f);
-                sol.intensity = 2.1f * dia * (1 - 0.65f * cubierto) + relampago * 2.5f;
+                sol.intensity = 2.3f * dia * (1 - 0.65f * cubierto) + relampago * 2.5f;
                 sol.shadowStrength = Mathf.Lerp(1, 0.35f, cubierto);
             }
             if (luna != null)
@@ -256,8 +259,46 @@ namespace Argentina1860
             RenderSettings.fogEndDistance = Mathf.Lerp(Mathf.Lerp(nieblaFin0, 420, madrugada), 600, lluvia) * (viento > 0.8f && humedad < 0.2f ? 0.75f : 1);   // el pampero levanta tierra
             nb = Color.Lerp(nb, new Color(0.78f, 0.8f, 0.8f) * Mathf.Lerp(0.3f, 1, dia), madrugada * 0.6f);
             RenderSettings.fogColor = nb;
+            ActualizarCielo(haciaSol, dia, bajo, cubierto, nb);
             var cam = Camera.main;
-            if (cam != null) cam.backgroundColor = nb;   // el horizonte se funde con la niebla
+            if (cam != null)
+            {
+                cam.backgroundColor = nb;   // si no hay cielo, el horizonte se funde con la niebla
+                if (matCielo != null && cam.clearFlags != CameraClearFlags.Skybox) cam.clearFlags = CameraClearFlags.Skybox;
+            }
+        }
+
+        // ---------- cielo ----------
+        Material matCielo;
+
+        /// Pasa al shader del cielo (Argentina/Cielo) la hora, la cobertura y los colores del momento. El horizonte es el color de la niebla,
+        /// así el campo lejano se funde con el cielo sin línea.
+        void ActualizarCielo(Vector3 haciaSol, float dia, float bajo, float cubierto, Color horizonte)
+        {
+            if (matCielo == null)
+            {
+                var sh = Shader.Find("Argentina/Cielo");
+                if (sh == null) return;
+                matCielo = new Material(sh) { name = "Cielo", hideFlags = HideFlags.DontSave };
+                RenderSettings.skybox = matCielo;
+            }
+            var cenitDia = new Color(0.33f, 0.52f, 0.78f);      // azul pálido de invierno
+            var cenitAtardecer = new Color(0.30f, 0.36f, 0.58f);
+            var cenitNoche = new Color(0.015f, 0.025f, 0.07f);
+            var cenitGris = new Color(0.48f, 0.51f, 0.56f);
+            var cenit = Color.Lerp(Color.Lerp(cenitNoche, cenitAtardecer, dia), cenitDia, dia * (1 - bajo));
+            cenit = Color.Lerp(cenit, cenitGris * Mathf.Lerp(0.15f, 1, dia), cubierto * 0.85f);
+            var dirLuna = new Vector3(-haciaSol.x * 0.6f, 0.75f, -haciaSol.z * 0.6f + 0.3f).normalized;
+            matCielo.SetVector("_CieloCenit", (Vector4)cenit.linear);
+            matCielo.SetVector("_CieloHorizonte", (Vector4)horizonte.linear);
+            matCielo.SetVector("_CieloSuelo", (Vector4)(horizonte * 0.8f).linear);
+            matCielo.SetVector("_CieloSolColor", sol != null ? (Vector4)sol.color.linear : new Vector4(1, 0.8f, 0.6f, 1));
+            matCielo.SetVector("_CieloSolDir", haciaSol);
+            matCielo.SetVector("_CieloLunaDir", dirLuna);
+            matCielo.SetFloat("_CieloNubes", Mathf.Clamp01(nubosidad * 1.1f));
+            matCielo.SetFloat("_CieloNoche", LucesDeNoche);
+            matCielo.SetFloat("_CieloLuz", Mathf.Lerp(0.15f, 1, dia));
+            matCielo.SetVector("_CieloViento", new Vector4(corrimiento.x * 0.0035f, corrimiento.y * 0.0035f, 0, 0));
         }
 
         // ---------- posproceso según la hora y el tiempo ----------

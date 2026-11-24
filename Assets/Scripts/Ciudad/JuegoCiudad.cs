@@ -370,19 +370,20 @@ namespace Argentina1860
             papel.Apply();
             var tinta = new Color(0.165f, 0.133f, 0.106f);
             sCaja = new GUIStyle(GUI.skin.box) { padding = new RectOffset(14, 14, 10, 12) };
-            sCaja.normal.background = papel;
+            sCaja.normal.background = papel; sCaja.border = Ui.Borde;
             sTitulo = new GUIStyle(GUI.skin.label) { fontSize = 17, fontStyle = FontStyle.Bold, wordWrap = true };
             sTitulo.normal.textColor = new Color(0.48f, 0.11f, 0.08f);
             sTexto = new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true };
             sTexto.normal.textColor = tinta;
             sEtiqueta = new GUIStyle(GUI.skin.box) { fontSize = 13, alignment = TextAnchor.MiddleCenter, padding = new RectOffset(8, 8, 3, 4), wordWrap = true };
-            sEtiqueta.normal.background = papel;
+            sEtiqueta.normal.background = papel; sEtiqueta.border = Ui.Borde;
             sEtiqueta.normal.textColor = tinta;
             sAyuda = new GUIStyle(sTexto) { fontSize = 13 };
         }
 
         void OnGUI()
         {
+            GUI.matrix = Ui.Matriz;
             if (!listo || jugador == null) return;
             Estilos();
             var cam = camara != null ? camara.GetComponent<Camera>() : Camera.main;
@@ -395,7 +396,7 @@ namespace Argentina1860
                     var sp = cam.WorldToScreenPoint(n.transform.position + Vector3.up * n.AltoEtiqueta);
                     if (sp.z < 0) continue;
                     var tam = sEtiqueta.CalcSize(new GUIContent(n.Nombre));
-                    GUI.Label(new Rect(sp.x - tam.x / 2, Screen.height - sp.y - tam.y, tam.x, tam.y), n.Nombre, sEtiqueta);
+                    GUI.Label(new Rect(sp.x / Ui.Escala - tam.x / 2, Ui.Alto - sp.y / Ui.Escala - tam.y, tam.x, tam.y), n.Nombre, sEtiqueta);
                 }
 
             var (titulo, texto) = OBJETIVOS[Mathf.Min(q, OBJETIVOS.Length - 1)];
@@ -411,7 +412,7 @@ namespace Argentina1860
             if (mapa != null)
             {
                 const float S = 240, esc = 0.9f;
-                var area = new Rect(Screen.width - S - 16, Screen.height - S - 16, S, S);
+                var area = new Rect(Ui.Ancho - S - 16, Ui.Alto - S - 16, S, S);
                 GUI.Box(new Rect(area.x - 3, area.y - 3, S + 6, S + 6), GUIContent.none, sCaja);
                 float x = pu.x, z = -pu.z, span = S / esc;
                 float u = (x + MAPA_R) * MAPA_ESC, v = (z + MAPA_R) * MAPA_ESC, W = mapa.width;
@@ -428,7 +429,7 @@ namespace Argentina1860
 
             if (tiempo < 20)
             {
-                GUILayout.BeginArea(new Rect(Screen.width - 296, 16, 280, 230));
+                GUILayout.BeginArea(new Rect(Ui.Ancho - 296, 16, 280, 230));
                 GUILayout.BeginVertical(sCaja);
                 GUILayout.Label("WASD / flechas: caminar\nShift: correr\nQ / R: girar la vista\nRueda: zoom\nE: hablar\nI: morral\n9: volver al pago" + (viajeRapido ? "\n1–8: viaje rápido (pruebas)" : ""), sAyuda);
                 GUILayout.EndVertical();
@@ -438,13 +439,13 @@ namespace Argentina1860
             if (avisoT > 0 && !string.IsNullOrEmpty(aviso))
             {
                 var tam = sEtiqueta.CalcSize(new GUIContent(aviso));
-                GUI.Label(new Rect((Screen.width - tam.x) / 2, Screen.height - 150, tam.x, tam.y), aviso, sEtiqueta);
+                GUI.Label(new Rect((Ui.Ancho - tam.x) / 2, Ui.Alto - 150, tam.x, tam.y), aviso, sEtiqueta);
             }
 
             if (hablando != null)
             {
-                float w = Mathf.Min(760, Screen.width - 32);
-                GUILayout.BeginArea(new Rect((Screen.width - w) / 2, Screen.height - 190, w, 174));
+                float w = Mathf.Min(760, Ui.Ancho - 32);
+                GUILayout.BeginArea(new Rect((Ui.Ancho - w) / 2, Ui.Alto - 190, w, 174));
                 GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
                 GUILayout.Label(hablando.Nombre, sTitulo);
                 GUILayout.Label(lineas[Mathf.Min(linea, lineas.Length - 1)], sTexto);
@@ -457,7 +458,7 @@ namespace Argentina1860
             {
                 var txt = "E  ·  Hablar con " + cercano.Nombre;
                 var tam = sEtiqueta.CalcSize(new GUIContent(txt));
-                GUI.Label(new Rect((Screen.width - tam.x) / 2, Screen.height - 90, tam.x, tam.y), txt, sEtiqueta);
+                GUI.Label(new Rect((Ui.Ancho - tam.x) / 2, Ui.Alto - 90, tam.x, tam.y), txt, sEtiqueta);
             }
         }
     }

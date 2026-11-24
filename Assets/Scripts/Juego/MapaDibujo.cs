@@ -250,19 +250,18 @@ namespace Argentina1860
             float S = area.width, esc = 0.6f, k = esc / ESC;
             float a = Mathf.PI / 2 - yaw, ca = Mathf.Cos(a), sa = Mathf.Sin(a);
             GUI.BeginGroup(area);
-            GUI.DrawTexture(new Rect(0, 0, S, S), Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0, new Color(0.886f, 0.827f, 0.682f), 0, 0);
             DibujarGirado(area, S, a, k, WX(px, pz));
 
             Vector2 Pant(float x, float z) { float dx = x - px, dz = z - pz; return new Vector2((dx * ca - dz * sa) * esc, (dx * sa + dz * ca) * esc); }
-            float M = S / 2 - 12;
+            float M = S / 2 - 14;
             var ocupado = new List<Rect>();
             void Marca(Lugar l, bool esDest)
             {
                 var sp = Pant(l.x, l.z);
                 float d = Mathf.Sqrt((l.x - px) * (l.x - px) + (l.z - pz) * (l.z - pz));
-                bool fuera = Mathf.Abs(sp.x) > M || Mathf.Abs(sp.y) > M;
+                bool fuera = sp.magnitude > M;
                 float X = sp.x, Y = sp.y;
-                if (fuera) { float f = M / Mathf.Max(Mathf.Abs(sp.x), Mathf.Abs(sp.y)); X *= f; Y *= f; }
+                if (fuera) { float f = M / sp.magnitude; X *= f; Y *= f; }
                 X += S / 2; Y += S / 2;
                 var col = esDest ? ROJO : new Color(0.227f, 0.165f, 0.11f);
                 string txt = l.n + (fuera || esDest ? " · " + Dist(d) : "");
@@ -270,7 +269,9 @@ namespace Argentina1860
                 var st = esDest ? sTxtB : sTxt;
                 var tam = st.CalcSize(new GUIContent(txt));
                 float tw = tam.x / 2 + 4;
-                float tx = Mathf.Clamp(X, tw, S - tw), ty = Mathf.Clamp(fuera ? (Y < S / 2 ? Y + 14 : Y - 14) : Y - 12, 9, S - 9);
+                float ty = Mathf.Clamp(fuera ? (Y < S / 2 ? Y + 14 : Y - 14) : Y - 12, 9, S - 9);
+                float lim = Mathf.Sqrt(Mathf.Max(0, (S / 2 - 6) * (S / 2 - 6) - (ty - S / 2) * (ty - S / 2)));   // ancho disponible a esa altura del círculo
+                float tx = lim > tw ? Mathf.Clamp(X, S / 2 - lim + tw, S / 2 + lim - tw) : S / 2;
                 var caja = new Rect(tx - tw, ty - 8, tw * 2, 16);
                 if (!esDest && ocupado.Exists(o => o.Overlaps(caja))) return;
                 ocupado.Add(caja);
@@ -283,7 +284,7 @@ namespace Argentina1860
                 if (!destino.HasValue || Mathf.Sqrt((l.x - destino.Value.x) * (l.x - destino.Value.x) + (l.z - destino.Value.z) * (l.z - destino.Value.z)) > 12) Marca(l, false);
             Flecha(S / 2, S / 2, Mathf.PI - rumbo + a, 8, TINTA);   // vos, mirando hacia donde caminás
             float nx = sa, ny = -ca;                               // el norte (z negativa del prototipo) en pantalla
-            Texto("N", S / 2 + nx * (S / 2 - 16), S / 2 + ny * (S / 2 - 16), ROJO, true, 13);
+            Texto("N", S / 2 + nx * (S / 2 - 15), S / 2 + ny * (S / 2 - 15), ROJO, true, 13);
             GUI.EndGroup();
         }
 
@@ -307,10 +308,11 @@ namespace Argentina1860
         {
             if (!hayPedido || Base == null) return;
             int S = Mathf.Max(16, Mathf.RoundToInt(pS));
-            if (rtMini == null || rtMini.width != S)
+            int T = Mathf.RoundToInt(S * Mathf.Max(2f, Ui.Escala * 1.3f));   // más resolución cuando la interfaz se agranda
+            if (rtMini == null || rtMini.width != T)
             {
                 if (rtMini != null) rtMini.Release();
-                rtMini = new RenderTexture(S, S, 0, RenderTextureFormat.ARGB32) { name = "Minimapa", filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
+                rtMini = new RenderTexture(T, T, 0, RenderTextureFormat.ARGB32) { name = "Minimapa", filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
             }
             if (matMapa == null) matMapa = new Material(Shader.Find("UI/Default")) { hideFlags = HideFlags.HideAndDontSave };
             matMapa.mainTexture = Base;
@@ -342,9 +344,40 @@ namespace Argentina1860
                     t = Tex(x0, y1); GL.TexCoord2(t.x, t.y); GL.Vertex3(x0, y1, 0);
                 }
             GL.End();
+            BorrarFuera(pS);
             GL.PopMatrix();
             RenderTexture.active = antes;
             hayPedido = false;
+        }
+
+        Material matBorrar;
+
+        /// Deja transparente todo lo que queda fuera del círculo inscripto (color del papel con alfa 0, para que el borde no quede oscuro).
+        void BorrarFuera(float S)
+        {
+            if (matBorrar == null)
+            {
+                matBorrar = new Material(Shader.Find("Hidden/Internal-Colored")) { hideFlags = HideFlags.HideAndDontSave };
+                matBorrar.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                matBorrar.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                matBorrar.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+                matBorrar.SetInt("_ZWrite", 0);
+                matBorrar.SetInt("_ZTest", (int)UnityEngine.Rendering.CompareFunction.Always);
+            }
+            matBorrar.SetPass(0);
+            float r = S / 2, c = S / 2;
+            const int N = 96;
+            GL.Begin(GL.QUADS);
+            GL.Color(new Color(0.886f, 0.827f, 0.682f, 0));
+            for (int i = 0; i < N; i++)
+            {
+                float a0 = i * 2 * Mathf.PI / N, a1 = (i + 1) * 2 * Mathf.PI / N;
+                GL.Vertex3(c + Mathf.Cos(a0) * (r - 0.5f), c + Mathf.Sin(a0) * (r - 0.5f), 0);
+                GL.Vertex3(c + Mathf.Cos(a0) * r * 1.6f, c + Mathf.Sin(a0) * r * 1.6f, 0);
+                GL.Vertex3(c + Mathf.Cos(a1) * r * 1.6f, c + Mathf.Sin(a1) * r * 1.6f, 0);
+                GL.Vertex3(c + Mathf.Cos(a1) * (r - 0.5f), c + Mathf.Sin(a1) * (r - 0.5f), 0);
+            }
+            GL.End();
         }
 
         /// Mapa grande con todo el pago a la vista.

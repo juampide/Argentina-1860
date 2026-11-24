@@ -33,6 +33,8 @@ namespace Argentina1860
         public Vector3? FocoForzado { get; set; }
         /// Vista forzada (por ejemplo, más cerca durante un diálogo).
         public float? VistaForzada { get; set; }
+        /// Apaga el recorte tramado de árboles y cercos (mientras la cámara de diálogo está en uso).
+        public bool RecorteApagado { get; set; }
 
         void OnEnable()
         {
@@ -87,7 +89,7 @@ namespace Argentina1860
             var pj = objetivo.position;
             Shader.SetGlobalVector(idXrayJug, new Vector4(pj.x, pj.y + 1, pj.z, pj.y));
             Shader.SetGlobalVector(idXrayDir, (mira - pos).normalized);
-            Shader.SetGlobalFloat(idXrayRad, Application.isPlaying ? radioRecorte : 0);
+            Shader.SetGlobalFloat(idXrayRad, Application.isPlaying && !RecorteApagado ? radioRecorte : 0);
             Shader.SetGlobalFloat(idXrayMax, transparenciaRecorte);
             // en modo edición solo se toca la cámara si cambió algo, para no marcar la escena como modificada
             if (!Application.isPlaying && (pos - transform.position).sqrMagnitude < 1e-4f && Mathf.Abs(cam.orthographicSize - vistaAct) < 1e-3f) return;

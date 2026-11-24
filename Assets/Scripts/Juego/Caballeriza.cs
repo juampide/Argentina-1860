@@ -176,21 +176,20 @@ namespace Argentina1860
         void Estilos()
         {
             if (sCaja != null && papel != null) return;
-            papel = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
-            papel.SetPixel(0, 0, new Color(0.945f, 0.902f, 0.804f, 0.94f));
-            papel.Apply();
+            papel = Ui.Papel;
             var tinta = new Color(0.165f, 0.133f, 0.106f);
             sCaja = new GUIStyle(GUI.skin.box) { padding = new RectOffset(12, 12, 8, 10) };
-            sCaja.normal.background = papel;
+            sCaja.normal.background = papel; sCaja.border = Ui.Borde;
             sTexto = new GUIStyle(GUI.skin.label) { fontSize = 13, wordWrap = true };
             sTexto.normal.textColor = tinta;
             sEtiqueta = new GUIStyle(GUI.skin.box) { fontSize = 13, alignment = TextAnchor.MiddleCenter, padding = new RectOffset(8, 8, 3, 4), wordWrap = true };
-            sEtiqueta.normal.background = papel;
+            sEtiqueta.normal.background = papel; sEtiqueta.border = Ui.Borde;
             sEtiqueta.normal.textColor = tinta;
         }
 
         void OnGUI()
         {
+            GUI.matrix = Ui.Matriz;
             if (jug == null) return;
             Estilos();
 
@@ -198,7 +197,7 @@ namespace Argentina1860
             {
                 // aliento del caballo y teclas, abajo a la izquierda
                 var c = jug.Montura;
-                var area = new Rect(16, Screen.height - 96, 250, 80);
+                var area = new Rect(16, Ui.Alto - 96, 250, 80);
                 GUI.Box(area, GUIContent.none, sCaja);
                 GUI.Label(new Rect(area.x + 12, area.y + 6, 226, 20), c.nombre + (c.Cansado ? " · cansado" : ""), sTexto);
                 var barra = new Rect(area.x + 12, area.y + 30, 226, 10);
@@ -212,22 +211,22 @@ namespace Argentina1860
             {
                 var txt = "E  ·  Montar al " + caballo.nombre;
                 var tam = sEtiqueta.CalcSize(new GUIContent(txt));
-                GUI.Label(new Rect((Screen.width - tam.x) / 2, Screen.height - 90, tam.x, tam.y), txt, sEtiqueta);
+                GUI.Label(new Rect((Ui.Ancho - tam.x) / 2, Ui.Alto - 90, tam.x, tam.y), txt, sEtiqueta);
             }
             else if (TieneCaballo && tiempo < 25)
             {
-                GUI.Label(new Rect(16, Screen.height - 44, 260, 28), "H: silbarle al " + Nombre, sEtiqueta);
+                GUI.Label(new Rect(16, Ui.Alto - 44, 260, 28), "H: silbarle al " + Nombre, sEtiqueta);
             }
             else if (TRUCOS && !TieneCaballo && tiempo < 25)
             {
-                GUI.Label(new Rect(16, Screen.height - 44, 260, 28), "O: darte un caballo (pruebas)", sEtiqueta);
+                GUI.Label(new Rect(16, Ui.Alto - 44, 260, 28), "O: darte un caballo (pruebas)", sEtiqueta);
             }
 
             if (avisoT > 0 && !string.IsNullOrEmpty(aviso))
             {
                 var tam = sEtiqueta.CalcSize(new GUIContent(aviso));
-                float w = Mathf.Min(tam.x, Screen.width * 0.7f);
-                GUI.Label(new Rect((Screen.width - w) / 2, Screen.height - 200, w, tam.y), aviso, sEtiqueta);
+                float w = Mathf.Min(tam.x, Ui.Ancho * 0.7f);
+                GUI.Label(new Rect((Ui.Ancho - w) / 2, Ui.Alto - 200, w, tam.y), aviso, sEtiqueta);
             }
         }
     }

@@ -16,6 +16,10 @@ namespace Argentina1860
         public string lugar;
         public Aspecto aspecto = new Aspecto();
 
+        [Header("Cámara")]
+        [Tooltip("Las conversaciones con este personaje usan la cámara de cine (planos general, medio y corto). Si no está tildada, quedan con la cámara isométrica. Ver Docs/guion/cinematicas.md")]
+        public bool conversacionCine;
+
         [Header("Diálogo (provisorio)")]
         [TextArea(2, 5)] public string[] lineas;
 

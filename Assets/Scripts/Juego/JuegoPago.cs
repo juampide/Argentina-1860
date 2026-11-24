@@ -45,7 +45,8 @@ namespace Argentina1860
         MapaDibujo mapa;
         readonly List<MapaDibujo.Lugar> lugares = new List<MapaDibujo.Lugar>();
         GUIStyle sCaja, sTitulo, sTexto, sEtiqueta, sAviso, sAyuda, sBoton, sCelda;
-        Texture2D papel;
+        GUIStyle sSub, sSubNombre, sSubAyuda, sPildora, sPildoraCaja, sTecla, sHud, sHudTitulo, sHudTexto;
+        Texture2D papel, degradado, oscuro, circulo;
 
         void Start()
         {
@@ -156,12 +157,14 @@ namespace Argentina1860
                 camara.VistaForzada = 7.5f;
                 camara.FocoForzado = (jugador.transform.position + n.transform.position) / 2;
             }
+            CamaraDialogo.Iniciar(this, n, lineas);   // conversaciones importantes: corte directo a la cámara de cine
         }
 
         void Avanzar()
         {
             linea++;
-            if (linea < lineas.Length) return;
+            if (linea < lineas.Length) { CamaraDialogo.Linea(linea); return; }
+            CamaraDialogo.Terminar();
             var fin = alTerminar;
             hablando = null;
             alTerminar = null;
@@ -384,20 +387,45 @@ namespace Argentina1860
         {
             // Unity descarga solo las texturas que cree que nadie usa (cuando sube la memoria) y no sabe que los
             // estilos del GUI apuntan a esta: sin DontUnloadUnusedAsset los cuadros se quedaban sin fondo.
-            if (sCaja != null && papel != null) return;
-            papel = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
-            papel.SetPixel(0, 0, new Color(0.945f, 0.902f, 0.804f, 0.94f));
-            papel.Apply();
+            if (sCaja != null && papel != null && degradado != null && oscuro != null && circulo != null) return;
+            // interfaz liviana, al estilo de los juegos de aventura: texto sobre degradado, avisos junto al personaje y paneles chicos a los bordes
+            degradado = new Texture2D(1, 64, TextureFormat.RGBA32, false) { hideFlags = HideFlags.HideAndDontSave, wrapMode = TextureWrapMode.Clamp };
+            for (int i = 0; i < 64; i++) degradado.SetPixel(0, i, new Color(0.05f, 0.04f, 0.03f, Mathf.Pow(1 - i / 63f, 1.6f) * 0.74f));   // i = 0 es abajo
+            degradado.Apply();
+            oscuro = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
+            oscuro.SetPixel(0, 0, new Color(0.06f, 0.05f, 0.04f, 0.6f));
+            oscuro.Apply();
+            circulo = Ui.Disco;
+            var crema = new Color(0.97f, 0.93f, 0.84f);
+            sSub = new GUIStyle(GUI.skin.label) { wordWrap = true, alignment = TextAnchor.UpperLeft };
+            sSub.normal.textColor = crema;
+            sSubNombre = new GUIStyle(sSub) { fontStyle = FontStyle.Bold };
+            sSubNombre.normal.textColor = new Color(0.93f, 0.72f, 0.45f);
+            sSubAyuda = new GUIStyle(sSub) { alignment = TextAnchor.LowerRight };
+            sSubAyuda.normal.textColor = new Color(crema.r, crema.g, crema.b, 0.65f);
+            sPildora = new GUIStyle(GUI.skin.label) { fontSize = 15, alignment = TextAnchor.MiddleLeft, wordWrap = false };
+            sPildora.normal.textColor = crema;
+            sPildoraCaja = new GUIStyle(GUI.skin.box);
+            sPildoraCaja.normal.background = Ui.Capsula; sPildoraCaja.border = Ui.BordeCapsula;
+            sTecla = new GUIStyle(GUI.skin.label) { fontSize = 15, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+            sTecla.normal.textColor = new Color(0.16f, 0.13f, 0.1f);
+            sHud = new GUIStyle(GUI.skin.box) { padding = new RectOffset(12, 12, 8, 10) };
+            sHud.normal.background = Ui.Oscuro; sHud.border = Ui.Borde;
+            sHudTitulo = new GUIStyle(GUI.skin.label) { fontSize = 15, fontStyle = FontStyle.Bold, wordWrap = true };
+            sHudTitulo.normal.textColor = new Color(0.93f, 0.72f, 0.45f);
+            sHudTexto = new GUIStyle(GUI.skin.label) { fontSize = 14, wordWrap = true };
+            sHudTexto.normal.textColor = crema;
+            papel = Ui.Papel;
             var tinta = new Color(0.165f, 0.133f, 0.106f);
             sCaja = new GUIStyle(GUI.skin.box) { padding = new RectOffset(14, 14, 10, 12) };
-            sCaja.normal.background = papel;
+            sCaja.normal.background = papel; sCaja.border = Ui.Borde;
             sTitulo = new GUIStyle(GUI.skin.label) { fontSize = 17, fontStyle = FontStyle.Bold, wordWrap = true };
             sTitulo.normal.textColor = new Color(0.48f, 0.11f, 0.08f);
             sTexto = new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true };
             sTexto.normal.textColor = tinta;
             sEtiqueta = new GUIStyle(GUI.skin.box) { fontSize = 13, alignment = TextAnchor.MiddleCenter, padding = new RectOffset(8, 8, 3, 4) };
-            sEtiqueta.normal.background = papel;
-            sEtiqueta.normal.textColor = tinta;
+            sEtiqueta.normal.background = Ui.Pildora; sEtiqueta.border = Ui.BordePildora;
+            sEtiqueta.normal.textColor = crema;
             sAviso = new GUIStyle(sEtiqueta) { fontSize = 15, fontStyle = FontStyle.Italic, wordWrap = true };
             sAyuda = new GUIStyle(sTexto) { fontSize = 13 };
             sBoton = new GUIStyle(GUI.skin.button) { fontSize = 13 };
@@ -412,13 +440,14 @@ namespace Argentina1860
 
         void OnGUI()
         {
+            GUI.matrix = Ui.Matriz;
             if (jugador == null) return;
             Estilos();
             var cam = camara != null ? camara.GetComponent<Camera>() : Camera.main;
             var p = jugador.transform.position;
 
             // nombres sobre los personajes cercanos
-            if (cam != null && hablando == null && !tienda)
+            if (cam != null && hablando == null && !tienda && !CamaraDialogo.Activa)
                 foreach (var n in npcs)
                 {
                     if (n == null) continue;
@@ -427,34 +456,42 @@ namespace Argentina1860
                     var sp = cam.WorldToScreenPoint(n.transform.position + Vector3.up * n.AltoEtiqueta);
                     if (sp.z < 0) continue;
                     var tam = sEtiqueta.CalcSize(new GUIContent(n.Nombre));
-                    GUI.Label(new Rect(sp.x - tam.x / 2, Screen.height - sp.y - tam.y, tam.x, tam.y), n.Nombre, sEtiqueta);
+                    GUI.Label(new Rect(sp.x / Ui.Escala - tam.x / 2, Ui.Alto - sp.y / Ui.Escala - tam.y, tam.x, tam.y), n.Nombre, sEtiqueta);
                 }
 
             // misión, monedas y lo que llevás
-            GUILayout.BeginArea(new Rect(16, 16, 400, 260));
-            GUILayout.BeginVertical(sCaja);
-            GUILayout.Label(misionTitulo, sTitulo);
-            GUILayout.Label(misionTexto, sTexto);
-            GUILayout.Label("$ " + monedas, sTexto);
-            GUILayout.Label($"Morral {Partida.Peso:0.#} kg (I) · Arreo nv {NivelArreo} · Comercio nv {NivelComercio} · Pesca nv {Partida.Nivel(Partida.PESCA)}", sAyuda);
-            GUILayout.EndVertical();
-            GUILayout.EndArea();
+            if (hablando == null)   // en una conversación no hay nada más en pantalla que el texto: que no tape a los personajes
+            {
+                GUILayout.BeginArea(new Rect(14, 14, 330, 200));
+                GUILayout.BeginVertical(sHud);
+                GUILayout.Label(misionTitulo, sHudTitulo);
+                GUILayout.Label(misionTexto, sHudTexto);
+                GUILayout.Label("$ " + monedas + "   ·   Morral " + Partida.Peso.ToString("0.#") + " kg (I)", sHudTexto);
+                GUILayout.EndVertical();
+                GUILayout.EndArea();
+            }
 
             // minimapa
-            const float S = 240;
+            const float S = 200;
             if (mapa != null && !mapaGrande && hablando == null && !tienda)
             {
-                var area = new Rect(Screen.width - S - 16, Screen.height - S - 16, S, S);
-                GUI.Box(new Rect(area.x - 3, area.y - 3, S + 6, S + 6), GUIContent.none, sCaja);
+                var area = new Rect(Ui.Ancho - S - 16, Ui.Alto - S - 16, S, S);
+                var cc0 = GUI.color;
+                GUI.color = new Color(0.06f, 0.05f, 0.04f, 0.7f);
+                GUI.DrawTexture(new Rect(area.x - 6, area.y - 6, S + 12, S + 12), circulo);   // fondo redondo
+                GUI.color = cc0;
                 mapa.DibujarMini(area, p.x, -p.z, Rumbo(), camara != null ? camara.YawVis : Mathf.PI * 0.75f, Lugares(), Destino());
+                var cc1 = GUI.color; GUI.color = new Color(0.93f, 0.72f, 0.45f, 0.9f);
+                GUI.DrawTexture(new Rect(area.x - 2, area.y - 2, S + 4, S + 4), Ui.Aro);   // aro dorado
+                GUI.color = cc1;
             }
 
             // ayuda de controles (se va sola)
-            if (tiempo < 25)
+            if (tiempo < 25 && hablando == null)
             {
-                GUILayout.BeginArea(new Rect(Screen.width - 296, 16, 280, 290));
-                GUILayout.BeginVertical(sCaja);
-                GUILayout.Label("WASD / flechas: caminar\nShift: correr\nQ / R: girar la vista\nRueda: zoom\nE: hablar, tranquera\nF: pescar, juntar, fogón\nI: morral\nM: mapa grande\nEsc: cerrar\n9: ir a Buenos Aires (pruebas)" +(viajeRapido ? "\n1–8: viaje rápido (pruebas)" : ""), sAyuda);
+                GUILayout.BeginArea(new Rect(Ui.Ancho - 296, 16, 280, 290));
+                GUILayout.BeginVertical(sHud);
+                GUILayout.Label("WASD / flechas: caminar\nShift: correr\nQ / R: girar la vista\nRueda: zoom\nE: hablar, tranquera\nF: pescar, juntar, fogón\nI: morral\nM: mapa grande\nEsc: cerrar\n9: ir a Buenos Aires (pruebas)" +(viajeRapido ? "\n1–8: viaje rápido (pruebas)" : ""), sHudTexto);
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
             }
@@ -463,49 +500,79 @@ namespace Argentina1860
             if (avisoT > 0 && !string.IsNullOrEmpty(aviso))
             {
                 var tam = sAviso.CalcSize(new GUIContent(aviso));
-                float w = Mathf.Clamp(tam.x + 24, 280, Screen.width * 0.7f);
+                float w = Mathf.Clamp(tam.x + 24, 280, Ui.Ancho * 0.7f);
                 float h = sAviso.CalcHeight(new GUIContent(aviso), w) + 14;   // la cursiva no entra justa
                 var c0 = GUI.color;
                 GUI.color = new Color(1, 1, 1, Mathf.Clamp01(avisoT / 0.5f));
-                GUI.Label(new Rect((Screen.width - w) / 2, Screen.height - 140 - h, w, h), aviso, sAviso);
+                GUI.Label(new Rect((Ui.Ancho - w) / 2, Ui.Alto - 140 - h, w, h), aviso, sAviso);
                 GUI.color = c0;
             }
 
             if (mapaGrande && mapa != null)
             {
-                float w = Mathf.Min(Screen.width - 80, (Screen.height - 80) * 4f / 3f), h = w * 3f / 4f;
-                var area = new Rect((Screen.width - w) / 2, (Screen.height - h) / 2, w, h);
+                float w = Mathf.Min(Ui.Ancho - 80, (Ui.Alto - 80) * 4f / 3f), h = w * 3f / 4f;
+                var area = new Rect((Ui.Ancho - w) / 2, (Ui.Alto - h) / 2, w, h);
                 GUI.Box(new Rect(area.x - 4, area.y - 4, w + 8, h + 8), GUIContent.none, sCaja);
                 var personas = npcs.Where(n => n != null).Select(n => new Vector2(n.transform.position.x, -n.transform.position.z)).ToList();
                 mapa.DibujarGrande(area, p.x, -p.z, Rumbo(), camara != null ? camara.YawVis : 0, Lugares(), Destino(), personas);
             }
 
             if (tienda) DibujarTienda();
-            else if (hablando != null)
-            {
-                float w = Mathf.Min(760, Screen.width - 32);
-                GUILayout.BeginArea(new Rect((Screen.width - w) / 2, Screen.height - 190, w, 174));
-                GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
-                GUILayout.Label(hablando.Nombre, sTitulo);
-                GUILayout.Label(lineas[Mathf.Min(linea, lineas.Length - 1)], sTexto);
-                GUILayout.FlexibleSpace();
-                GUILayout.Label("E para seguir", sAyuda);
-                GUILayout.EndVertical();
-                GUILayout.EndArea();
-            }
-            else if (cercano != null || cercaTranquera)
-            {
-                var txt = cercano != null ? "E  ·  Hablar con " + cercano.Nombre : "E  ·  " + (fauna.Tranq.abierta ? "Cerrar la tranquera" : "Abrir la tranquera");
-                var tam = sEtiqueta.CalcSize(new GUIContent(txt));
-                GUI.Label(new Rect((Screen.width - tam.x) / 2, Screen.height - 90, tam.x, tam.y), txt, sEtiqueta);
-            }
+            else if (hablando != null) DibujarSubtitulo();
+            else if ((cercano != null || cercaTranquera) && cam != null) DibujarAviso(cam);
+        }
+
+        // ---------- interfaz liviana ----------
+        static void ConSombra(Rect r, string t, GUIStyle s)
+        {
+            var c = s.normal.textColor;
+            s.normal.textColor = new Color(0, 0, 0, 0.85f);
+            GUI.Label(new Rect(r.x + 1.5f, r.y + 1.5f, r.width, r.height), t, s);
+            GUI.Label(new Rect(r.x - 1f, r.y + 1.5f, r.width, r.height), t, s);
+            s.normal.textColor = c;
+            GUI.Label(r, t, s);
+        }
+
+        /// La conversación se lee como un subtítulo: texto sobre un degradado al pie, sin caja, para que los personajes queden a la vista.
+        void DibujarSubtitulo()
+        {
+            int fs = Mathf.Clamp(Mathf.RoundToInt(Ui.Alto * 0.027f), 16, 30);
+            sSub.fontSize = fs; sSubNombre.fontSize = Mathf.RoundToInt(fs * 0.8f); sSubAyuda.fontSize = Mathf.RoundToInt(fs * 0.62f);
+            var texto = lineas[Mathf.Min(linea, lineas.Length - 1)];
+            bool gallego = PlanosDialogo.HablaElGallego(texto);
+            string quien = gallego ? "El Gallego" : hablando.Nombre;
+            string dicho = gallego ? texto.Substring(texto.IndexOf(':') + 1).Trim() : texto;
+            float w = Mathf.Min(Ui.Ancho * 0.64f, 900), x = (Ui.Ancho - w) / 2;
+            float hN = sSubNombre.CalcHeight(new GUIContent(quien), w), hT = sSub.CalcHeight(new GUIContent(dicho), w), hA = sSubAyuda.CalcHeight(new GUIContent("E ▸"), 80);
+            float total = hN + hT + 10, y = Ui.Alto - total - Ui.Alto * 0.045f;
+            float hG = total + Ui.Alto * 0.13f;
+            GUI.DrawTexture(new Rect(0, Ui.Alto - hG, Ui.Ancho, hG), degradado, ScaleMode.StretchToFill);
+            ConSombra(new Rect(x, y, w, hN), quien, sSubNombre);
+            ConSombra(new Rect(x, y + hN, w, hT), dicho, sSub);
+            ConSombra(new Rect(x + w - 80, y + total - hA, 80, hA), "E ▸", sSubAyuda);
+        }
+
+        /// "E  Hablar con…" junto al personaje (o la tranquera), con una teclita redonda, en vez de un cartel fijo al pie.
+        void DibujarAviso(Camera cam)
+        {
+            string verbo = cercano != null ? "Hablar con " + cercano.Nombre : (fauna.Tranq.abierta ? "Cerrar la tranquera" : "Abrir la tranquera");
+            var mundo = cercano != null ? cercano.transform.position + Vector3.up * (cercano.AltoEtiqueta * 0.5f) : fauna.Tranq.PosUnity + Vector3.up * 1.1f;
+            var sp = cam.WorldToScreenPoint(mundo);
+            if (sp.z < 0) return;
+            var tam = sPildora.CalcSize(new GUIContent(verbo));
+            float h = 32, w = tam.x + 46;
+            float x = Mathf.Clamp(sp.x / Ui.Escala + 30, 8, Ui.Ancho - w - 8), y = Mathf.Clamp(Ui.Alto - sp.y / Ui.Escala - h / 2, 8, Ui.Alto - h - 8);
+            GUI.Box(new Rect(x, y, w, h), GUIContent.none, sPildoraCaja);
+            var cc = GUI.color; GUI.color = new Color(0.95f, 0.9f, 0.8f); GUI.DrawTexture(new Rect(x + 4, y + 4, 24, 24), circulo); GUI.color = cc;
+            GUI.Label(new Rect(x + 4, y + 4, 24, 24), "E", sTecla);
+            GUI.Label(new Rect(x + 36, y, tam.x + 8, h), verbo, sPildora);
         }
 
         void DibujarTienda()
         {
-            float w = Mathf.Min(700, Screen.width - 32);
-            float h = Mathf.Min(460, Screen.height - 60);
-            GUILayout.BeginArea(new Rect((Screen.width - w) / 2, (Screen.height - h) / 2, w, h));
+            float w = Mathf.Min(700, Ui.Ancho - 32);
+            float h = Mathf.Min(460, Ui.Alto - 60);
+            GUILayout.BeginArea(new Rect((Ui.Ancho - w) / 2, (Ui.Alto - h) / 2, w, h));
             GUILayout.BeginVertical(sCaja, GUILayout.ExpandHeight(true));
             GUILayout.Label("Pulpería de Don Ramón", sTitulo);
             GUILayout.Label($"Tenés ${monedas} · Morral {Partida.Peso:0.#} de {Partida.CargaMaxima:0} kg · Comercio nivel {NivelComercio} (a más nivel, mejor precio). Los precios cambian con las noticias del camino.", sAyuda);
