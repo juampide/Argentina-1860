@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4804881741797139348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Pintura
+  m_EditorClassIdentifier: Argentina1860:Argentina1860:PinturaRenderFeature
+  m_Active: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28,7 +41,8 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: 8645394250831497916}
   - {fileID: 2837610812961903192}
-  m_RendererFeatureMap: ad6b866f10d7b46cbc0a0410449cfa7758d2660500386127l
+  - {fileID: -4804881741797139348}
+  m_RendererFeatureMap: ad6b866f10d7b46cbc0a0410449cfa7758d26605003861276cdc6b6083a151bdl
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3

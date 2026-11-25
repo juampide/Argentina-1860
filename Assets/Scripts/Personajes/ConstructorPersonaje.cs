@@ -24,7 +24,7 @@ namespace Argentina1860
 
             float cx = o.contextura > 0 ? o.contextura : 1;   // flaco o robusto: más ancho de hombros y de cintura
             int va = Mathf.Clamp(o.variante, 0, 3);
-            var g = new Nodo("modelo") { esc = v(0.92f * o.escala * cx, 0.92f * o.escala, 0.92f * o.escala * Mathf.Lerp(1, cx, 0.8f)) };
+            var g = new Nodo("modelo") { esc = v(0.88f * o.escala * cx, 0.99f * o.escala, 0.88f * o.escala * Mathf.Lerp(1, cx, 0.8f)) };   // más alto y flaco que antes (0,92 parejo): menos juguete
             var cuerpo = g.Hijo("cuerpo");
             bool conPiernas = estilo == Estilo.Levita || estilo == Estilo.Poncho || estilo == Estilo.Pregonero || estilo == Estilo.Quillango || estilo == Estilo.Soldado;
             var piernas = new List<Nodo>(); var rodillas = new List<Nodo>(); var brazos = new List<Nodo>(); var codos = new List<Nodo>();
@@ -261,11 +261,50 @@ namespace Argentina1860
             }
 
             // ---------- cabeza: faceta alargada, sin cara ----------
-            var cab = cuerpo.Hijo("cabeza", v(0, 1.4f, 0));
-            cab.Pieza(Tronco(0.045f, 0.05f, 0.12f, 5), piel, v(0, 0.03f, 0));
-            cab.Pieza(Geo.Ico(0.14f), piel, v(0, 0.22f, 0), default, v(0.88f, 1.28f, 0.98f));
-            cab.Pieza(Geo.Cono(0.03f, 0.08f, 3), pielOsc, v(0, 0.2f, 0.135f), v(PI / 2, 0, 0));                           // nariz: cuña
+            var cab = cuerpo.Hijo("cabeza", v(0, 1.37f, 0));   // más baja que antes: cuello corto
+            cab.Pieza(Tronco(0.05f, 0.056f, 0.12f, 5), piel, v(0, 0.04f, 0));
+            // cabeza modelada por anillos (mentón, mandíbula, pómulos, frente, cráneo): una cara con volumen, no un triángulo.
+            // El Loft corre a lo largo de z: se gira para que z sea la altura; "y" del anillo es hacia atrás (-profundidad).
+            var anillos = new[]
+            {
+                new Geo.Seccion(0.055f, 0.040f, 0.050f, -0.030f),   // mentón
+                new Geo.Seccion(0.100f, 0.092f, 0.092f, -0.020f),   // mandíbula
+                new Geo.Seccion(0.170f, 0.122f, 0.118f, -0.010f),   // pómulos
+                new Geo.Seccion(0.250f, 0.128f, 0.124f, -0.006f),   // ojos y ceja
+                new Geo.Seccion(0.320f, 0.124f, 0.124f, 0.000f),    // sien
+                new Geo.Seccion(0.385f, 0.080f, 0.090f, 0.010f),    // coronilla
+            };
+            cab.Pieza(Geo.Loft(anillos, 12), piel, Vector3.zero, v(-PI / 2, 0, 0));
+            foreach (var s in new[] { -1f, 1f })
+                cab.Pieza(Geo.Caja(0.018f, 0.062f, 0.04f), pielOsc, v(s * 0.127f, 0.215f, 0.0f), v(0, 0, s * 0.12f));       // orejas
+            cab.Pieza(Geo.Caja(0.03f, 0.075f, 0.03f), C(Conv.Aclara(o.piel, 0.9f)), v(0, 0.215f, 0.138f));                                       // puente de la nariz
+            cab.Pieza(Geo.Caja(0.044f, 0.024f, 0.04f), pielOsc, v(0, 0.178f, 0.14f));                                        // punta de la nariz
+            cab.Pieza(Geo.Caja(0.05f, 0.01f, 0.03f), C(Color.Lerp(o.piel, Conv.Hex("#5a2c24"), 0.4f)), v(0, 0.158f, 0.125f));   // sombra bajo la nariz
             const float zc = 0.12f;
+
+            // facciones mínimas: ceja marcada, ojos hundidos en sombra, pómulos y una boca apretada; con el pelo y el sombrero
+            // encima hacen una mirada seria y cansada en vez de una bola de color
+            // (inclinación de las cejas: + el extremo de adentro baja = enojo; - sube = tristeza), párpado, comisuras de la boca (+ sonrisa), ojeras
+            float ceja = 0, ceyY = 0, parpado = 0.006f, comisura = 0, ojeras = 0, bocaAncho = 0.05f;
+            switch (o.expresion)
+            {
+                case Expresion.Dura:    ceja = 0.32f; ceyY = -0.004f; parpado = 0.011f; comisura = -0.18f; bocaAncho = 0.06f; break;
+                case Expresion.Cansada: ceja = -0.2f; ceyY = 0f; parpado = 0.014f; comisura = -0.25f; ojeras = 1; break;
+                case Expresion.Amable:  ceja = -0.12f; ceyY = 0.008f; parpado = 0.004f; comisura = 0.45f; bocaAncho = 0.06f; break;
+                case Expresion.Triste:  ceja = -0.42f; ceyY = 0.004f; parpado = 0.012f; comisura = -0.4f; ojeras = 0.6f; break;
+                case Expresion.Enojado: ceja = 0.55f; ceyY = -0.008f; parpado = 0.016f; comisura = -0.2f; bocaAncho = 0.055f; break;
+            }
+            string cejaMat = C(Color.Lerp(o.pelo, Conv.Hex("#1b130f"), 0.45f)), ojo = "#17100c", boca = C(Color.Lerp(o.piel, Conv.Hex("#6e2f28"), 0.65f)), sombraOjos = C(Conv.Aclara(o.piel, 0.6f));
+            foreach (var s in new[] { -1f, 1f })
+            {
+                cab.Pieza(Geo.Caja(0.07f, 0.04f, 0.012f), "#ece4d0", v(s * 0.054f, 0.238f, 0.121f));                          // blanco del ojo
+                cab.Pieza(Geo.Caja(0.03f, 0.038f, 0.016f), ojo, v(s * 0.054f, 0.238f, 0.124f));                                 // pupila
+                cab.Pieza(Geo.Caja(0.076f, parpado + 0.008f, 0.018f), pielOsc, v(s * 0.054f, 0.262f - parpado * 0.4f, 0.123f), v(0, 0, s * ceja * 0.25f));   // párpado
+                cab.Pieza(Geo.Caja(0.082f, 0.02f, 0.014f), cejaMat, v(s * 0.056f, 0.286f + ceyY, 0.118f), v(0, 0, s * ceja));    // ceja
+                if (ojeras > 0) cab.Pieza(Geo.Caja(0.062f, 0.014f * ojeras + 0.004f, 0.01f), sombraOjos, v(s * 0.054f, 0.214f, 0.12f));   // ojera
+                cab.Pieza(Geo.Caja(bocaAncho * 0.6f, 0.017f, 0.016f), boca, v(s * bocaAncho * 0.6f, 0.136f + comisura * 0.026f, 0.112f), v(0, 0, s * comisura * 0.9f));   // comisura
+            }
+            cab.Pieza(Geo.Caja(bocaAncho * 0.7f, 0.018f, 0.016f), boca, v(0, 0.136f, 0.115f));                                  // labios
 
             void Puas(int n, float r, float y, float largo, float ancho)
             {
@@ -278,23 +317,23 @@ namespace Argentina1860
             switch (o.PeinadoReal)
             {
                 case Peinado.Puas:
-                    cab.Pieza(Geo.Ico(0.14f), pelo, v(0, 0.3f, -0.03f), default, v(0.9f, 0.7f, 1.0f));
+                    cab.Pieza(Geo.Ico(0.14f), pelo, v(0, 0.34f, 0f), default, v(1.0f, 0.56f, 1.0f));
                     Puas(7, 0.1f, 0.4f, 0.12f, 0.045f);
                     break;
                 case Peinado.Corto:
-                    cab.Pieza(Geo.Ico(0.145f), pelo, v(0, 0.3f, -0.025f), default, v(0.92f, 0.75f, 1.02f));
+                    cab.Pieza(Geo.Ico(0.14f), pelo, v(0, 0.34f, 0f), default, v(1.0f, 0.56f, 1.0f));
                     break;
                 case Peinado.Canoso:
                     foreach (var s in new[] { -1f, 1f }) cab.Pieza(Geo.Cono(0.06f, 0.16f, 4), pelo, v(s * 0.14f, 0.2f, -0.02f), v(0, 0, s * 1.3f));
                     cab.Pieza(Geo.Cono(0.07f, 0.16f, 4), pelo, v(0, 0.2f, -0.13f), v(-1.3f, 0, 0));
                     break;
                 case Peinado.Largo:
-                    cab.Pieza(Geo.Ico(0.145f), pelo, v(0, 0.29f, -0.03f), default, v(0.94f, 0.8f, 1.02f));
+                    cab.Pieza(Geo.Ico(0.14f), pelo, v(0, 0.34f, 0f), default, v(1.0f, 0.56f, 1.0f));
                     cab.Pieza(Geo.Caja(0.27f, 0.32f, 0.08f), pelo, v(0, 0.1f, -0.12f));
                     foreach (var s in new[] { -1f, 1f }) cab.Pieza(Geo.Caja(0.04f, 0.18f, 0.08f), pelo, v(s * 0.13f, 0.2f, 0.03f));
                     break;
                 case Peinado.Trenzas:
-                    cab.Pieza(Geo.Ico(0.145f), pelo, v(0, 0.29f, -0.03f), default, v(0.94f, 0.8f, 1.02f));
+                    cab.Pieza(Geo.Ico(0.14f), pelo, v(0, 0.34f, 0f), default, v(1.0f, 0.56f, 1.0f));
                     cab.Pieza(Geo.Caja(0.25f, 0.22f, 0.06f), pelo, v(0, 0.17f, -0.12f));
                     foreach (var s in new[] { -1f, 1f })                                                                   // dos trenzas al frente
                     {
@@ -303,7 +342,7 @@ namespace Argentina1860
                     }
                     break;
                 case Peinado.Rodete:
-                    cab.Pieza(Geo.Ico(0.15f), pelo, v(0, 0.28f, -0.03f), default, v(0.96f, 0.85f, 1.05f));
+                    cab.Pieza(Geo.Ico(0.14f), pelo, v(0, 0.34f, 0f), default, v(1.0f, 0.56f, 1.0f));
                     foreach (var s in new[] { -1f, 1f }) cab.Pieza(Geo.Caja(0.045f, 0.24f, 0.12f), pelo, v(s * 0.13f, 0.17f, -0.02f));
                     cab.Pieza(Geo.Ico(0.09f), pelo, v(0, 0.4f, -0.14f));                                                   // rodete
                     bool tapada = o.sombrero == Sombrero.Panuelo || o.sombrero == Sombrero.Mantilla;

@@ -223,13 +223,40 @@ namespace Argentina1860
 
         void Flecha(float x, float y, float angRad, float r, Color col)
         {
-            var m = GUI.matrix;
-            GUIUtility.RotateAroundPivot(angRad * Mathf.Rad2Deg, new Vector2(x, y));
+            // sin girar la matriz del GUI (se corría con la escala de la interfaz): cada ángulo tiene su textura ya girada
             var c0 = GUI.color;
             GUI.color = col;
-            GUI.DrawTexture(new Rect(x - r * 1.3f, y - r * 1.3f, r * 2.6f, r * 2.6f), flecha);
+            GUI.DrawTexture(new Rect(x - r * 1.95f, y - r * 1.95f, r * 3.9f, r * 3.9f), FlechaGirada(angRad));
             GUI.color = c0;
-            GUI.matrix = m;
+        }
+
+        const int PASOS = 72;
+        readonly Texture2D[] giradas = new Texture2D[PASOS];
+
+        Texture2D FlechaGirada(float angRad)
+        {
+            int i = Mathf.RoundToInt(angRad / (2 * Mathf.PI) * PASOS) % PASOS;
+            if (i < 0) i += PASOS;
+            if (giradas[i] != null) return giradas[i];
+            const int F = 48;
+            float th = i * 2 * Mathf.PI / PASOS, c = Mathf.Cos(th), s = Mathf.Sin(th);
+            var t = new Texture2D(F, F, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp, hideFlags = HideFlags.HideAndDontSave };
+            for (int y = 0; y < F; y++)
+                for (int x = 0; x < F; x++)
+                {
+                    int n = 0;
+                    for (int sy = 0; sy < 2; sy++)
+                        for (int sx = 0; sx < 2; sx++)
+                        {
+                            float u = (x + 0.25f + 0.5f * sx) / F * 2 - 1, v = 1 - (y + 0.25f + 0.5f * sy) / F * 2;
+                            // el cuadro se escala 1.5 veces (la flecha entera cabe aunque gire)
+                            u *= 1.5f; v *= 1.5f;
+                            if (DentroFlecha(u * c + v * s, -u * s + v * c)) n++;
+                        }
+                    t.SetPixel(x, y, new Color(1, 1, 1, n / 4f));
+                }
+            t.Apply();
+            return giradas[i] = t;
         }
 
         void Punto(float x, float y, float r, Color col)

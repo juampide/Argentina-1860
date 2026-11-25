@@ -7,6 +7,7 @@ namespace Argentina1860
     public enum Sombrero { Ninguno, Copa, Ala, Bonete, Kepi, Gorra, Vincha, Panuelo, Mantilla, Teja }
     public enum Peinado { SegunEstilo, Puas, Corto, Canoso, Largo, Rodete, Trenzas }
     public enum Bigote { Ninguno, Fino, Manubrio }
+    public enum Expresion { Neutra, Dura, Cansada, Amable, Triste, Enojado }
     public enum Accesorio { Ninguno, Fusil, Canasta, Barril, Guitarra, Cajon, Lanza }
 
     /// <summary>
@@ -22,6 +23,8 @@ namespace Argentina1860
         public Peinado peinado = Peinado.SegunEstilo;
         public bool barba;
         public Bigote bigote = Bigote.Ninguno;
+        [Tooltip("Gesto de la cara: cejas, párpados y boca")]
+        public Expresion expresion = Expresion.Neutra;
 
         [Header("Ropa")]
         [Tooltip("Levita, vestido, chaleco del pregonero, kepi")]
