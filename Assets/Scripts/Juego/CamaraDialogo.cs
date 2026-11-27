@@ -47,6 +47,9 @@ namespace Argentina1860
     {
         static CamaraDialogo instancia;
         public static bool Activa => instancia != null && instancia.activa;
+        /// Con quién se está hablando ahora (el NPC), o null; y si es él quien dice la línea actual.
+        public static Transform Interlocutor => Activa ? instancia.otro : null;
+        public static bool HablaElOtro => Activa && !instancia.hablaGallego;
 
         Camera baseCam, cine;
         CamaraIsometrica iso;
@@ -145,6 +148,9 @@ namespace Argentina1860
             desdeGeneral = plano == Plano.General ? 0 : desdeGeneral + 1;
             hablaGallego = habla;
             indice = i;
+            var quienHabla = habla ? gallego : otro;   // mueve la boca del que habla, si su modelo tiene cara con formas
+            var cara = quienHabla != null ? quienHabla.GetComponentInChildren<CaraBlender>() : null;
+            if (cara != null) cara.Hablar(lineas[i]);        // la boca sigue el texto y la cara acompaña lo que dice
             if (!Poner(plano)) Poner(Plano.General);
         }
 
@@ -162,6 +168,14 @@ namespace Argentina1860
         float Ojos(Transform t)
         {
             if (ojos.TryGetValue(t, out var h)) return h;
+            // modelo con esqueleto (Blender): los ojos están 7,4 cm sobre el inicio del hueso de la cabeza
+            foreach (var hueso in t.GetComponentsInChildren<Transform>())
+                if (hueso.name == "Head")
+                {
+                    h = Mathf.Clamp(hueso.position.y - t.position.y + 0.074f * hueso.lossyScale.y, 1.2f, 2.2f);
+                    ojos[t] = h;
+                    return h;
+                }
             var rs = t.GetComponentsInChildren<Renderer>();
             float tope = 0;
             foreach (var r in rs) if (r.enabled && !(r is ParticleSystemRenderer)) tope = Mathf.Max(tope, r.bounds.max.y - t.position.y);

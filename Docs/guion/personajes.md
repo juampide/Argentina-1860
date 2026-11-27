@@ -126,6 +126,7 @@ Cada ficha tiene:
 - **Rol**: jefe del fortín.
 - **Quiere**: refuerzos y provisiones que no llegan, porque la tropa está en la guerra del Paraguay.
 - **Voz**: militar, correcta, cansada.
+- **Aspecto**: oficial flaco, de unos cuarenta años, cara de cansancio (ojeras, mejillas hundidas, bigote), pelo corto peinado hacia atrás. Saco azul corto de una hilera de botones, cuello y puños oscuros, correaje de cuero con tres cartucheras, pantalón recto, botines negros y kepí. **Primer personaje con modelo propio hecho en Blender** (`Assets/Modelos/Personajes/Obregon.fbx`, ver `Docs/mundo/personajes-blender.md`); sus conversaciones usan la cámara de cine.
 - **Función**: **la frontera oficial**. En la etapa 1 es el que le dice al Gallego que su tierra está del otro lado de la frontera. Puede pedir que se vigile o se lleve un mensaje.
 - **En el malón**: el fortín no llega a tiempo. Después necesita un culpable.
 

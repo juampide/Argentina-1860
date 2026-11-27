@@ -40,3 +40,9 @@ sysinfo.txt
 # Prototipo web (referencia)
 node_modules/
 dist/
+
+# Animaciones de Mixamo: no se redistribuyen sueltas (se regeneran con Arte/blender/retarget_mixamo.py)
+Assets/Modelos/Animaciones/
+Assets/Modelos/Animaciones.meta
+Assets/Resources/Animaciones/
+Assets/Resources/Animaciones.meta

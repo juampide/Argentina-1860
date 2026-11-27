@@ -53,7 +53,7 @@ La **gente sin nombre** sale de `Variedad.cs`: gaucho, paisana, señora, caballe
 | Carmen Larralde | Miriñaque con volados |
 | Don Vicente Larralde | Levita con chaleco claro, robusto |
 | Don Rufino Aramburu | Levita larga, robusto |
-| Teniente Obregón | Saco corto, flaco |
+| Teniente Obregón | **Modelo propio de Blender**: saco azul corto, correaje y cartucheras, pantalón recto, botines y kepí. Se asigna en la ficha (campo *Modelo propio*); el resto de las fichas sigue con el modelo armado por código |
 | El centinela (ciudad) | Soldado de línea |
 
 Ya se usan en la gente sin nombre: los paisanos de los fogones (gauchos con el poncho al hombro o puesto, paisanas con pañuelo y rebozo) y la ronda del fortín (estilo Soldado). Los personajes con ficha **no se cambiaron**: eso lo decide diseño en cada ficha (ver "Para decidir").

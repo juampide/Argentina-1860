@@ -22,6 +22,7 @@ MonoBehaviour:
     peinado: 2
     barba: 0
     bigote: 1
+    expresion: 2
     ropa: {r: 0.17254902, g: 0.24313726, b: 0.41960785, a: 1}
     ropa2: {r: 0.95686275, g: 0.93333334, b: 0.8627451, a: 1}
     chaleco: {r: 0.7882353, g: 0.63529414, b: 0.15294118, a: 1}
@@ -35,6 +36,9 @@ MonoBehaviour:
     escala: 1
     contextura: 0.92
     variante: 1
+  modeloBlender: {fileID: 919132149155446097, guid: c3e6aae41f657dc438588cff19cd7c82, type: 3}
+  escalaModelo: 1.1
+  conversacionCine: 1
   lineas:
   - "Teniente Obreg\xF3n, a su servicio. Este fort\xEDn tiene pocos hombres y menos provisiones, pero la frontera no se cuida sola."
   - "Si ve rastros o gente extra\xF1a, av\xEDseme. Y no ande solo de noche."

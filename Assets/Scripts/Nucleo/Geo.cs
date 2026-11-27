@@ -14,6 +14,10 @@ namespace Argentina1860
         public readonly List<Vector3> v = new List<Vector3>();
         public readonly List<Vector2> uv = new List<Vector2>();
 
+        /// Si es true, las normales se suavizan entre caras vecinas con poca diferencia de ángulo (el resto queda con aristas duras).
+        public bool suave;
+        public Geo Suave() { suave = true; return this; }
+
         void T(Vector3 a, Vector3 b, Vector3 c) { T(a, b, c, Vector2.zero, Vector2.zero, Vector2.zero); }
 
         /// Agrega un triángulo suelto (orden antihorario visto desde afuera, como en three.js).

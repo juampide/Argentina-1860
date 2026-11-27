@@ -111,6 +111,31 @@ namespace Argentina1860
                 File.WriteAllBytes(Path.Combine(dir, "cuerpos_" + (h + 1) + ".png"), hojaCue.EncodeToPNG());
                 Destroy(hojaRet); Destroy(hojaCue);
             }
+            // comparación: arriba como antes (facetado y color liso), abajo con normales suaves y material con detalle; retrato y cuerpo entero de 5 personajes
+            {
+                bool previo = ConstructorPersonaje.Suavizar, previoDet = ConstructorPersonaje.ConDetalle;
+                int cant = Mathf.Min(5, aspectos.Count);
+                var hojaCmp = new Texture2D(360 * cant, 640 * 2, TextureFormat.RGB24, false);
+                for (int fila = 0; fila < 2; fila++)
+                {
+                    ConstructorPersonaje.Suavizar = fila == 1; ConstructorPersonaje.ConDetalle = fila == 1;
+                    for (int i = 0; i < cant; i++)
+                    {
+                        var asp = JsonUtility.FromJson<Aspecto>(JsonUtility.ToJson(aspectos[(i * 2) % aspectos.Count].Item2));
+                        var modelo = new GameObject("comparación").transform;
+                        modelo.SetParent(raiz, false);
+                        ConstructorPersonaje.Construir(modelo, asp, null);
+                        yield return null;
+                        float esc = Mathf.Max(0.5f, asp.escala);
+                        Foto(cam, centro + new Vector3(0, 1.2f * esc, 3.0f), centro + new Vector3(0, 1.2f * esc, 0), 26, 360, 640, hojaCmp, i * 360, (1 - fila) * 640);
+                        Destroy(modelo.gameObject);
+                        yield return null;
+                    }
+                }
+                ConstructorPersonaje.Suavizar = previo; ConstructorPersonaje.ConDetalle = previoDet;
+                File.WriteAllBytes(Path.Combine(dir, "comparacion_suave.png"), hojaCmp.EncodeToPNG());
+                Destroy(hojaCmp);
+            }
             // una hoja con todas las expresiones sobre el mismo personaje (el primero sin barba ni bigote)
             {
                 var base0 = aspectos[0];

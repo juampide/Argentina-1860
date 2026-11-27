@@ -14,6 +14,12 @@ namespace Argentina1860
         static Vector3 S(float s) => new Vector3(s, s, s);
         const float PI = Mathf.PI;
 
+        /// Normales suaves en las formas redondas (y más lados en brazos, piernas y cuello): look más blando sin más polígonos visibles. Se puede apagar para comparar.
+        public static bool Suavizar = true;
+
+        /// Material con detalle de superficie (manchas, trama de tela, mugre) en vez de colores lisos. Se puede apagar para comparar.
+        public static bool ConDetalle = true;
+
         public static AnimPersonaje Construir(Transform padre, Aspecto o, Func<Mesh, Mesh> registrar)
         {
             string C(Color c) => Conv.Clave(c);
@@ -30,7 +36,8 @@ namespace Argentina1860
             var piernas = new List<Nodo>(); var rodillas = new List<Nodo>(); var brazos = new List<Nodo>(); var codos = new List<Nodo>();
             const float CAD = 0.86f;
 
-            Geo Tronco(float rs, float ri, float h, int seg = 6, bool abierto = false) => Geo.Cilindro(rs, ri, h, seg, abierto);
+            Geo Tronco(float rs, float ri, float h, int seg = 6, bool abierto = false) { var t = Geo.Cilindro(rs, ri, h, seg, abierto); return Suavizar ? t.Suave() : t; }
+            int Lados(int n) => Suavizar ? 8 : n;   // lados de piernas, brazos y cuello
 
             // ---------- piernas flacas y botas grandes ----------
             if (conPiernas)
@@ -40,9 +47,9 @@ namespace Argentina1860
                     bool gaucho = estilo == Estilo.Poncho || (estilo == Estilo.Soldado && va == 2);
                     bool quillango = estilo == Estilo.Quillango;
                     string mP = gaucho ? "#efe6d0" : C(o.pantalon);                           // con quillango, el chiripá
-                    cad.Pieza(Tronco(gaucho ? 0.1f : 0.072f, gaucho ? 0.09f : 0.056f, 0.44f, 5), mP, v(0, -0.2f, 0));
+                    cad.Pieza(Tronco(gaucho ? 0.1f : 0.072f, gaucho ? 0.09f : 0.056f, 0.44f, Lados(5)), mP, v(0, -0.2f, 0));
                     var rod = cad.Hijo("rodilla", v(0, -0.42f, 0));
-                    rod.Pieza(Tronco(gaucho ? 0.088f : 0.056f, gaucho ? 0.07f : 0.046f, 0.4f, 5), mP, v(0, -0.18f, 0));
+                    rod.Pieza(Tronco(gaucho ? 0.088f : 0.056f, gaucho ? 0.07f : 0.046f, 0.4f, Lados(5)), mP, v(0, -0.18f, 0));
                     if (gaucho)
                     {
                         // calzoncillo cribado: termina en flecos sobre la bota de potro
@@ -245,9 +252,9 @@ namespace Argentina1860
             {
                 var hom = cuerpo.Hijo(s < 0 ? "hombro_I" : "hombro_D", v(s * anchoHombro, 1.33f, 0));
                 if (!sinHombro) hom.Pieza(Geo.Octa(0.06f), mangas, Vector3.zero);
-                hom.Pieza(Tronco(0.05f, 0.042f, 0.3f, 5), mangas, v(0, -0.14f, 0));
+                hom.Pieza(Tronco(0.05f, 0.042f, 0.3f, Lados(5)), mangas, v(0, -0.14f, 0));
                 var cod = hom.Hijo("codo", v(0, -0.29f, 0));
-                cod.Pieza(Tronco(0.042f, 0.036f, 0.28f, 5), antebrazoPiel ? piel : mangas, v(0, -0.13f, 0));
+                cod.Pieza(Tronco(0.042f, 0.036f, 0.28f, Lados(5)), antebrazoPiel ? piel : mangas, v(0, -0.13f, 0));
                 if (punos) cod.Pieza(Tronco(0.058f, 0.044f, 0.07f, 5), estilo == Estilo.Soldado ? "#a02a20" : crema, v(0, -0.26f, 0));   // puño
                 if (estilo == Estilo.Mirinaque) cod.Pieza(Tronco(0.05f, 0.12f, 0.2f, 6, true), mangas, v(0, -0.17f, 0));   // manga pagoda
                 cod.Pieza(Geo.Octa(0.055f), guante ?? piel, v(0, -0.34f, 0.01f), default, v(0.85f, 1.25f, 0.8f));        // mano grande
@@ -262,7 +269,7 @@ namespace Argentina1860
 
             // ---------- cabeza: faceta alargada, sin cara ----------
             var cab = cuerpo.Hijo("cabeza", v(0, 1.37f, 0));   // más baja que antes: cuello corto
-            cab.Pieza(Tronco(0.05f, 0.056f, 0.12f, 5), piel, v(0, 0.04f, 0));
+            cab.Pieza(Tronco(0.05f, 0.056f, 0.12f, Lados(5)), piel, v(0, 0.04f, 0));
             // cabeza modelada por anillos (mentón, mandíbula, pómulos, frente, cráneo): una cara con volumen, no un triángulo.
             // El Loft corre a lo largo de z: se gira para que z sea la altura; "y" del anillo es hacia atrás (-profundidad).
             var anillos = new[]
@@ -274,7 +281,7 @@ namespace Argentina1860
                 new Geo.Seccion(0.320f, 0.124f, 0.124f, 0.000f),    // sien
                 new Geo.Seccion(0.385f, 0.080f, 0.090f, 0.010f),    // coronilla
             };
-            cab.Pieza(Geo.Loft(anillos, 12), piel, Vector3.zero, v(-PI / 2, 0, 0));
+            cab.Pieza(Suavizar ? Geo.Loft(anillos, 12).Suave() : Geo.Loft(anillos, 12), piel, Vector3.zero, v(-PI / 2, 0, 0));
             foreach (var s in new[] { -1f, 1f })
                 cab.Pieza(Geo.Caja(0.018f, 0.062f, 0.04f), pielOsc, v(s * 0.127f, 0.215f, 0.0f), v(0, 0, s * 0.12f));       // orejas
             cab.Pieza(Geo.Caja(0.03f, 0.075f, 0.03f), C(Conv.Aclara(o.piel, 0.9f)), v(0, 0.215f, 0.138f));                                       // puente de la nariz
@@ -492,7 +499,8 @@ namespace Argentina1860
             frente.SetParent(padre, false);
             frente.localRotation = Quaternion.Euler(0, 180, 0);
             var mapa = new Dictionary<Nodo, Transform>();
-            g.Instanciar(frente, registrar, mapa);
+            Paleta.Detalle = ConDetalle;
+            try { g.Instanciar(frente, registrar, mapa); } finally { Paleta.Detalle = false; }
 
             var anim = new AnimPersonaje { cuerpo = mapa[cuerpo], torso = mapa[torso], cab = mapa[cab], vestido = estilo == Estilo.Vestido || estilo == Estilo.Quillango || estilo == Estilo.Mirinaque };
             foreach (var p in piernas) anim.piernas.Add(mapa[p]);

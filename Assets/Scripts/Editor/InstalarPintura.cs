@@ -27,6 +27,17 @@ namespace Argentina1860
             {
                 var datos = lista.GetArrayElementAtIndex(i).objectReferenceValue as ScriptableRendererData;
                 if (datos == null) continue;
+                // limpia entradas rotas (efectos sin script) que pudieron quedar de una versión anterior
+                var soLimpio = new SerializedObject(datos);
+                var lf = soLimpio.FindProperty("m_RendererFeatures");
+                var lm = soLimpio.FindProperty("m_RendererFeatureMap");
+                for (int k = lf.arraySize - 1; k >= 0; k--)
+                {
+                    if (lf.GetArrayElementAtIndex(k).objectReferenceValue != null) continue;
+                    lf.DeleteArrayElementAtIndex(k);
+                    if (k < lm.arraySize) lm.DeleteArrayElementAtIndex(k);
+                }
+                soLimpio.ApplyModifiedProperties();
                 bool ya = false;
                 foreach (var f in datos.rendererFeatures) if (f is PinturaRenderFeature) ya = true;
                 if (ya) continue;

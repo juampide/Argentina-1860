@@ -30,9 +30,13 @@ namespace Argentina1860
             if (ControladoAfuera) return;
             var d = jugador - transform.position;
             d.y = 0;
-            if (d.magnitude < 12 && d.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(d);
+            // solo se da vuelta hacia el jugador cuando conversa con él (antes todos lo seguían con la vista apenas se acercaba)
+            if (CamaraDialogo.Interlocutor == transform && d.sqrMagnitude > 0.01f)
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(d), 240f * dt);
             fase += dt * 1.2f;
-            Modelo.Anim?.Animar(fase, 0);
+            var anim = Modelo.Anim;
+            if (anim != null && CamaraDialogo.Interlocutor == transform) anim.Conversar(Time.time, CamaraDialogo.HablaElOtro);   // gesticula y se acomoda
+            else anim?.Animar(fase, 0);
         }
     }
 }

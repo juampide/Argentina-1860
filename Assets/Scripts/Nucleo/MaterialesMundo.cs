@@ -60,6 +60,22 @@ namespace Argentina1860
     {
         static readonly Dictionary<string, Material> cache = new Dictionary<string, Material>();
 
+        /// Si es true, los colores lisos ("#rrggbb") salen con el material de personaje (manchas, trama de tela y mugre) en vez del liso.
+        public static bool Detalle;
+        static readonly HashSet<string> sinDetalle = new HashSet<string> { "#ece4d0", "#17100c", "#1b130f" };   // ojos
+
+        static Material MatDetalle(string clave)
+        {
+            string k = "detalle|" + clave;
+            if (cache.TryGetValue(k, out var c) && c != null) return c;
+            var sh = Shader.Find("Argentina/Personaje");
+            if (sh == null) return null;
+            var m = new Material(sh) { name = k, hideFlags = HideFlags.DontSave };
+            m.SetColor("_BaseColor", Conv.Hex(clave));
+            cache[k] = m;
+            return m;
+        }
+
         public static Material Mat(string clave)
         {
             var mm = MaterialesMundo.Instancia;
@@ -68,6 +84,7 @@ namespace Argentina1860
                 var m = mm.Buscar(clave);
                 if (m != null) return m;
             }
+            if (Detalle && clave.StartsWith("#") && !sinDetalle.Contains(clave)) { var md = MatDetalle(clave); if (md != null) return md; }
             if (cache.TryGetValue(clave, out var c) && c != null) return c;
 
             // "base*#rrggbb": copia del material con nombre "base" teñida con ese color (paredes pastel, tejas de distinto tono)
