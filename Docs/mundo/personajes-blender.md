@@ -36,7 +36,7 @@ Blender (GPL; lo que se exporta es nuestro) → FBX → `Assets/Modelos/Personaj
 - Se bajan de Mixamo sobre **Remy** (esqueleto estándar `mixamorig:`), no sobre Obregón: el auto-rigger de Mixamo cruzaba izquierda y derecha (nuestros lados están espejados: `_R` de Obregón es el `Left` de Mixamo) y daba animaciones al revés.
 - `Arte/blender/retarget_mixamo.py` pasa la animación al esqueleto de Obregón por dirección de hueso (sin dedos; los dedos los maneja `AnimPersonaje.Mano`) y funde los últimos cuadros hacia el primero para el bucle. Uso: `blender -b -P retarget_mixamo.py -- <anim.fbx> <Nombre> <salida.fbx>`.
 - Los FBX de salida van a `Assets/Modelos/Animaciones/Obregon_<Nombre>.fbx`; `ExtraerAnimaciones` los convierte en `Assets/Resources/Animaciones/<Nombre>.anim` y `AnimPersonaje` los mezcla (Reposo, Caminar, Correr, Hablar).
-- Esos FBX y clips de Mixamo **no se suben al repositorio** (es público y los términos de Adobe permiten usarlos en un juego, pero no redistribuirlos sueltos). Cada uno los regenera con el script a partir de las descargas de Mixamo (`D:\Unity\Descargas\mixamo`). Sin clips, el juego cae a la animación procedural.
+- Los FBX y clips de Mixamo **sí están en el repositorio** (decisión de Juan, para no tener todo separado). Los términos de Adobe permiten usarlos sin regalías en un juego; no conviene publicarlos como paquete suelto. Las descargas crudas siguen en `D:UnityDescargasmixamo`.
 
 ## PENDIENTE: arreglar la costura del clip "Hablar"
 Al terminar de hablar, Obregón "se recuesta en el aire como si se fuera a caer", se sacude y vuelve a empezar. Pasa igual aunque se fundieron los últimos 24 cuadros hacia el primero y se cambió la transición a Reposo. Sospechas a revisar:
